@@ -61,3 +61,13 @@ The justfile invokes Python commands through `uv run --locked`. A strategy uses
 that same interpreter, but runs from `snapshot/src/strategy.py`, alongside its
 frozen `k4_ramsey` package. This preserves source isolation without `PYTHONPATH`
 overrides or creating an additional environment for every run.
+
+Pydantic contracts live under `src/k4_ramsey/schemas/`; Typer implements the
+command interface and the shared strategy options. See [Python design](python-design.md)
+for the data definitions, lifecycle guarantees, and compatibility boundaries.
+Snapshots include the nested schema modules and the `pyproject.toml`/`uv.lock`
+dependency identity. They use the current locked environment rather than copying
+site-packages, so do not change dependencies during active experiments.
+
+Use `just verify-weighted --help` for the separately scoped weighted recount and
+`just generate-certificate --help` for the binary-certificate Lean generator.

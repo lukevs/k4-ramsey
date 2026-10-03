@@ -47,7 +47,17 @@ python-test: runner-build
     uv run --locked python -m unittest discover -s tests -v
 
 # Build, test, and inspect theorem axioms.
-check: lean-build test audit
+check: python-lint lean-build test audit
+
+# Check maintained Python formatting and basic correctness.
+python-lint:
+    uv run --locked ruff check src/k4_ramsey experiments/strategies scripts/generate_lean_certificate.py
+    uv run --locked ruff format --check src/k4_ramsey experiments/strategies scripts/generate_lean_certificate.py
+
+# Format the maintained Python modules (historical experiments stay untouched).
+format:
+    uv run --locked ruff check --select I --fix src/k4_ramsey experiments/strategies scripts/generate_lean_certificate.py
+    uv run --locked ruff format src/k4_ramsey experiments/strategies scripts/generate_lean_certificate.py
 
 # Print the published graph's exact count.
 published:
@@ -71,8 +81,16 @@ experiment *args:
     uv run --locked k4-lab run "$@"
 
 # Refresh the local journal.html snapshot (no background server).
-dashboard:
-    uv run --locked k4-lab dashboard
+dashboard *args:
+    uv run --locked k4-lab dashboard "$@"
+
+# Independently recount a positive-integer weighted certificate.
+verify-weighted *args:
+    uv run --locked python -m k4_ramsey.weighted_verify "$@"
+
+# Embed a binary certificate as Lean source; see --help for arguments.
+generate-certificate *args:
+    uv run --locked python scripts/generate_lean_certificate.py "$@"
 
 # Show the experiment runner's full CLI options.
 runner-help *args:

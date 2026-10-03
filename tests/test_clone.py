@@ -51,7 +51,7 @@ class CloneTests(unittest.TestCase):
         rows = [list(s) for s in ["011", "100", "100"]]
         g = Graph(certificate(["".join(r) for r in rows]))
         before = g.export()
-        original = g.delta
+        original = g.calculate_delta
         calls = 0
         def fail_after_one(u, v):
             nonlocal calls
@@ -59,7 +59,7 @@ class CloneTests(unittest.TestCase):
             if calls == 2:
                 raise RuntimeError("injected failure")
             return original(u, v)
-        g.delta = fail_after_one
+        g.calculate_delta = fail_after_one
         with self.assertRaises(RuntimeError):
             trial_clone(g, rows, 0, 1)
         self.assertEqual(g.export(), before)

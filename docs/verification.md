@@ -164,7 +164,7 @@ Archive SHA256: `6ff8a2496c545e86def3a12bd69ef557c50a890c732a8506d30b1bbe8467ec8
 published example. To regenerate this representation:
 
 ```sh
-python3 scripts/generate_lean_certificate.py \
+just generate-certificate \
   .autolab/hills/clique-cluster-ramsey-multiplicity/examples/published_cayley_768/solution.json \
   lean/K4Ramsey/Constructions/Published768/Data.lean --namespace Published768
 ```

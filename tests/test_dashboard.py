@@ -4,7 +4,7 @@ from pathlib import Path
 import tempfile
 import unittest
 
-from k4_ramsey.dashboard import _timeline, render
+from k4_ramsey.dashboard import render_timeline, render
 from fractions import Fraction
 
 
@@ -123,7 +123,7 @@ class DashboardTests(unittest.TestCase):
         self.record('single')
         self.assertIn('<circle cx="530.000"',self.page())
         invalid=[(self.reports/'x/report.json',dict(started_at='bad',total_seconds=1),Fraction(1,32),'')]
-        self.assertIn('No hash-valid checked results',_timeline(invalid,Fraction(1,32)))
+        self.assertIn('No hash-valid checked results',render_timeline(invalid,Fraction(1,32)))
 
     def weighted_record(self, name='weighted'):
         run = self.record(name, evidence='unverified', verification=None)
@@ -221,7 +221,7 @@ class DashboardTests(unittest.TestCase):
                     dict(path=self.reports/'later-worse/report.json',
                          timing=dict(finished_at='2026-09-27T12:02:00+00:00'),
                          value=Fraction(31, 1000), level='Native exact')]
-        chart = _timeline(binary, Fraction(1,32), graphons)
+        chart = render_timeline(binary, Fraction(1,32), graphons)
         self.assertIn('best 3/100 · graphon · Native exact', chart)
         self.assertIn('best 3/100 · later-worse · Native exact', chart)
         self.assertNotIn('best 31/1000', chart)

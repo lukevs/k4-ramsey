@@ -1,13 +1,16 @@
 [project]
 name = "k4-ramsey"
 version = "0.1.0"
-description = "Add your description here"
+description = "Clebsch-based K4 Ramsey constructions, exact recounts, and isolated experiments"
 readme = "README.md"
 authors = [
     { name = "Luke Van Seters", email = "lukevanseters@gmail.com" }
 ]
 requires-python = ">=3.12"
-dependencies = []
+dependencies = [
+    "pydantic>=2.12,<3",
+    "typer>=0.20,<1",
+]
 
 [project.scripts]
 k4-ramsey = "k4_ramsey:main"
@@ -16,3 +19,14 @@ k4-lab = "k4_ramsey.lab:main"
 [build-system]
 requires = ["uv_build>=0.12.3,<0.13.0"]
 build-backend = "uv_build"
+
+[tool.ruff]
+target-version = "py312"
+
+[tool.ruff.lint]
+select = ["E4", "E7", "E9", "F", "I"]
+
+[dependency-groups]
+dev = [
+    "ruff>=0.16.10",
+]

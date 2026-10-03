@@ -1,259 +1,409 @@
-"""One isolated experiment. Scheduling belongs to the coordinating session."""
+"""One isolated experiment: validate → freeze → search → recount → record.
+
+The justfile owns builds; this module owns runtime supervision, never scheduling.
+Public orchestration appears before the helpers it calls.
+"""
+
 from __future__ import annotations
 
-import argparse
-from datetime import datetime, timezone
-from fractions import Fraction
-import hashlib
 import json
-import math
 import os
-from pathlib import Path
 import platform
 import shutil
 import signal
 import subprocess
 import sys
 import time
+from datetime import datetime, timezone
+from fractions import Fraction
+from pathlib import Path
+from typing import Annotated
 
-from .engine import ROOT, SEED, TARGET, native_library_path, load
-from .verify import verify
+import typer
 
+from .artifacts import hash_file, read_json, write_json
+from .engine import ROOT, SEED, TARGET, locate_native_library, read_certificate
+from .schemas.experiments import (
+    ExperimentReport,
+    ExperimentRequest,
+    ProcessResult,
+    SearchMetrics,
+)
+from .verify import recount
 
-def digest(path):
-    return hashlib.sha256(Path(path).read_bytes()).hexdigest()
-
-
-def read_json(path):
-    def reject(value):
-        raise ValueError(f'nonfinite JSON constant: {value}')
-    value = json.loads(Path(path).read_text(), parse_constant=reject)
-    # Valid JSON number syntax can still overflow a Python float (e.g. 1e999).
-    # Reject it before attaching the data to the durable failure report.
-    json.dumps(value, allow_nan=False)
-    return value
-
-
-def write_json(path, data):
-    """Atomic replacement for checkpoints and mutable status, not final evidence."""
-    path = Path(path)
-    temporary = path.with_name(path.name + '.tmp')
-    temporary.write_text(json.dumps(data, indent=2, allow_nan=False) + '\n')
-    temporary.replace(path)
+app = typer.Typer(help=__doc__, no_args_is_help=True, pretty_exceptions_enable=False)
 
 
-def prepare():
+def main() -> None:
+    app()
+
+
+@app.command("run")
+def run_command(
+    out: Annotated[Path, typer.Option()],
+    hypothesis: Annotated[str, typer.Option()],
+    prediction: Annotated[str, typer.Option()],
+    input_path: Annotated[Path, typer.Option("--input")] = SEED,
+    strategy: Annotated[Path, typer.Option()] = ROOT
+    / "experiments/strategies/edge_descent.py",
+    seed: Annotated[int, typer.Option()] = 0,
+    seconds: Annotated[float, typer.Option()] = 10.0,
+    timeout: Annotated[float, typer.Option()] = 40.0,
+    config: Annotated[Path | None, typer.Option()] = None,
+) -> None:
+    """Run one experiment without scheduling other jobs."""
+    request = ExperimentRequest(
+        out=out,
+        input_path=input_path,
+        strategy=strategy,
+        hypothesis=hypothesis,
+        prediction=prediction,
+        seed=seed,
+        seconds=seconds,
+        timeout=timeout,
+        config=read_json(config) if config else {},
+    )
+    previous = signal.signal(signal.SIGTERM, interrupt)
+    try:
+        report = run_experiment(request).model_dump(
+            mode="json", by_alias=True, exclude_none=True
+        )
+        typer.echo(
+            json.dumps(
+                {
+                    k: report[k]
+                    for k in ("status", "evidence", "improvement", "gap_to_mckay")
+                    if k in report
+                }
+            )
+        )
+        typer.echo(out.resolve() / "report.json")
+        if report["status"] != "completed":
+            raise typer.Exit(1)
+    finally:
+        signal.signal(signal.SIGTERM, previous)
+
+
+@app.command("record-build")
+def record_build_command() -> None:
+    """Record prebuilt artifact hashes (called by just runner-build)."""
+    record_build()
+    typer.echo("Native engine and Lean checker build identities recorded.")
+
+
+@app.command("dashboard")
+def dashboard_command(
+    reports: Annotated[Path, typer.Option()] = ROOT / "reports",
+    out: Annotated[Path, typer.Option()] = ROOT / "journal.html",
+) -> None:
+    """Render a self-contained snapshot of experiment states."""
+    from .dashboard import render
+
+    typer.echo(render(reports, out))
+
+
+def run_legacy_experiment(
+    *,
+    out,
+    input_path,
+    strategy,
+    hypothesis,
+    prediction,
+    seed=0,
+    seconds=10.0,
+    timeout=40.0,
+    config=None,
+) -> dict:
+    """Compatibility boundary for research callers; use run_experiment internally."""
+    request = ExperimentRequest(
+        out=Path(out),
+        input_path=Path(input_path),
+        strategy=Path(strategy),
+        hypothesis=hypothesis,
+        prediction=prediction,
+        seed=seed,
+        seconds=seconds,
+        timeout=timeout,
+        config={} if config is None else config,
+    )
+    return run_experiment(request).model_dump(
+        mode="json", by_alias=True, exclude_none=True
+    )
+
+
+def run_experiment(request: ExperimentRequest) -> ExperimentReport:
+    """Run one validated request, preserving failure evidence and reaping children."""
+    data = read_certificate(request.input_path)
+    strategy = request.strategy.resolve(strict=True)
+    out = request.out.resolve()
+    out.mkdir(parents=True, exist_ok=False)
+    start = time.monotonic()
+    deadline = start + request.timeout
+    report = ExperimentReport(
+        hypothesis=request.hypothesis,
+        prediction=request.prediction,
+        seed=request.seed,
+        search_seconds=request.seconds,
+        timeout_seconds=request.timeout,
+        started_at=datetime.now(timezone.utc).isoformat(),
+        source_input=str(request.input_path.resolve()),
+        strategy=str(strategy),
+        python=sys.version,
+        platform=platform.platform(),
+    )
+    write_json(out / "status.json", report)
+    try:
+        source = out / "snapshot"
+        report.source_hashes = freeze_sources(source)
+        strategy_copy = source / "src/strategy.py"
+        shutil.copy2(strategy, strategy_copy)
+        report.strategy_sha256 = hash_file(strategy_copy)
+        write_json(out / "input.json", data)
+        write_json(out / "config.json", request.config)
+        report.input_sha256 = hash_file(out / "input.json")
+        checker = source / "lean/.lake/build/bin/check_candidate"
+        report.baseline = recount(
+            data, timeout=remaining_budget(deadline), checker=checker
+        )
+        report.setup_seconds = time.monotonic() - start
+        report.command = strategy_command(request, out, strategy_copy)
+        report.status = "searching"
+        write_json(out / "status.json", report)
+        report.process = supervise(
+            report.command,
+            cwd=out,
+            env=strategy_environment(),
+            timeout=search_budget(request, deadline),
+            stdout=out / "stdout.log",
+            stderr=out / "stderr.log",
+        )
+        if report.process.status != "completed":
+            report.status = report.process.status
+            return report
+        report.status = "verifying"
+        write_json(out / "status.json", report)
+        verify_candidate(report, out, source, checker, len(data["red_rows"]), deadline)
+    except KeyboardInterrupt:
+        report.status = "interrupted"
+        report.error = "Interrupted by user or termination signal"
+    except subprocess.TimeoutExpired as exc:
+        report.status, report.error = "timeout", str(exc)
+    except Exception as exc:
+        report.status, report.error = "failed", f"{type(exc).__name__}: {exc}"
+    finally:
+        report.total_seconds = time.monotonic() - start
+        ExperimentReport.model_validate(
+            report.model_dump(mode="json", by_alias=True, exclude_none=True)
+        )
+        write_json(out / "status.json", report)
+        with (out / "report.json").open("x") as handle:
+            json.dump(
+                report.model_dump(mode="json", by_alias=True, exclude_none=True),
+                handle,
+                indent=2,
+                allow_nan=False,
+            )
+            handle.write("\n")
+    return report
+
+
+def verify_candidate(
+    report: ExperimentReport,
+    out: Path,
+    source: Path,
+    checker: Path,
+    order: int,
+    deadline: float,
+) -> None:
+    """Promote only an unchanged-order candidate recounted against frozen sources."""
+    candidate = read_certificate(out / "candidate.json")
+    if len(candidate["red_rows"]) != order:
+        raise ValueError(
+            "this runner requires unchanged order; extend verification contract first"
+        )
+    metrics_path = out / "search.json"
+    raw_metrics = read_json(metrics_path) if metrics_path.exists() else {}
+    metrics = SearchMetrics.model_validate(raw_metrics)
+    report.search_reported = raw_metrics
+    check_snapshot(source, report.source_hashes, report.strategy_sha256)
+    checked = recount(
+        candidate,
+        metrics.numerator,
+        timeout=remaining_budget(deadline),
+        checker=checker,
+    )
+    write_json(out / "verification.json", checked)
+    candidate_hash = hash_file(out / "candidate.json")
+    gap = Fraction(checked.numerator, checked.denominator) - Fraction(TARGET, 768**4)
+    assert report.baseline is not None
+    report.verification = checked
+    report.candidate_sha256 = candidate_hash
+    report.improvement = report.baseline.numerator - checked.numerator
+    report.gap_to_mckay, report.beats_mckay = str(gap), gap < 0
+    report.interpretation = (
+        "Verified candidate value; hypothesis interpretation remains for coordinator."
+    )
+    report.status, report.evidence = "completed", "lean_native_checked"
+
+
+def record_build() -> dict[str, str]:
     """Record existing build artifacts; just owns all compiler invocations."""
-    native = native_library_path()
-    paths = ['native/search.cpp', 'lean/Executables/CheckCandidate.lean', 'lean/K4Ramsey/Counting/Multiplicity.lean',
-             'lean/lean-toolchain', 'lean/lakefile.toml', str(native.relative_to(ROOT)),
-             'lean/.lake/build/bin/check_candidate', 'justfile', 'scripts/lean.sh']
-    manifest = {p: digest(ROOT/p) for p in paths}
-    write_json(ROOT/'build/experiment-build.json', manifest)
+    native = locate_native_library()
+    paths = [
+        "native/search.cpp",
+        "lean/Executables/CheckCandidate.lean",
+        "lean/K4Ramsey/Counting/Multiplicity.lean",
+        "lean/lean-toolchain",
+        "lean/lakefile.toml",
+        str(native.relative_to(ROOT)),
+        "lean/.lake/build/bin/check_candidate",
+        "justfile",
+        "scripts/lean.sh",
+        "pyproject.toml",
+        "uv.lock",
+    ]
+    manifest = {p: hash_file(ROOT / p) for p in paths}
+    write_json(ROOT / "build/experiment-build.json", manifest)
     return manifest
 
 
-def snapshot(destination):
-    """Refuse stale binaries; each experiment runs a private copy of the code."""
-    manifest_path = ROOT/'build/experiment-build.json'
+def freeze_sources(destination: Path) -> dict[str, str]:
+    """Refuse stale builds and copy a private source/binary/dependency identity."""
+    manifest_path = ROOT / "build/experiment-build.json"
     if not manifest_path.exists():
-        raise ValueError('Run just runner-build before experiments')
-    manifest = json.loads(manifest_path.read_text())
-    for p, expected in manifest.items():
-        if digest(ROOT/p) != expected:
-            raise ValueError(f'Stale build: {p}; run just runner-build before dispatch')
+        raise ValueError("Run just runner-build before experiments")
+    manifest = read_json(manifest_path)
+    for path, expected in manifest.items():
+        if hash_file(ROOT / path) != expected:
+            raise ValueError(
+                f"Stale build: {path}; run just runner-build before dispatch"
+            )
     paths = set(manifest)
-    paths.update(str(p.relative_to(ROOT)) for p in (ROOT/'src/k4_ramsey').glob('*.py'))
+    paths.update(
+        str(p.relative_to(ROOT)) for p in (ROOT / "src/k4_ramsey").rglob("*.py")
+    )
     identities = {}
-    for p in sorted(paths):
-        target = destination/p
+    for path in sorted(paths):
+        target = destination / path
         target.parent.mkdir(parents=True, exist_ok=True)
-        shutil.copy2(ROOT/p, target)
-        identities[p] = digest(target)
-        if p in manifest and identities[p] != manifest[p]:
-            raise ValueError(f'Build changed during snapshot: {p}')
+        shutil.copy2(ROOT / path, target)
+        identities[path] = hash_file(target)
+        if path in manifest and identities[path] != manifest[path]:
+            raise ValueError(f"Build changed during snapshot: {path}")
     return identities
 
 
-def run_process(command, *, cwd, env, timeout, stdout, stderr):
-    """Bound one process tree; clean descendants on exit, timeout or interruption."""
+def check_snapshot(
+    source: Path, hashes: dict[str, str], strategy_hash: str | None
+) -> None:
+    """Detect accidental mutation before accepting a candidate."""
+    for path, expected in hashes.items():
+        if hash_file(source / path) != expected:
+            raise ValueError(f"experiment snapshot was modified: {path}")
+    if hash_file(source / "src/strategy.py") != strategy_hash:
+        raise ValueError("strategy snapshot was modified")
+
+
+def strategy_command(request: ExperimentRequest, out: Path, script: Path) -> list[str]:
+    """Encode the standalone strategy protocol using the current uv interpreter."""
+    return [
+        sys.executable,
+        str(script),
+        "--input",
+        str(out / "input.json"),
+        "--output",
+        str(out / "candidate.json"),
+        "--seed",
+        str(request.seed),
+        "--seconds",
+        str(request.seconds),
+        "--config",
+        str(out / "config.json"),
+    ]
+
+
+def strategy_environment() -> dict[str, str]:
+    """Use snapshot imports and keep each native numeric runtime single-threaded."""
+    env = os.environ.copy()
+    env.pop("PYTHONPATH", None)
+    env["PYTHONDONTWRITEBYTECODE"] = "1"
+    for name in [
+        "OMP_NUM_THREADS",
+        "OPENBLAS_NUM_THREADS",
+        "MKL_NUM_THREADS",
+        "VECLIB_MAXIMUM_THREADS",
+        "NUMEXPR_NUM_THREADS",
+    ]:
+        env[name] = "1"
+    return env
+
+
+def search_budget(request: ExperimentRequest, deadline: float) -> float:
+    """Reserve recount time while allowing two seconds for strategy startup."""
+    remaining = remaining_budget(deadline)
+    reserve = min(10.0, max(0.0, remaining - request.seconds - 2.0))
+    return min(request.seconds + 2.0, remaining - reserve)
+
+
+def remaining_budget(deadline: float) -> float:
+    """Fail before starting another operation when the total budget is spent."""
+    remaining = deadline - time.monotonic()
+    if remaining <= 0:
+        raise subprocess.TimeoutExpired("experiment", 0)
+    return remaining
+
+
+def run_process(command, *, cwd, env, timeout, stdout, stderr) -> dict:
+    """Dictionary adapter for older research callers of the process supervisor."""
+    return supervise(
+        command, cwd=cwd, env=env, timeout=timeout, stdout=stdout, stderr=stderr
+    ).model_dump(exclude={"pid"} if timeout <= 0 else set())
+
+
+def supervise(
+    command: list[str],
+    *,
+    cwd: Path,
+    env: dict[str, str],
+    timeout: float,
+    stdout: Path,
+    stderr: Path,
+) -> ProcessResult:
+    """Bound one process tree; reap descendants on exit, timeout or interruption."""
     if timeout <= 0:
-        return {'status': 'timeout', 'returncode': None, 'seconds': 0}
+        return ProcessResult(status="timeout", returncode=None, seconds=0.0)
     started = time.monotonic()
-    with Path(stdout).open('w') as out, Path(stderr).open('w') as err:
-        proc = subprocess.Popen(command, cwd=cwd, env=env, stdout=out, stderr=err,
-                                start_new_session=True)
+    with Path(stdout).open("w") as out, Path(stderr).open("w") as err:
+        proc = subprocess.Popen(
+            command, cwd=cwd, env=env, stdout=out, stderr=err, start_new_session=True
+        )
         try:
             try:
                 code = proc.wait(timeout=timeout)
-                status = 'completed' if code == 0 else 'failed'
+                status = "completed" if code == 0 else "failed"
             except subprocess.TimeoutExpired:
-                status, code = 'timeout', None
+                status, code = "timeout", None
         finally:
-            # Even a successful strategy must not leave background compute behind.
             try:
                 os.killpg(proc.pid, signal.SIGKILL)
             except ProcessLookupError:
                 pass
             proc.wait()
-    return dict(status=status, returncode=code, pid=proc.pid,
-                seconds=time.monotonic()-started)
+    return ProcessResult(
+        status=status, returncode=code, pid=proc.pid, seconds=time.monotonic() - started
+    )
 
 
-def experiment(*, out, input_path, strategy, hypothesis, prediction, seed=0,
-               seconds=10.0, timeout=40.0, config=None):
-    for name, value in [('seconds', seconds), ('timeout', timeout)]:
-        if not math.isfinite(value) or value <= 0:
-            raise ValueError(f'{name} must be positive and finite')
-    if timeout <= seconds:
-        raise ValueError('timeout must exceed search seconds to leave verification time')
-    if not hypothesis.strip() or not prediction.strip():
-        raise ValueError('hypothesis and prediction are required')
-    data = load(Path(input_path))
-    strategy = Path(strategy).resolve(strict=True)
-    config = {} if config is None else config
-    if not isinstance(config, dict):
-        raise ValueError('config must be a JSON object')
-    # Validate serialization before creating a run directory.
-    json.dumps(config, allow_nan=False)
-    out = Path(out).resolve()
-    out.mkdir(parents=True, exist_ok=False)
-    start = time.monotonic()
-    deadline = start + timeout
-    report = dict(schema='k4-experiment-v1', status='preparing', hypothesis=hypothesis, prediction=prediction,
-                  seed=seed, search_seconds=seconds, timeout_seconds=timeout,
-                  started_at=datetime.now(timezone.utc).isoformat(),
-                  source_input=str(Path(input_path).resolve()), strategy=str(strategy),
-                  python=sys.version, platform=platform.platform(),
-                  evidence='unverified', official_autolab_report=False)
-    write_json(out/'status.json', report)
-    try:
-        source = out/'snapshot'
-        report['source_hashes'] = snapshot(source)
-        # Script-directory imports select the frozen package, not the editable
-        # workspace install provided by the parent uv environment.
-        strategy_copy = source/'src/strategy.py'
-        shutil.copy2(strategy, strategy_copy)
-        report['strategy_sha256'] = digest(strategy_copy)
-        write_json(out/'input.json', data)
-        write_json(out/'config.json', config)
-        report['input_sha256'] = digest(out/'input.json')
-        checker = source/'lean/.lake/build/bin/check_candidate'
-        report['baseline'] = verify(data, timeout=max(.001, deadline-time.monotonic()), checker=checker)
-        report['setup_seconds'] = time.monotonic()-start
-        command = [sys.executable, str(strategy_copy), '--input', str(out/'input.json'),
-                   '--output', str(out/'candidate.json'), '--seed', str(seed),
-                   '--seconds', str(seconds), '--config', str(out/'config.json')]
-        env = os.environ.copy()
-        env.pop('PYTHONPATH', None)
-        env['PYTHONDONTWRITEBYTECODE'] = '1'
-        for name in ['OMP_NUM_THREADS','OPENBLAS_NUM_THREADS','MKL_NUM_THREADS',
-                     'VECLIB_MAXIMUM_THREADS','NUMEXPR_NUM_THREADS']:
-            env[name] = '1'
-        report.update(status='searching', command=command)
-        write_json(out/'status.json', report)
-        # Reserve up to 10 seconds for checking. A cooperative strategy receives
-        # its own search duration; the parent also enforces a hard process limit.
-        remaining = deadline-time.monotonic()
-        if remaining <= 0:
-            raise subprocess.TimeoutExpired(command, timeout)
-        # Leave startup/serialization grace in the process budget too. Reserving
-        # all non-search time can otherwise kill a short run during Python import.
-        reserve = min(10.0, max(0.0, remaining-seconds-2.0))
-        report['process'] = run_process(command, cwd=out, env=env,
-            timeout=min(seconds+2.0, remaining-reserve),
-            stdout=out/'stdout.log', stderr=out/'stderr.log')
-        report['status'] = report['process']['status']
-        if report['status'] != 'completed':
-            # Any surviving checkpoint remains explicitly unverified; restarting
-            # it is a new experiment, never an implicit successful completion.
-            return report
-        candidate = load(out/'candidate.json')
-        if len(candidate['red_rows']) != len(data['red_rows']):
-            raise ValueError('this runner requires unchanged order; extend verification contract first')
-        metrics_path = out/'search.json'
-        metrics = read_json(metrics_path) if metrics_path.exists() else {}
-        if not isinstance(metrics, dict):
-            raise ValueError('search.json must be an object')
-        report['search_reported'] = metrics
-        expected = metrics.get('numerator')
-        if expected is not None and (type(expected) is not int or expected < 0):
-            raise ValueError('search numerator must be a nonnegative integer')
-        report['status'] = 'verifying'
-        write_json(out/'status.json', report)
-        # Detect accidental source/binary mutation before promotion.
-        for p, expected_hash in report['source_hashes'].items():
-            if digest(source/p) != expected_hash:
-                raise ValueError(f'experiment snapshot was modified: {p}')
-        if digest(strategy_copy) != report['strategy_sha256']:
-            raise ValueError('strategy snapshot was modified')
-        checked = verify(candidate, expected, timeout=max(.001, deadline-time.monotonic()), checker=checker)
-        write_json(out/'verification.json', checked)
-        numerator, denominator = checked['numerator'], checked['denominator']
-        gap = Fraction(numerator,denominator) - Fraction(TARGET,768**4)
-        report.update(status='completed', evidence='lean_native_checked',
-                      verification=checked, candidate_sha256=digest(out/'candidate.json'),
-                      improvement=report['baseline']['numerator']-numerator,
-                      gap_to_mckay=str(gap), beats_mckay=gap<0,
-                      interpretation='Verified candidate value; hypothesis interpretation remains for coordinator.')
-    except KeyboardInterrupt:
-        report.update(status='interrupted', error='Interrupted by user or termination signal')
-    except subprocess.TimeoutExpired as exc:
-        report.update(status='timeout', error=str(exc))
-    except Exception as exc:
-        report.update(status='failed', error=f'{type(exc).__name__}: {exc}')
-    finally:
-        report['total_seconds'] = time.monotonic()-start
-        write_json(out/'status.json', report)
-        # Never overwrite evidence from another attempt: out was exclusively created.
-        with (out/'report.json').open('x') as handle:
-            json.dump(report, handle, indent=2, allow_nan=False)
-            handle.write('\n')
-    return report
+def interrupt(signum, frame) -> None:
+    raise KeyboardInterrupt
 
 
-def main():
-    parser = argparse.ArgumentParser(description=__doc__)
-    sub = parser.add_subparsers(dest='action', required=True)
-    sub.add_parser('record-build', help='Record prebuilt artifact hashes (normally called by just runner-build)')
-    dash = sub.add_parser('dashboard', help='Render a self-contained HTML snapshot of experiment states')
-    dash.add_argument('--reports', type=Path, default=ROOT/'reports')
-    dash.add_argument('--out', type=Path, default=ROOT/'journal.html')
-    run = sub.add_parser('run', help='Run one experiment, without scheduling other jobs')
-    run.add_argument('--out', type=Path, required=True)
-    run.add_argument('--input', type=Path, default=SEED)
-    run.add_argument('--strategy', type=Path, default=ROOT/'experiments/strategies/edge_descent.py')
-    run.add_argument('--hypothesis', required=True)
-    run.add_argument('--prediction', required=True)
-    run.add_argument('--seed', type=int, default=0)
-    run.add_argument('--seconds', type=float, default=10)
-    run.add_argument('--timeout', type=float, default=40)
-    run.add_argument('--config', type=Path)
-    args = parser.parse_args()
-    if args.action == 'record-build':
-        prepare()
-        print('Native engine and Lean checker build identities recorded.')
-        return
-    if args.action == 'dashboard':
-        from .dashboard import render
-        render(args.reports, args.out)
-        print(args.out.resolve())
-        return
-    def interrupt(signum, frame):
-        raise KeyboardInterrupt
-    previous = signal.signal(signal.SIGTERM, interrupt)
-    try:
-        report = experiment(out=args.out, input_path=args.input, strategy=args.strategy,
-            hypothesis=args.hypothesis, prediction=args.prediction, seed=args.seed,
-            seconds=args.seconds, timeout=args.timeout,
-            config=read_json(args.config) if args.config else {})
-        print(json.dumps({k:report[k] for k in ('status','evidence','improvement','gap_to_mckay') if k in report}))
-        print(args.out.resolve()/'report.json')
-        if report['status'] != 'completed':
-            raise SystemExit(1)
-    finally:
-        signal.signal(signal.SIGTERM, previous)
+# Compatibility names used by older research scripts.
+experiment = run_legacy_experiment
+prepare = record_build
+snapshot = freeze_sources
+digest = hash_file
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

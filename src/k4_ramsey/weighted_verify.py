@@ -1,69 +1,139 @@
 """Versioned independent weighted recount; never accepted by the unit runner."""
-import argparse
-from fractions import Fraction
-import hashlib
+
 import json
-from pathlib import Path
 import subprocess
 import tempfile
 import time
+from fractions import Fraction
+from pathlib import Path
+from typing import Annotated
 
-from .engine import ROOT,validate
+import typer
 
+from .artifacts import hash_file, read_json
+from .engine import ROOT
+from .schemas.certificates import WeightedCertificate
+from .schemas.verification import WeightedVerification
 
-def validate_weighted(data):
-    if not isinstance(data,dict) or set(data)!={'schema','weights','red_rows'}:
-        raise ValueError('invalid certificate keys')
-    weights=data['weights']
-    rows=data['red_rows']
-    if not isinstance(rows,list) or not isinstance(weights,list) or len(weights)!=len(rows):
-        raise ValueError('weights and rows must be equal-length arrays')
-    if any(type(w)is not int or not 1<=w<=65535 for w in weights):
-        raise ValueError('weights must be positive integers <=65535')
-    # Reuse only schema/adjacency validation, not the unit-weight objective.
-    validate(dict(data,weights=[1]*len(rows)))
-    return rows,weights
+app = typer.Typer(pretty_exceptions_enable=False)
 
 
-def verify(data,expected_density=None,timeout=120):
-    rows,weights=validate_weighted(data)
-    checker=ROOT/'lean/.lake/build/bin/check_weighted_candidate'
-    if not checker.is_file(): raise RuntimeError('build check_weighted_candidate first')
-    started=time.monotonic()
-    with tempfile.TemporaryDirectory(prefix='k4-weighted-v1-') as directory:
-        matrix=Path(directory)/'weighted.txt'
-        matrix.write_text(' '.join(map(str,weights))+'\n'+'\n'.join(rows)+'\n')
-        result=subprocess.run([str(checker),str(matrix)],text=True,capture_output=True,check=True,timeout=timeout)
-    values=list(map(int,result.stdout.split()))
-    if len(values)!=4: raise ValueError('invalid weighted checker output')
-    n,total,numerator,denominator=values
-    if n!=len(rows) or total!=sum(weights) or denominator!=total**4:
-        raise ValueError('weighted checker normalization mismatch')
-    density=Fraction(numerator,denominator)
-    if expected_density is not None and density!=Fraction(expected_density):
-        raise ValueError('weighted checker disagrees with expected density')
-    sources=['lean/Executables/WeightedCandidate.lean','lean/K4Ramsey/Counting/WeightedMultiplicity.lean','lean/Tests/WeightedMultiplicity.lean',
-             'lean/K4Ramsey/Counting/Multiplicity.lean','lean/lean-toolchain','src/k4_ramsey/weighted_verify.py']
-    return dict(schema='k4-weighted-verification-v1',status='lean_native_checked_weighted_v1',
-        n=n,total_weight=total,numerator=numerator,denominator=denominator,density=str(density),
-        seconds=time.monotonic()-started,checker_binary_sha256=hashlib.sha256(checker.read_bytes()).hexdigest(),
-        source_hashes={p:hashlib.sha256((ROOT/p).read_bytes()).hexdigest() for p in sources},
-        scope='Positive integer weights <=65535; order<=1024; symmetric binary graph; blue diagonals.',
-        trust='Independent compiled Lean full weighted recount; not a kernel-only proof of the general counting identity or asymptotic bound.')
+def main() -> None:
+    app()
 
 
-def main():
-    parser=argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--input',type=Path,required=True)
-    parser.add_argument('--out',type=Path,required=True)
-    parser.add_argument('--expected-density')
-    args=parser.parse_args()
-    data=json.loads(args.input.read_text())
-    result=verify(data,args.expected_density)
-    result['candidate_sha256']=hashlib.sha256(args.input.read_bytes()).hexdigest()
-    result['candidate']=str(args.input.resolve())
-    with args.out.open('x') as handle: json.dump(result,handle,indent=2);handle.write('\n')
-    print(json.dumps(result,indent=2))
+@app.command()
+def check_command(
+    input_path: Annotated[Path, typer.Option("--input")],
+    out: Annotated[Path, typer.Option()],
+    expected_density: Annotated[str | None, typer.Option()] = None,
+) -> None:
+    """Recount a weighted certificate and write new, separately scoped evidence."""
+    result = recount(read_json(input_path), expected_density)
+    result.candidate_sha256 = hash_file(input_path)
+    result.candidate = str(input_path.resolve())
+    payload = result.model_dump(mode="json", by_alias=True, exclude_none=True)
+    with out.open("x") as handle:
+        json.dump(payload, handle, indent=2)
+        handle.write("\n")
+    typer.echo(json.dumps(payload, indent=2))
 
 
-if __name__=='__main__': main()
+def verify(data: dict, expected_density=None, timeout: float = 120) -> dict:
+    """JSON-compatible wrapper for existing research callers."""
+    return recount(data, expected_density, timeout).model_dump(
+        mode="json", by_alias=True, exclude_none=True
+    )
+
+
+def recount(
+    data: dict | WeightedCertificate, expected_density=None, timeout: float = 120
+) -> WeightedVerification:
+    """Validate weights and graph, execute Lean, then check exact normalization."""
+    certificate = WeightedCertificate.model_validate(data)
+    checker = ROOT / "lean/.lake/build/bin/check_weighted_candidate"
+    if not checker.is_file():
+        raise RuntimeError("Build checker first: just runner-build")
+    started = time.monotonic()
+    with tempfile.TemporaryDirectory(prefix="k4-weighted-v1-") as directory:
+        matrix = Path(directory) / "weighted.txt"
+        matrix.write_text(
+            " ".join(map(str, certificate.weights))
+            + "\n"
+            + "\n".join(certificate.red_rows)
+            + "\n"
+        )
+        result = subprocess.run(
+            [str(checker), str(matrix)],
+            text=True,
+            capture_output=True,
+            check=True,
+            timeout=timeout,
+        )
+    return parse_recount(
+        result.stdout,
+        certificate,
+        expected_density,
+        time.monotonic() - started,
+        hash_file(checker),
+    )
+
+
+def parse_recount(
+    stdout: str,
+    certificate: WeightedCertificate,
+    expected_density,
+    seconds: float,
+    checker_hash: str,
+) -> WeightedVerification:
+    """Interpret the weighted checker's four integers, rejecting inconsistent data."""
+    values = list(map(int, stdout.split()))
+    if len(values) != 4:
+        raise ValueError("invalid weighted checker output")
+    n, total, numerator, denominator = values
+    if (
+        n != len(certificate.red_rows)
+        or total != sum(certificate.weights)
+        or denominator <= 0
+    ):
+        raise ValueError("weighted checker normalization mismatch")
+    density = Fraction(numerator, denominator)
+    if expected_density is not None and density != Fraction(expected_density):
+        raise ValueError("weighted checker disagrees with expected density")
+    return WeightedVerification(
+        n=n,
+        total_weight=total,
+        numerator=numerator,
+        denominator=denominator,
+        density=str(density),
+        seconds=seconds,
+        checker_binary_sha256=checker_hash,
+        source_hashes=hash_verifier_sources(),
+    )
+
+
+def validate_weighted(data: dict) -> tuple[list[str], list[int]]:
+    """Compatibility adapter for strategies that consume row/weight arrays."""
+    certificate = WeightedCertificate.model_validate(data)
+    return certificate.red_rows, certificate.weights
+
+
+def hash_verifier_sources() -> dict[str, str]:
+    """Identify the source contract independently of the candidate's report."""
+    sources = [
+        "lean/Executables/WeightedCandidate.lean",
+        "lean/K4Ramsey/Counting/WeightedMultiplicity.lean",
+        "lean/Tests/WeightedMultiplicity.lean",
+        "lean/K4Ramsey/Counting/Multiplicity.lean",
+        "lean/lean-toolchain",
+        "src/k4_ramsey/weighted_verify.py",
+        "src/k4_ramsey/artifacts.py",
+    ]
+    sources.extend(
+        str(p.relative_to(ROOT)) for p in (ROOT / "src/k4_ramsey/schemas").glob("*.py")
+    )
+    return {p: hash_file(ROOT / p) for p in sources}
+
+
+if __name__ == "__main__":
+    main()

@@ -7,6 +7,8 @@ engine, Python experiments, and Lean proofs.
 Start with [the introduction](introduction.md) for the problem and results.
 Open the [interactive explainer](research/clebsch-explorer.html) in a browser
 to explore the graph visually.
+The [paper directory](paper/README.md) contains the LaTeX manuscript, compiled
+PDF, bibliography, and construction supplement.
 
 ## Layout
 
@@ -22,6 +24,7 @@ lean/                     Self-contained Lean package
   Tests/                  Lean regression tests
   lakefile.toml           Lean build targets and dependencies
 src/k4_ramsey/            Python engine interface and experiment runner
+  schemas/               Pydantic data definitions and validation contracts
 native/                   C++17 search primitives
 tests/                    Python/native regression tests
 experiments/              Strategies, configurations, and specialized tools
@@ -29,6 +32,7 @@ data/                     Published seed and source attribution
 scripts/                  Generators and the Lean command wrapper
 docs/                     Verification and runner documentation
 research/                 Research notes, paper draft, and visual explainer
+paper/                    LaTeX manuscript, PDF, and checked construction data
 justfile                  Common project commands
 ```
 
@@ -54,8 +58,8 @@ the C++ shared library and Lean candidate checker. Lean and mathlib are pinned
 to `v4.34.1`; allow several GB for dependencies and build products.
 
 The Python recipes use `uv run --locked` with the installed project package;
-no `PYTHONPATH` setup is needed. The core runner has no third-party runtime
-dependencies. Specialized research experiments may need additional dependencies.
+no `PYTHONPATH` setup is needed. Pydantic validates data contracts and Typer handles
+the Python CLIs. Specialized research experiments may need additional dependencies.
 The Lean proofs use embedded data, not the large local experiment artifacts.
 
 ## Common commands
@@ -73,6 +77,8 @@ Run `just` to list the available commands.
 | `just search reports/descent-001` | Run a short search from the bundled seed. |
 | `just dashboard` | Refresh the local `journal.html` snapshot. |
 | `just runner-help run` | Show advanced experiment options. |
+| `just format` | Format the maintained Python code. |
+| `just python-lint` | Check Python formatting and basic correctness. |
 
 Build before running searches, use a new output directory each time, and do not
 rebuild during an active experiment. Search parameters are positional:
@@ -103,4 +109,4 @@ literal density, but its final numerical certificate remains unfinished.
 The published bitset checker also has a separate correctness gap.
 
 See [verification details](docs/verification.md), [runner details](docs/experiments.md),
-and [seed attribution](data/SOURCE.md).
+[Python design](docs/python-design.md), and [seed attribution](data/SOURCE.md).
