@@ -35,7 +35,7 @@ the development dependencies. `just` owns the LaTeX compiler step.
 
 ## Figures
 
-`just paper-figures` regenerates five figures under `figures/`, as PDF for the
+`just paper-figures` regenerates six figures under `figures/`, as PDF for the
 manuscript and PNG for the Markdown documents:
 
 | File | Content |
@@ -45,6 +45,7 @@ manuscript and PNG for the Markdown documents:
 | `ppss-reordered` | The PPSS graph in published order, in Clebsch order, and one family |
 | `family-rule` | The twelve-family type rule, the family graph, and the four patterns |
 | `refinements` | The pentagon refinement and the balanced sign split |
+| `hero` | README banner: the PPSS graph as published, relabeled, and the Clebsch graph |
 
 The generator reads the published PPSS matrix and the explainer's vertex order.
 It checks that they agree, that every family is a fourfold Clebsch blow-up, and

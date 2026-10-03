@@ -303,6 +303,37 @@ def render() -> None:
     red_blue_legend(fig, 0.035)
     save(fig, "ppss-reordered")
 
+    # README banner: the published graph, its relabeling, and the Clebsch graph.
+    fig = plt.figure(figsize=(9.0, 3.25))
+    boxes = [
+        (0.015, 0.06, 0.27, 0.78),
+        (0.365, 0.06, 0.27, 0.78),
+        (0.71, 0.03, 0.28, 0.84),
+    ]
+    titles = [
+        "PPSS graph, as published",
+        "Relabeled: 12 families",
+        "Each family: Clebsch graph",
+    ]
+    ax = fig.add_axes(boxes[0])
+    matrix(ax, seed, missing_diagonal=True)
+    ax = fig.add_axes(boxes[1])
+    matrix(ax, ordered, 64, missing_diagonal=True, lw=0.7)
+    ax = fig.add_axes(boxes[2])
+    for x, y in edges:
+        ax.plot(*zip(pos[x], pos[y]), color=BLUE, lw=1.0, alpha=0.8, zorder=1)
+    for x, (px, py) in pos.items():
+        ax.scatter(px, py, s=38, color="white", edgecolor=INK, lw=0.9, zorder=2)
+    ax.set_aspect("equal")
+    ax.set_xlim(-3.0, 3.0)
+    ax.set_ylim(-2.75, 3.0)
+    ax.set_axis_off()
+    for (left, bottom, width, height), title in zip(boxes, titles):
+        fig.text(left + width / 2, 0.93, title, ha="center", fontsize=11, color=INK)
+    for x in (0.325, 0.672):
+        fig.text(x, 0.45, "→", ha="center", va="center", fontsize=22, color=MUTED)
+    save(fig, "hero")
+
     # Figure 3: the twelve-family rule and the four position patterns.
     fig = plt.figure(figsize=(6.7, 3.45))
     gs = fig.add_gridspec(

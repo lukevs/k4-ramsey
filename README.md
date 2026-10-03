@@ -1,111 +1,98 @@
 # Twelve Clebsch graphs and the Ramsey multiplicity of K₄
 
-How few monochromatic K₄s can a red/blue coloring of a large complete graph
-have? The limiting fraction, c₄, is unknown. This repository contains a new
-explicit upper bound,
+![The PPSS graph, relabeled into twelve Clebsch families](paper/figures/hero.png)
+
+**A new upper bound for the Ramsey multiplicity of K₄, c₄ ≤ 0.0301388876.**
+The previous best public construction is a 768-vertex graph with no visible
+pattern. We show that it is twelve linked copies of the Clebsch graph, then
+refine that structure into a better coloring.
+
+[Paper (PDF)](paper/main.pdf) · [Introduction](introduction.md) ·
+[Interactive explainer](explainer/clebsch-explorer.html) · [Paper build notes](paper/README.md)
+
+## The result
+
+Color every edge of a large complete graph red or blue. c₄ is the smallest
+possible fraction of four-vertex sets whose six edges all share a color, in the
+limit of large graphs. Random coloring gives 1/32 = 0.03125; the true value is
+unknown and is at least 0.0296.
+
+| Construction | Upper bound on c₄ | Status |
+|---|---:|---|
+| Parczyk, Pokutta, Spiegel, Szabó (PPSS), 2022 | 0.0301449 | Published; graph public |
+| McKay, reported by PPSS, 2024 | 0.0301423 | Value reported; graph not released |
+| Feinstein, Technion seminar, Jan 2026 | < 0.030139 | Announced; no value or construction |
+| **This work** | **0.0301388876** | Exact value; data, code, and proofs here |
+
+Our bound is below Feinstein's announced threshold. Without his exact value we
+can't compare the two, so we don't claim to beat it. The exact value is
 
 ```text
-c₄ ≤ 8450462766487926638466333426306607129 / 280384030360880691940646801777885184000
-   = 0.030138887566497220…
+8450462766487926638466333426306607129 / 280384030360880691940646801777885184000
 ```
 
-together with the code, data, and Lean proofs behind it.
+## How it works
 
-![Upper bounds on c₄](paper/figures/bounds.png)
-
-**Background.** The best construction with public data is the 768-vertex graph
-of Parczyk, Pokutta, Spiegel and Szabó (2022), at 0.0301449. Their paper
-reports an improvement by McKay to 0.0301423 whose graph has not been released.
-A January 2026 seminar by Feinstein announced c₄ < 0.030139, without a value or
-construction. Our bound is below that threshold. We can't compare the two
-exactly, so we don't claim to beat it.
-
-**What we found.**
-
-1. **Structure.** The PPSS graph is twelve linked copies of the Clebsch graph.
-   Its vertices split into 12 families × 16 Clebsch positions × 4. The colors
-   between families follow one of four patterns, chosen by a rule on
-   ℤ₃ × ℤ₂ × ℤ₂.
+1. **Hidden structure.** The PPSS graph's vertices split into 12 families of
+   64. Inside each family the blue edges form the Clebsch graph, with every
+   vertex replaced by four. Between families, the colors follow one of four
+   patterns, chosen by a simple rule on ℤ₃ × ℤ₂ × ℤ₂.
 2. **Two parameters.** Making the two fractional patterns adjustable gives a
-   192-class table with density given by an explicit polynomial in p and h. Its
-   minimum, 0.0301389773, already beats McKay's value. A rational point,
-   0.0301389941, is proved in Lean.
-3. **Refinement.** Splitting each class with a pentagon pattern and then two
-   balanced sign splits gives the 3840-class bound above. Its value comes from
-   an independent exact computation.
+   192-class construction whose density is an explicit polynomial in p and h.
+   Its minimum, 0.0301389773, already beats McKay's value. A nearby rational
+   point, 0.0301389941, is proved in Lean.
+3. **Refinement.** Splitting each class with a pentagon pattern, then twice into
+   balanced ± halves, gives 3840 classes and the bound above. Its value comes
+   from an independent exact computation.
 
-![The PPSS graph before and after relabeling](paper/figures/ppss-reordered.png)
+![History of upper bounds on c₄](paper/figures/bounds.png)
 
-The results were found autonomously by an AI research system running in the
-[Codex](https://github.com/openai/codex), OpenAI's agent harness: a [GPT-6 Astra](https://deploymentsafety.openai.com/gpt-6-astra)
-parent agent directing eight GPT-6 Astra subagents through Codex's native
-subagents. All agents
-followed a research skill derived from OpenAI's
-[Cycle Double Cover prompt](https://cdn.openai.com/pdf/04d1d1e4-bc75-476a-97cf-49055cd98d31/cdc_prompt.pdf)
+## How it was found
+
+The construction was found autonomously by an AI research system running in
+[Codex](https://github.com/openai/codex), OpenAI's agent harness. A
+[GPT-6 Astra](https://deploymentsafety.openai.com/gpt-6-astra) parent agent
+directed eight GPT-6 Astra subagents through Codex's native subagents. Every
+agent followed a [research skill](paper/data/research-workflow.md) derived from
+OpenAI's [Cycle Double Cover prompt](https://cdn.openai.com/pdf/04d1d1e4-bc75-476a-97cf-49055cd98d31/cdc_prompt.pdf)
 and the [Jacobian Conjecture prompt](https://aaronlou.com/jacobian_counterexample_prompt.pdf)
-([skill](paper/data/research-workflow.md), [adaptation notes](paper/data/workflow-source-principles.md)).
-No candidate was accepted until a separate program had recounted it exactly.
+([adaptation notes](paper/data/workflow-source-principles.md)). No candidate was
+accepted until a separate program had recounted it exactly.
+
+## Acknowledgments
 
 This work began at [Sundai Hack 142](https://www.sundai.club/events/boston/recursive-learning-hack-with-harvard-innovation-labs),
 *Recursive Self Improvement and Formal Verification in Mathematics* (Harvard,
-27 September 2026). Huge thanks to the Sundai Club organizers: without
-the event, this work would not exist. Special thanks to Alejandro Zarzuelo
-Urdiales, a guest at the event, who selected the open problems for the hack
-and presented them; this problem was one of them.
+27 September 2026). Huge thanks to the Sundai Club organizers: without the
+event, this work would not exist. Special thanks to Alejandro Zarzuelo
+Urdiales, a guest at the event, who selected the open problems for the hack and
+presented them; this problem was one of them.
 
-**Where to read more.**
+## Using this repository
 
-- [Introduction](introduction.md): the problem and the construction, with no
-  graph theory assumed.
-- [Paper](paper/main.pdf) ([source](paper/main.tex), [build notes](paper/README.md)):
-  full statements, proofs, and the verification boundary.
-- [Interactive explainer](explainer/clebsch-explorer.html): open it in a browser
-  to explore the twelve families.
+### Layout
 
-## Layout
+| Folder | What's there |
+|---|---|
+| `paper/` | The paper, its figures, and the construction data |
+| `lean/` | Lean proofs |
+| `src/k4_ramsey/` | Python code: search, checking, and paper tools |
+| `native/` | The C++ search engine |
+| `explainer/` | The interactive explainer |
+| `data/` | The PPSS graph and fixed inputs |
+| `research/` | Notes and experiments from the research campaign |
+| `docs/` | Details on verification and running experiments |
+| `tests/` | Tests |
 
-```text
-lean/                     Self-contained Lean package
-  K4Ramsey.lean           Public library entry point
-  K4Ramsey/
-    Core/                 Objective, probability, realization, and limits
-    Counting/             Counters and general correctness proofs
-    Constructions/        Published768, Clebsch192, and Final3840
-  Executables/            Command-line counters
-  Audits/                 Theorem-axiom inspection
-  Tests/                  Lean regression tests
-  lakefile.toml           Lean build targets and dependencies
-src/k4_ramsey/            Python engine interface and experiment runner
-  schemas/               Pydantic data definitions and validation contracts
-  strategies/            Maintained search implementations
-  generators/            Reproducible Lean source generators
-native/                   C++17 search primitives
-tests/                    Python/native regression tests
-data/                     Published seed, fixed construction inputs, provenance
-  search-configs/         Example configurations for maintained strategies
-explainer/                HTML template, builder, and standalone explainer
-scripts/                  Lean environment wrapper only
-docs/                     Verification and runner documentation
-research/
-  notes/                  Historical research notes and early paper drafts
-  experiments/            Specialized research programs and configurations
-paper/                    LaTeX manuscript, PDF, and checked construction data
-justfile                  Common project commands
-```
+Generated output (`reports/`, `build/`, `lean/.lake/`, `journal.html`) is not
+checked in. The [research index](research/README.md) maps paths in the older
+notes to their current locations.
 
-Generated `reports/`, `build/`, `lean/.lake/`, and `journal.html` stay out of Git.
-Historical research logs retain their original command text; see the
-[research index](research/README.md) for the old-to-new path mapping.
-Fixed regeneration inputs are checked in under `data/constructions/`, not read
-from local reports. No local reports are needed for Lean builds, Lean source
-regeneration, or rebuilding the explainer. Historical evidence export for the
-paper still uses archived reports.
+### Setup
 
-## Setup
-
-Use macOS or Linux with **Git**, **just**, **uv**, Lean's **elan** toolchain
-manager, and a **C++17 compiler** available as `c++`. Python 3.12+ is required;
-uv manages the project environment.
+You need macOS or Linux with Git, [just](https://github.com/casey/just),
+[uv](https://docs.astral.sh/uv/), Lean's [elan](https://github.com/leanprover/elan),
+and a C++17 compiler.
 
 ```sh
 git clone https://github.com/lukevs/k4-ramsey.git
@@ -113,69 +100,56 @@ cd k4-ramsey
 just setup
 ```
 
-This syncs the locked Python environment, downloads cached mathlib dependencies,
-checks the proof library, and builds
-the C++ shared library and Lean candidate checker. Lean and mathlib are pinned
-to `v4.34.1`; allow several GB for dependencies and build products.
+This installs the Python environment and Lean's math library (mathlib), checks
+the proofs, and builds the C++ engine. Allow several GB of disk space. After
+that, run everything through `just` from the repository root; `just` on its own
+lists the commands.
 
-The Python recipes use `uv run --locked` with the installed project package;
-no `PYTHONPATH` setup is needed. Pydantic validates data contracts and Typer handles
-the Python CLIs. Specialized research experiments may need additional dependencies.
-The Lean proofs use embedded data, not the large local experiment artifacts.
+### Common commands
 
-## Common commands
+**Check the results**
 
-Run `just` to list the available commands.
-
-| Command | Action |
+| Command | What it does |
 |---|---|
-| `just build` | Build the proofs and C++/Lean experiment runner. |
-| `just test` | Run Lean and Python/native regression tests. |
-| `just native-test` | Run standalone C++ boundary tests with address/undefined-behavior sanitizers. |
-| `just audit` | List theorem axioms and native-evaluation dependencies. |
-| `just check` | Build, test, and audit. |
-| `just published` | Print the published 768-vertex graph's exact count. |
-| `just recount` | Run the long 3,840-part diagnostic count. |
-| `just search reports/descent-001` | Run a short search from the bundled seed. |
-| `just dashboard` | Refresh the local `journal.html` snapshot. |
-| `just runner-help run` | Show advanced experiment options. |
-| `just format` | Format the maintained Python code. |
-| `just python-lint` | Check Python formatting and basic correctness. |
-| `just explainer` | Rebuild the standalone HTML explainer (requires Node.js). |
-| `just generate-certificate --help` | Show binary-certificate embedding options. |
-| `just generate-expansion` | Regenerate the six-edge Lean expansion proofs. |
-| `just generate-final3840` | Regenerate the embedded Lean witness from bundled inputs. |
-| `just paper-check` | Validate the paper's supplement data, without a new clique recount. |
-| `just paper-figures` | Regenerate checked scientific figures. |
-| `just paper` | Check, draw figures, and compile the paper with latexmk. |
+| `just check` | Build everything, run the tests, and list what the Lean proofs depend on |
+| `just published` | Count monochromatic K₄s in the PPSS graph with a fast Lean program |
+| `just recount` | Recount the 3840-class construction (several minutes, about 700 MB) |
+| `just audit` | List the axioms and native evaluations each Lean theorem depends on |
 
-Build before running searches, use a new output directory each time, and do not
-rebuild during an active experiment. Search parameters are positional:
-`just search OUT SEED SECONDS TIMEOUT`. The defaults are `0 10 40`; timeout
-includes setup and verification. The dashboard is a snapshot, not a server.
+**The paper**
 
-Build commands live in the justfile. Python handles experiment supervision,
-checker-output validation, and artifact formatting—not compiler invocations.
-The C++ engine is loaded through `ctypes`.
+| Command | What it does |
+|---|---|
+| `just paper-check` | Check the paper's construction data |
+| `just paper-figures` | Redraw the figures from the published data |
+| `just paper` | Check, redraw, and compile the PDF (needs LaTeX) |
 
-The full recount is a multi-minute task, not part of `just check`. An observed
-run used roughly 700 MB. Its printed totals do not replace the final numerical
-Lean certificate.
+**Search and development**
 
-## Further details
+| Command | What it does |
+|---|---|
+| `just search reports/run-001` | Run a short search starting from the PPSS graph |
+| `just runner-help run` | Show options for longer experiments |
+| `just dashboard` | Refresh the local experiment dashboard, `journal.html` |
+| `just build`, `just test` | Build, or run the tests |
+| `just format`, `just python-lint` | Format or lint the Python code |
+| `just explainer` | Rebuild the interactive explainer (needs Node.js) |
+| `just native-test` | Test the C++ engine with memory-safety checks |
+| `just generate-final3840` | Regenerate the Lean copy of the 3840-class construction |
 
-All normal workflows run through `just` from the repository root. The recipes
-manage Python's uv environment, the Lean working directory, compiled counters,
-and the optional repository-local `.elan/` installation. There is no need to set
-`PYTHONPATH`, activate an environment, or invoke Python or Lake directly.
+Each search needs a new output directory. Don't rebuild while a search is
+running.
 
-For custom strategies or replay, use `just experiment` with the options listed
-by `just runner-help run`.
+### Verification status
 
-**Verification status:** the 192-part construction has an end-to-end numerical
-upper-bound proof. The 3,840-part optimized counter is proved equal to the
-literal density, but its final numerical certificate remains unfinished.
-The published bitset checker also has a separate correctness gap.
+- The 192-class bound (0.0301389941) has a complete Lean proof, including the
+  numerical evaluation.
+- For the 3840-class bound, Lean proves the structure and the counting formula,
+  but the final numerical step is not formalized yet. The value comes from an
+  independent exact computation.
+- The fast program behind `just published` agrees with the PPSS value, but no
+  Lean proof yet connects it to the definition of the density.
 
-See [verification details](docs/verification.md), [runner details](docs/experiments.md),
-[Python design](docs/python-design.md), and [seed attribution](data/SOURCE.md).
+See [verification details](docs/verification.md),
+[running experiments](docs/experiments.md), and
+[where the PPSS graph comes from](data/SOURCE.md).

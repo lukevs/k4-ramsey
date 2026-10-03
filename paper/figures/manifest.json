@@ -1,10 +1,10 @@
 {
   "schema": "k4-paper-figures-v1",
   "source_sha256": {
-    "explainer/clebsch-explorer.html": "9f52dd7098c9eab535d565ee9ed2c2a7b20e255eab87e8908cd11dfd4d813323",
+    "explainer/clebsch-explorer.html": "3bfae91fe614a4ce083e50fdc1cd2836dfc16b8ef06dbc133487dd52d8e6ae3a",
     "data/published_cayley_768.json": "4c372995b69be5e30713965670d525f75876a5e0a434f576491522cc0920fc54",
     "paper/data/base-minimum.json": "0cf72474fef4be7bae9f78a2c3d916285b876d2ff3ed7967254cde44d13471e7",
-    "src/k4_ramsey/paper/figures.py": "57c77bf91c89ab1803f1edc06249fe4b2956cefa5ea0937891837d85c70ca061"
+    "src/k4_ramsey/paper/figures.py": "cbe798f49a8f1b5edc2409fb3c861279b091c91dd1bf21d0b473d0884ee11208"
   },
   "files": {
     "clebsch-graph.pdf": {
@@ -22,6 +22,14 @@
     "ppss-reordered.png": {
       "sha256": "a905b1ace601521c04c21dd4cae278d288024cd8cda23fed306af02a6a775e93",
       "bytes": 107219
+    },
+    "hero.pdf": {
+      "sha256": "e63389305b8db8f75815b424a7b2a94b6bceac4e49e146213ac55a64163358b8",
+      "bytes": 33447
+    },
+    "hero.png": {
+      "sha256": "ff254a5b9ebe823042b1626b3349dfdcd7dcad076d591cf45f7d823c9bea8869",
+      "bytes": 217067
     },
     "family-rule.pdf": {
       "sha256": "4981408cebba1f9d25ba314fa7aa0ed1813a0bb51965bc927bbbd7010743f83b",
