@@ -1,0 +1,8 @@
+{
+  "hypothesis": "A nondegenerate paired-bit quadratic invariant, jointly with Hamming weight and the Z3 orbit, exposes structured basins unavailable to Hamming shells alone.",
+  "family": "G=Z3 x F2^6; p depends on (Z3 equal/unequal, Hamming weight of the binary difference, q(z)=z0z1+z2z3+z4z5 mod 2)",
+  "parameters": 28,
+  "exact_census": "Translation fixes the first vertex; enumerate 27*64^3 triples and aggregate the six relation IDs with multiplicity, retaining repeats.",
+  "controls": ["k=2 histogram equals literal translated triples", "constant p and complement invariance", "nonrandom quadratic and red-clique Hamming seeds"],
+  "admission": "Only a numerical point below 0.030138904006337588 is rationalized; otherwise report a selected-basin screen only."
+}

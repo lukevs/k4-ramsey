@@ -1,0 +1,15 @@
+{
+  "hypothesis": "Per-edge amplitudes expose additional descent after moving the shared h coordinate onto the active-h boundary face.",
+  "immutable_parent": "reports/joint-coarse-boundary-face-001",
+  "parent_candidate_sha256": "b93b3589a5be4846436f1f721df5efaf06a6bc852c008e00cf74cdce0d87e838",
+  "phase_assignment_sha256": "226ab819da150c12b8152e2ac6a10acaf7d5dcff716199c42d8d42c68790011e",
+  "active_p_base": 51064,
+  "active_h_base": 35139,
+  "initial_q_p": -7236,
+  "initial_q_h": -11713,
+  "support_and_phases_fixed": true,
+  "maximum_sweeps": 3,
+  "maximum_seconds": 60,
+  "stopping_rule": "Stop after a full zero-change sweep, three sweeps, or 60 seconds.",
+  "materialization_rule": "Materialize only a strict exact improvement over b93."
+}

@@ -1,0 +1,50 @@
+{
+  "schema": "k4-structural-screen-v1",
+  "evidence": "exact Python profile arithmetic",
+  "hypothesis": "Small XOR/composition factors provide competitive alternative constructions",
+  "finite_scope": "XOR of one order3 factor and two order16 factors; each order16 is XOR or composition of two order4 graphs",
+  "finite_factor_counts": {
+    "order3": 4,
+    "order4": 11,
+    "order16": 166
+  },
+  "finite_trials": 55444,
+  "finite_best": {
+    "numerator": 10660872192,
+    "denominator": 347892350976,
+    "density": "3389/110592",
+    "factors": [
+      {
+        "n": 3,
+        "mask": 7
+      },
+      {
+        "operation": "xor_graph",
+        "a": 0,
+        "b": 12
+      },
+      {
+        "operation": "xor_graph",
+        "a": 12,
+        "b": 12
+      }
+    ]
+  },
+  "finite_seconds": 1.7935859160497785,
+  "recursive_scope": "XOR of two order4 factors and a nested order5 core; outside current fixed-order Lean scope",
+  "recursive_trials": 2244,
+  "recursive_best": {
+    "density": "487/15872",
+    "core_order": 5,
+    "core_mask": 220,
+    "xor_factor_masks": [
+      12,
+      12
+    ]
+  },
+  "seconds": 4.152763165999204,
+  "code_hashes": {
+    "/Users/luke.vanseters/code/github.com/lukevs/k4-ramsey/experiments/structural/screen.py": "9cfe0036392f7f8dfa77983ee6c495b4f8b82509c9c1716c420cab72fc6e547e",
+    "/Users/luke.vanseters/code/github.com/lukevs/k4-ramsey/experiments/structural/profiles.py": "f2c20249325ed952fcf5830bacc191838d8bc024d821a2332c1935f3b7115bf1"
+  }
+}

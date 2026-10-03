@@ -1,0 +1,14 @@
+{
+  "hypothesis": "H-F2-01D",
+  "parent": "reports/association-scheme-phase-alternating-001",
+  "parent_candidate_sha256": "d93abf5aa5f8b90a98cba93f52ee154a355ae217dc5934ef88954ab6e2b80bcd",
+  "parent_phase_assignment_sha256": "962bae2174e7b0ce96904c6fa26c9c71dd4ee20ff1144dbc7e4fd78fed8ddf6a",
+  "initial_amplitudes": {"q_p": -7236, "q_h": -7236},
+  "feasible_intervals": {"q_p": [-7236, 4824], "q_h": [-11671, 10173]},
+  "phase_step": "one deterministic strict coordinate sweep over phase/support states using the exact bivariate factor objective",
+  "amplitude_step": "alternate exhaustive exact integer minimization of q_p holding q_h and q_h holding q_p until coordinate-stable",
+  "limits": "at most 16 outer rounds, 8 amplitude-coordinate cycles per round, or 300 seconds; one process; no restart or seed",
+  "stopping_rule": "a complete phase sweep has zero moves and both amplitude coordinates remain fixed",
+  "promotion": "materialize only a strict exact improvement; request separate compressed typed-kernel recount",
+  "scope": "remove the global-amplitude active constraint on the immutable d93 parent; fixed Z5 kernel and no parameter-family sweep"
+}

@@ -1,0 +1,10 @@
+{
+  "hypothesis": "H-QR-001 canonical pair refinement",
+  "mechanism": "Split each of the 192 discovered four-vertex fibers into the two pairs canonically induced at that endpoint by its unique degree-two two-K2,2 mate. On every resulting 2x2 block, add a common multiple of its exact seed-density deviation from the old 4x4 block mean to the retained Q=65536 parent probability. This preserves every old block mean exactly and changes conditional independence by exposing actual pair-level seed information.",
+  "parent_control": "Amplitude zero duplicates each retained 192 parent class twice and must reproduce its exact density. Swapping the two pair labels within every old fiber is a pure 384-class relabeling control.",
+  "prediction": "A nonzero feasible dyadic amplitude has exact density below the duplicated 192 parent.",
+  "screen": "The full integer amplitude interval on the 1/256 grid. Seven exact values determine the degree-at-most-six numerator polynomial; evaluate that polynomial at every feasible grid point and directly recount the selected point.",
+  "gates": "Tiny arbitrary centered-refinement polynomial interpolation against literal enumeration; exact zero-amplitude parent reproduction; exact block-mean preservation; independent generic U256 candidate recount requested from the precision lane before promotion.",
+  "failure_scope": "A negative rejects only the common amplitude on this canonical pair direction. It does not reject separate amplitudes, different within-fiber pairings, 384-class free means, or refinements of the current 960-class incumbent.",
+  "resource": "one CPU process; shortest exact screen"
+}

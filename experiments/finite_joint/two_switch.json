@@ -1,0 +1,5 @@
+{
+  "red_edge_shortlist": 192,
+  "max_trials_per_sweep": 12000,
+  "max_sweeps": 3
+}

@@ -1,0 +1,11 @@
+{
+  "version": 1,
+  "skills": {
+    "hills": {
+      "source": "autolab-ai/hills",
+      "sourceType": "github",
+      "skillPath": "skills/hills/SKILL.md",
+      "computedHash": "7839c74aebe093a545a8b959e6a33fb6f23c716c4c10145561ce4e1581aa01bd"
+    }
+  }
+}

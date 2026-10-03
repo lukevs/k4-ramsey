@@ -1,0 +1,9 @@
+{
+  "hypothesis": "The old Hamming/Q-minus bins conceal useful distinctions in how a difference occupies the Witt-decomposed hyperbolic pairs.",
+  "refinement": "Z3 orbit x exact first-pair symbol x unordered multiset of the other two pair symbols (80 bins at k=6)",
+  "parent": "reports/quadratic-scheme-001/graphon-candidate.json",
+  "parent_sha256": "a26ecdaaf9522989c6affccb45ec6c29533c55a1501bd99526a3a3e148f9e440",
+  "cheap_falsifier": "At the lifted parent, normalize refined gradients by relation mass and remove the weighted common component inside every old fractional orbit. Stop if the residual vanishes.",
+  "optimization": "One deterministic descent constrained to preserve every old relation's weighted mean; old zero/one bins remain frozen.",
+  "controls": ["k4 compressed objective equals literal translated enumeration", "lifted k6 objective equals exact parent density", "componentwise complement invariance"]
+}

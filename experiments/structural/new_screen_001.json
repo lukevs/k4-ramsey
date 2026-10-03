@@ -1,0 +1,154 @@
+{
+  "schema": "heterogeneous-recursion-screen-v1",
+  "seed": 20260927,
+  "evidence": "exact rational profile screen; not independently Lean checked",
+  "objective": "K4+blueK4 density of K4 XOR M4 XOR root recursive profile",
+  "prediction": "Heterogeneous child types beat both corresponding homogeneous recursive controls",
+  "trials_counting_both_root_types": 2304,
+  "trials_improving_both_controls": 548,
+  "best": {
+    "family": "q9_and_one_edge_perturbation",
+    "root_type": 0,
+    "density": "876512858070511/28942355436134400",
+    "uniform_controls": [
+      "1411/46592",
+      "784369/25159680"
+    ],
+    "improvement_over_better_control": "-123732397177/202596488052940800",
+    "rules": [
+      {
+        "rows": [
+          "011100100",
+          "101010010",
+          "110001001",
+          "100011100",
+          "010101010",
+          "001110001",
+          "100100011",
+          "010010101",
+          "001001110"
+        ],
+        "children": [
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "rows": [
+          "011110100",
+          "101010010",
+          "110001001",
+          "100011100",
+          "110101010",
+          "001110001",
+          "100100011",
+          "010010101",
+          "001001110"
+        ],
+        "children": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      }
+    ]
+  },
+  "largest_mechanism_gain": {
+    "family": "all_two_type_order3_rules",
+    "root_type": 0,
+    "density": "171/4160",
+    "uniform_controls": [
+      "27/512",
+      "27/512"
+    ],
+    "improvement_over_better_control": "387/33280",
+    "rules": [
+      {
+        "rows": [
+          "000",
+          "000",
+          "000"
+        ],
+        "children": [
+          1,
+          1,
+          1
+        ]
+      },
+      {
+        "rows": [
+          "011",
+          "101",
+          "110"
+        ],
+        "children": [
+          0,
+          0,
+          0
+        ]
+      }
+    ]
+  },
+  "progress": [
+    {
+      "trial": 1,
+      "density": "27/512",
+      "family": "all_two_type_order3_rules"
+    },
+    {
+      "trial": 18,
+      "density": "1627/41472",
+      "family": "all_two_type_order3_rules"
+    },
+    {
+      "trial": 20,
+      "density": "191/5120",
+      "family": "all_two_type_order3_rules"
+    },
+    {
+      "trial": 36,
+      "density": "4949/133120",
+      "family": "all_two_type_order3_rules"
+    },
+    {
+      "trial": 40,
+      "density": "1712453/49548800",
+      "family": "all_two_type_order3_rules"
+    },
+    {
+      "trial": 104,
+      "density": "1149/33280",
+      "family": "all_two_type_order3_rules"
+    },
+    {
+      "trial": 232,
+      "density": "502423/14556672",
+      "family": "all_two_type_order3_rules"
+    },
+    {
+      "trial": 2049,
+      "density": "876512858070511/28942355436134400",
+      "family": "q9_and_one_edge_perturbation"
+    }
+  ],
+  "order3_seconds": 1.8088841250282712,
+  "seconds": 3.6241953329881653,
+  "source_hashes": {
+    "/Users/luke.vanseters/code/github.com/lukevs/k4-ramsey/experiments/structural/new_screen.py": "1d36fd58047ce278aae97a3fe90785c024d8b396d468af3fef4f08eb8cc0b540",
+    "/Users/luke.vanseters/code/github.com/lukevs/k4-ramsey/experiments/structural/new_profiles.py": "bf32a47055001d042ee240ac8377e766747b5ec2a99fa3c62a6f528e98f37c64",
+    "/Users/luke.vanseters/code/github.com/lukevs/k4-ramsey/experiments/structural/profiles.py": "f2c20249325ed952fcf5830bacc191838d8bc024d821a2332c1935f3b7115bf1"
+  }
+}

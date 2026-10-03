@@ -1,0 +1,15 @@
+{
+  "hypothesis": "H-F2-01",
+  "parent": "reports/literature-two-parameter-001/graphon-candidate.json",
+  "parent_sha256": "e26e754168010c069da3e0b207a140f2c7cbbfc36cc0a6af06ef409db5024450",
+  "microtypes": 5,
+  "group": "Z/5Z",
+  "difference_set": [1, 4],
+  "kernel": "kappa(x)=3 for x in {1,4}, and -2 otherwise",
+  "kernel_row_sum": 0,
+  "support": "all and only coarse pairs with probability strictly between 0 and 1",
+  "phase": "g(i,j)=1 if i<j, -1 if i>j; refined perturbation kappa(a-b-g(i,j))",
+  "scalar": "one integer q over its complete exact feasibility interval",
+  "admission_rule": "Run a generic 960-class exact ordered recount only if the independently tiny-tested motif polynomial has a feasible nonzero q with negative exact delta.",
+  "scope": "One preregistered coherent r=5 direction, not a basis or parameter sweep."
+}

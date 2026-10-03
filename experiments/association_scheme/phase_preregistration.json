@@ -1,0 +1,16 @@
+{
+  "hypothesis": "H-F2-01B",
+  "parent": "reports/literature-two-parameter-001/graphon-candidate.json",
+  "control": "reports/association-scheme-r5-001/graphon-candidate.json",
+  "kernel": "the fixed r=5 centered difference-set kernel from H-F2-01",
+  "variables": "one state in {inactive,0,1,2,3,4} for each of the 1248 fractional coarse edges",
+  "matched_control_state": "all active with phase 1",
+  "optimization_q": -2611,
+  "objective": "exact sum of cyclic intersection factors for triangles, C4s, diamonds and K4s",
+  "algorithm": "deterministic strict coordinate descent in lexicographic edge order",
+  "tie_rule": "retain current state on ties",
+  "limits": "at most 8 sweeps and 180 seconds; no restart and no seed",
+  "postprocessing": "one exact integer q minimization on the retained phase/support assignment",
+  "recount_admission": "materialize and generically recount exactly one candidate only if its exact predicted density is below association-scheme-r5-001",
+  "scope": "one causal phase/support optimization, not a kernel, seed or hyperparameter sweep"
+}

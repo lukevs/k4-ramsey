@@ -1,0 +1,17 @@
+{
+  "id": "H-NAB-01C",
+  "formal_mismatch": "All H-NAB-01 starts were A-invariant, so deterministic optimization could not leave the abelian direct-product subspace.",
+  "causal_change": "Add one fixed finite-amplitude non-class induced-representation matrix-coefficient feature before optimizing all 128 inverse-orbit variables.",
+  "actions": [1, 2, 3],
+  "start": "logit(p)=3*invariant_quadratic_feature+2.5*inverse-pair-symmetrized_Walsh_first_acted_coordinate",
+  "controls": {
+    "r1": "stationary invariant continuation 16900975846882693440446359118219264 / common denominator",
+    "r2": "invariant quadratic exact total 16901897597695656655017624392139328 / common denominator",
+    "r3": "invariant quadratic exact total 17474320030049380006306612082900992 / common denominator"
+  },
+  "prediction": "At least one optimized candidate remains action-noninvariant and exactly improves its matched invariant control; otherwise the tested representation branch collapses back to the abelian subspace or loses.",
+  "optimizer": "One deterministic L-BFGS run per exhaustive action type, at most 120 iterations each; no alternate amplitudes or random restarts.",
+  "selection": "Round Q=65536 and exactly recount every action before selecting; report max action-invariance residual and rounded violations.",
+  "branch": "If all three fail the joint gain-plus-residual criterion, stop this branch. If one succeeds, retain only the largest exact gain for independent recount; no automatic further sweep.",
+  "resource_limit": "One CPU process, no new compute after 22:00 UTC."
+}

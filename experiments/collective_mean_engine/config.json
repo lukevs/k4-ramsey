@@ -1,0 +1,46 @@
+{
+  "schema": "collective-mean-engine-consumer-v1",
+  "hypothesis": "H-TR3-2 collective fractional-mean Hessian escape",
+  "parent": "reports/literature-two-parameter-001/graphon-candidate.json",
+  "parent_sha256": "e26e754168010c069da3e0b207a140f2c7cbbfc36cc0a6af06ef409db5024450",
+  "orbital_report": "reports/group-recovery-orbitals-001/report.json",
+  "orbital_report_sha256": "7a8d162778041e36635357ac52bc497e86d095f9a55dab4fc00f94ceea3a8035",
+  "fractional_orbit_map": "reports/group-recovery-orbitals-001/fractional-pair-orbits.json",
+  "fractional_orbit_map_sha256": "f3306b396314914f8aba831486f3630dbaca9589baffd688f3754138bbfc8752",
+  "fractional_coordinates": 1248,
+  "initial_branch": {
+    "name": "five_orbit_constants",
+    "variables": [
+      {"orbit": 0, "size": 480, "parent_numerator": 51064},
+      {"orbit": 1, "size": 96, "parent_numerator": 51064},
+      {"orbit": 2, "size": 480, "parent_numerator": 51064},
+      {"orbit": 3, "size": 96, "parent_numerator": 35015},
+      {"orbit": 4, "size": 96, "parent_numerator": 51064}
+    ],
+    "neutral_constraints": [
+      "480*d0 + 96*d1 + 480*d2 + 96*d4 = 0",
+      "96*d3 = 0"
+    ],
+    "constraint_gate": "Provisional expected p/h constant-mode rows only. Before interpreting a constrained mode, compute exact relation gradients, divide by unordered orbit sizes under a documented derivative convention, and prove the four p-orbit per-edge gradients are exactly equal. Otherwise regroup only exact-gradient-equal orbitals or use the exact total-gradient row.",
+    "interpretation": "Cheap exact orbital subspace screen only; it does not exhaust the 1248-dimensional coordinate space and substantially overlaps prior orbit-line tests."
+  },
+  "production_branch": {
+    "name": "all_fractional_coordinates",
+    "coordinate_rule": "Every unordered off-diagonal parent entry strictly between 0 and Q",
+    "neutral_projection": "Subtract the mean separately inside every recomputed exact integer-gradient class; parent probability equality is not sufficient to merge classes",
+    "proposal_starts": [1729, 65537, 960192],
+    "integer_quantization_maxima": [16, 32, 64],
+    "curvature_convention": "C2=12*Adj+3*Dis is the t^2 polynomial coefficient; Hessian second derivative is 2*C2",
+    "promotion_gates": [
+      "exact parent c0",
+      "exact c1=0",
+      "exact c2<0",
+      "seventh-degree exclusion from six affine edge factors",
+      "at least one feasible holdout recount",
+      "exhaustive integer feasible-line minimum",
+      "independent selected-candidate recount"
+    ]
+  },
+  "matched_control": "Immutable parent at q=0 under the same exact evaluator",
+  "failure_scope": "A five-orbit failure does not address nonconstant modes. A bounded all-coordinate proposal failure is not a PSD certificate."
+}

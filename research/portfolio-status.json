@@ -1,0 +1,106 @@
+{
+  "updated_at": "2026-09-30T13:29:28.995989+00:00",
+  "limits": "Full two-root pilot complete; no active jobs or agents.",
+  "global_lower_bound_pilot": {
+    "overlap_followup": "All 15 pairs tested: (3,15)+(7,11) gives independently checked exact 0.0283900040333 with four new blocks. Clebsch/prism rooted-count example reproduced. Toolbox script prepared but unexecuted; Sage/CSDP absent. See research/global-overlap-pairs-pilot.md.",
+    "status": "Completed: full two-root coefficients checked; solve did not converge; no improvement.",
+    "result": "Checked N7 continuation: 50337414480901/1720320000000000 = 0.02926049483869338; below published frontier.",
+    "mechanism": "Exact root-swap block diagonalization and explicitly checked colour quotient reduce cost without assuming a symmetric graphon.",
+    "remaining": "Execute prepared 6178-variable colour quotient; then fuller hierarchy and N9.",
+    "note": "research/rooted-full-pilot.md",
+    "receipt": "reports/energy-bootstrap-auto-001/combined-23-check.json"
+  },
+  "size_pilots": {
+    "status": "Both size pilots completed; initial coarse runs independently recounted. No size-search jobs remain running.",
+    "latent": {
+      "agent": "01a0eff0-7ca1-7811-b8d5-42b59196b03e",
+      "scope": "Vary refinement size or latent masses with twelve coarse copies fixed",
+      "note": "research/clebsch-size-latent.md"
+    },
+    "coarse": {
+      "agent": "01a0eff0-7d2a-7bd1-8a05-14a2bfe20864",
+      "scope": "Vary number and weights of Clebsch copies",
+      "note": "research/clebsch-size-coarse.md"
+    },
+    "root_check": "Independent weighted all-root evaluator passed 24 exact tiny fixtures plus unequal duplication and zero-weight deletion controls; reproduced B192 baseline. All 20 initial coarse runs independently rebuilt and recounted, maximum discrepancy 4.65e-14.",
+    "contract": "research/clebsch-size-pilot-contract.md"
+  },
+  "focused_main_thread": {
+    "status": "Completed focused path-contraction tests and one user-authorized literature subagent; distributed search paused; no focused jobs remain running.",
+    "support_test": "All 576000 fine edges in the two weakest solid coarse types screened via 144000 verified XOR representatives at E5 depth-2. All inward derivatives positive; numerically worst derivative also checked by exact CRT.",
+    "moment_test": "Probability-box localizers reduce numerical allowed gain from 1.5451e-6 to 1.2382e-6 at fixed B192 means. No certified dual. Diamond credit shrinks 5.43x; relaxed four-cycle contribution becomes favorable.",
+    "path_test": "Sharp operator contraction rules out the old moment assignment (1020 violated inequalities). Joint centered path bounds give numerical floor ~0.03013850455 at fixed B192 means, optimal_inaccurate and uncertified. All 3072 one-class Z5 reflections fail exact box constraints.",
+    "next": "Common-prefix matrix contraction on overlapping suffix words; fixed-mean dual certification.",
+    "note": "research/clebsch-bowl-path-contractions.md",
+    "literature_note": "research/clebsch-formations-literature-2026-09-29.md"
+  },
+  "lanes": [
+    {
+      "lane": "Rawls: Fixed-edge constraints",
+      "status": "Completed: no fixed-edge gain. Incidental amplitude patch exact relative decrease1.5913e-14; parent audit pending, no promotion.",
+      "next_test": "Retire tested small-block bank; review sparse patch separately."
+    },
+    {
+      "lane": "Pauli: Twelve-block arrangement",
+      "status": "Completed: both mechanisms failed. Exact baseline recovered; best saved nonisomorphic alternative0.03014686207 is worse.",
+      "next_test": "Future test must jointly change types and heterogeneous probabilities."
+    },
+    {
+      "lane": "Peirce: New vertex types and class masses",
+      "status": "Completed33 search trials; no gain. Independent numerical recounts passed, replacement profiles recover old rows.",
+      "next_test": "Different multi-class mechanism or certified rooted-cubic lower bound."
+    },
+    {
+      "lane": "Einstein: Independent discrete structure search",
+      "status": "Completed: no incumbent gain; downhill beat annealing in all five comparisons; 17 binary artifacts worker-reported independently exact checked.",
+      "next_test": "Review receipts; no active search."
+    },
+    {
+      "lane": "Planck: Representation-guided new-class insertion",
+      "status": "Completed: 40 matched insertion runs found no gain; restricted fixed-mean spectral obstruction and counterexample to its extension, parent review pending.",
+      "next_test": "Review exact restricted obstruction; no active search."
+    },
+    {
+      "lane": "Parent: Energy-conditioned lower bound",
+      "status": "Full two-root N8 solve hit time limit; no valid improvement. All coefficients independently checked.",
+      "next_test": "Prepared colour-quotient control/cut solves, not yet run."
+    }
+  ],
+  "archived_lanes_before_assumption_challenge": [
+    {
+      "lane": "C1: Analytic ceiling of B192 lifts",
+      "status": "DONE: symmetric-amplitude lifts of B192 cannot reach 0.030138 (elementary bound gain <= 9.1e-7, floor 0.0301380672; SDP ~2.3e-7). General lifts undecided (true-box SDP 1.55e-6, loose via diamond terms). B192: second-order stable, fractional graph = 3 components x 64, 1152 PPH triangles all with c3=+0.839.",
+      "next_test": "Tighten true-box SDP with localising constraints; screen latents on exact (T3,T4,T5)."
+    },
+    {
+      "lane": "F1: Open support jointly with lift",
+      "status": "STOPPED 23:19 by user direction (focus on write-up + saddle analysis)",
+      "next_test": "\u2014"
+    },
+    {
+      "lane": "F2: Ramsey-critical latent kernels",
+      "status": "STOPPED 23:19 by user direction (focus on write-up + saddle analysis)",
+      "next_test": "\u2014"
+    },
+    {
+      "lane": "F3: Basin census + isomorphism tests",
+      "status": "STOPPED 23:19 by user direction (focus on write-up + saddle analysis)",
+      "next_test": "\u2014"
+    },
+    {
+      "lane": "F4: Provable statements",
+      "status": "DONE: Theorem A \u2014 exact F(p,h) polynomial; unique critical point = global min on [0,1]^2, F*=0.0301389772896653 (degree-17 algebraic), exact algebra + interval arithmetic. Theorem B \u2014 E4-3840 strict local min within its 456-parameter invariant family only (certificate grade).",
+      "next_test": "Refinement-stability eigen-check (graphon-space saddle along lift directions)."
+    },
+    {
+      "lane": "F5: Structured character-expansion checker",
+      "status": "DONE: independent Z2^k character-expansion checker; E5 depth-1 matches P direct U256 exactly; E5 depth-2 (3840) = 0.030138887566497220 (not yet promoted; awaiting user decision)",
+      "next_test": "Overnight direct U256 of depth-2."
+    },
+    {
+      "lane": "P: Promotion gate + paper",
+      "status": "E5 depth-1 PASSED full direct U256 (1644.7 s); E7 runs passed (convergence table); E11 closed form independently confirmed; paper draft updated",
+      "next_test": "Depth-2 via F5 structured checker."
+    }
+  ]
+}

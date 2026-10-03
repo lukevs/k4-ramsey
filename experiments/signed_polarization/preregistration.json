@@ -1,0 +1,14 @@
+{
+  "id": "H-SP-01",
+  "parent": "reports/joint-coarse-boundary-face-001/graphon-candidate.json",
+  "parent_sha256": "b93b3589a5be4846436f1f721df5efaf06a6bc852c008e00cf74cdce0d87e838",
+  "control_amplitude": "C(p)=p(1-p)",
+  "tested_amplitude": "C(p)=sign(2p-1)p(1-p), with sign(0)=0",
+  "mechanism": "Probability-conditioned signs may prevent cancellation of the triangle coefficient across red-leaning and blue-leaning fine blocks.",
+  "validity": "Fresh vertex signs make the perturbation mean zero; |C(p)|<=p(1-p) preserves [0,1] for |epsilon|<=1.",
+  "exact_objective": "F(epsilon)=F(0)+A3 epsilon^3+A4 epsilon^4; signed C removes the prior A4 nonnegativity argument.",
+  "decision_points": ["epsilon=0", "epsilon=-1", "epsilon=1", "every nonzero stationary -3A3/(4A4) lying in [-1,1]"],
+  "tiny_oracles": "Reuse three candidate-bound histogram/literal fixtures, change only signed-C lookup, require complement invariance of both coefficients, and update constant fixture.",
+  "resource_limit": "Five-minute setup gate, one CPU process, stop if gain is noncompetitive.",
+  "scope": "One latent-family direction, not a fundamentally new construction family or repeated-level claim."
+}

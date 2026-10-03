@@ -1,0 +1,56 @@
+{
+  "started_at": "2026-09-30T05:24:00Z",
+  "deadline": "2026-09-30T05:39:00Z",
+  "status": "agents_launched",
+  "lanes": [
+    {
+      "key": "hard_support",
+      "name": "Fixed-edge constraints",
+      "task": "Challenge fixed0/1 connections through coordinated finite changes, NOT repeated single-edge gradients. Read research/coarse-face.md, clebsch-bowl-focused-tests.md, family-mechanism-followup.md and flexible-mechanisms-pilot.md. Earlier192 base inward scan/orbit bank failed;576000 fine edges in two weak solid types have positive inward derivatives. Prior first-layer joint parent/amplitude patch gain only4.6e-13. New test: coherent blocks of fixed edges coupled to nearby fractional/latent amplitudes, allowing finite barrier crossing with small exact or trusted polynomial subproblems. Pick feasible small scope and compare parent-only/amplitude-only/joint controls. If using simpler B192 label it; don't equate it with incumbent. Try distinct coordinated support mechanism after firstfailure. Verify tiny directcounts and independent realrelative recount if claiming gain.",
+      "agent_id": "01a0f0c5-0a39-7e73-81a9-49b1ff85bcb3",
+      "nickname": "Rawls",
+      "status": "Completed: no fixed-edge gain. Incidental amplitude patch exact relative decrease1.5913e-14; parent audit pending, no promotion.",
+      "next_test": "Retire tested small-block bank; review sparse patch separately."
+    },
+    {
+      "key": "block_arrangement",
+      "name": "Twelve-block arrangement",
+      "task": "Challenge the inherited12x12 type arrangement and/or within-block relation assignments. Read experiments/round4_E11/family.py, research/coarse-alignment.md, coarse-seidel-switch.md, coordinated-reconstruction-round3.md, clebsch-size-coarse.md. Single switches, old15bit neighborhoods and regular product sweeps have failed. Design a genuinely distinct multi-block destroy/rebuild or variable-neighborhood search, then polish probabilities. Preserve no accidental vertex-transitivity assumptions when changing T: allroot evaluator or proven representative orbits. Include baseline recovery and compare local-only vs structural moves on same budget. No mere graph relabelling treated as newconstruction. Save strongest checked witness and basin diagnostics even if worse.",
+      "agent_id": "01a0f0c5-0adc-7c81-829b-60eceb0653ee",
+      "nickname": "Pauli",
+      "status": "Completed: both mechanisms failed. Exact baseline recovered; best saved nonisomorphic alternative0.03014686207 is worse.",
+      "next_test": "Future test must jointly change types and heterogeneous probabilities."
+    },
+    {
+      "key": "vertex_types",
+      "name": "New vertex types and class masses",
+      "task": "Challenge inherited classes using new attachment profiles, not only duplicating an existing row. Read research/clebsch-size-coarse.md, collective-weights.md, broad-methods-literature-2026-09-30.md section new-class insertion and unrestricted-bowl-challenge.md. Prior simple mass/deletion/duplicate tests collapsed to12profiles. Test new-class insertion with optimized attachment vector and tiny positive mass, rooted participation criterion versus baseF, then finite mass optimization; compare exact duplicate/split control. Alternatively coherent nontrivial splits/merges tied to attachments if insertion fails. Start affordable B192 or justified compressed model, report limitations. Fullweighted allroot counts and repeats; avoid global conclusion from stationarity.",
+      "agent_id": "01a0f0c5-0b86-7ee0-affe-be1e220d7e2b",
+      "nickname": "Peirce",
+      "status": "Completed33 search trials; no gain. Independent numerical recounts passed, replacement profiles recover old rows.",
+      "next_test": "Different multi-class mechanism or certified rooted-cubic lower bound."
+    },
+    {
+      "key": "discrete_basins",
+      "name": "Independent discrete structure search",
+      "task": "Challenge both representation and optimization basin. Read research/unrestricted-bowl-challenge.md, its checker/searchcode, research/approach-registry.md and PPSS search methodology summary research/literature-next-round.md. The92 continuous candidates converged1/32; don't repeat random continuous descent. Test discrete structural moves/tabu or annealing before continuouspolish, with a known nonconstant recovery control and independent starts. Choose alternative Cayley groups/generating sets or unrestricted binaryblock matrices large enough to represent nontrivial knowncontrol; don't hardwire Clebsch/P-H/12block template. Bound sizes and compute. Compare matched downhillonly vs barriercrossing, distinguish symmetryrestriction from unbiasedunrestricted search. Validate evaluator against literal tinyoracle and a nonconstant knowncontrol. If recoveryfails diagnose before interpreting negative searches.",
+      "agent_id": "01a0f0c5-0cf2-7693-9be9-5b5b840a07a0",
+      "nickname": "Einstein",
+      "status": "Independent group starts failed; longer unrestricted1024-class binary search underway.",
+      "next_test": "Finish matched comparison and exact independent counts."
+    },
+    {
+      "key": "symmetry_insertion",
+      "name": "Representation-guided new-class insertion",
+      "agent_id": "01a0f0c8-07f0-7f30-9982-f83e742f1a65",
+      "nickname": "Planck",
+      "started_at": "2026-09-30T05:27:00Z",
+      "deadline": "2026-09-30T05:42:00Z",
+      "task": "Compare verified symmetry-mode attachment profiles with matched random profiles; distinct from Peirce unrestricted insertion. Validate rooted criterion and finite-mass objective.",
+      "status": "Interior and boundary subspace screens completed; deriving a restricted spectral obstruction, audit pending.",
+      "next_test": "Verify exact mode-selection and Hessian certificate before reporting theorem."
+    }
+  ],
+  "updated_at": "2026-09-30T05:33:42.277158+00:00",
+  "compute_cap": "Five agents; retain four simultaneous single-thread numerical jobs; Planck coordinates heavy jobs with parent."
+}

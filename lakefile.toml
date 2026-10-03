@@ -1,0 +1,22 @@
+name = "k4-ramsey"
+version = "0.1.0"
+defaultTargets = ["K4Ramsey"]
+
+[[lean_lib]]
+name = "K4Ramsey"
+# native_decide uses imported code: without this, the expensive counter runs
+# in the interpreter. Keep computation in imported modules, not in the proof.
+precompileModules = true
+
+[[lean_exe]]
+name = "check_published"
+root = "CheckPublished"
+
+[[lean_exe]]
+name = "check_candidate"
+root = "CheckCandidate"
+
+[[lean_exe]]
+name = "check_weighted_candidate"
+root = "WeightedCandidate"
+moreLeanArgs = ["-j1"]

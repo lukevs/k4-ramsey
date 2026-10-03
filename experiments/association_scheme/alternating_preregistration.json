@@ -1,0 +1,13 @@
+{
+  "hypothesis": "H-F2-01C",
+  "parent": "reports/association-scheme-phase-001",
+  "parent_phase_assignment_sha256": "d4efba239aaf08e9b959ded2d0ecf2e82e996b36e87916c8468526c8acb48db2",
+  "parent_candidate_sha256": "31b6d0941b4d36e6e8ce61689321df1d1f914223ab21d261a60c1809c963d9b0",
+  "initial_q": -5496,
+  "phase_step": "one full deterministic lexicographic strict coordinate sweep over {inactive,0,1,2,3,4} using the exact motif-factor objective at the current q",
+  "amplitude_step": "exact exhaustive integer minimization over the active support's proven feasible interval",
+  "limits": "at most 16 alternating rounds or 300 seconds, one process, no restart or seed",
+  "stopping_rule": "stop after a complete phase sweep makes zero moves and exact amplitude minimization retains q",
+  "promotion": "materialize only a strict exact-density improvement over phase-001; request the separate compressed typed-kernel recount rather than a generic direct recount",
+  "scope": "one causal continuation of the immutable phase-001 assignment, not a kernel or seed sweep"
+}

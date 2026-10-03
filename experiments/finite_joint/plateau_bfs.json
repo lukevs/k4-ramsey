@@ -1,0 +1,5 @@
+{
+  "model_path": "/Users/luke.vanseters/code/github.com/lukevs/k4-ramsey/reports/pilot-algebraic-cycle-model-001/model.json",
+  "max_states": 20000,
+  "max_escapes": 20
+}

@@ -1,0 +1,53 @@
+# AutoLab stores downloaded tools, hill state, and local credentials here.
+.autolab/
+
+# Hills signing keys, evaluator environments, and temporary run material.
+.hills-state/
+
+# Repository-local Lean toolchain and Lake build products.
+.elan/
+.lake/
+
+# Rebuildable native engine and Python caches.
+build/
+__pycache__/
+
+.envrc
+
+# Generated experiment outputs and downloaded/rendered papers.
+/reports/
+/tmp/
+/journal.html
+*.bin
+*.npy
+*.npz
+*.so
+*.dylib
+*.o
+*.log
+*.pt
+*.pth
+*.ckpt
+*.safetensors
+
+# Compiled experiment executables (sources remain tracked).
+/experiments/assumption_discrete_basins/check_matrix
+/experiments/assumption_discrete_basins/search
+/experiments/assumption_discrete_basins/unrestricted
+/experiments/assumption_discrete_basins/validate_delta
+/experiments/coordinated_reconstruction/exhaustive
+/experiments/latent_weights/screen
+/experiments/quadratic_next/full_cayley
+/experiments/quadratic_next/screen
+/experiments/quadratic_scheme/screen
+/experiments/relation_engine/engine
+/experiments/relation_engine/engine_v2
+/experiments/round4_E1/pa
+/experiments/round4_E1/pa_b6
+/experiments/round4_E1/pa_lift
+/experiments/round4_E2/nrpa_cayley
+/experiments/round4_E2/nrpa_cayley_v2
+/experiments/round4_E4/exact_count
+/experiments/round4_E7/cay
+/experiments/round4_E7/cay9
+/experiments/round5_F5/k4mix

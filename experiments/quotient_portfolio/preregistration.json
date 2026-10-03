@@ -1,0 +1,19 @@
+{
+  "hypothesis": "H-QP-001 alternative intrinsic four-vertex quotients",
+  "mechanism": "Regroup the published 768 vertices into equal four-vertex cells using the actual degree-two or degree-three relations between the discovered fibers. Replace every cell pair by its exact red-edge average, then optimize all 18528 symmetric dyadic block probabilities with one matched projected-Adam procedure.",
+  "prediction": "At least one adjacency-derived regrouping enters a quotient-graphon basin below the identically optimized original four-sheet partition and below both same-cell-size random controls.",
+  "structured_bank": [
+    "degree2 red-K22 regrouping",
+    "degree2 blue-K22 regrouping",
+    "three deterministic perfect matchings of the degree3 defect relation with three pairings of their missing matching edges"
+  ],
+  "controls": [
+    "original discovered four-sheet partition",
+    "random 2+2 regrouping inside each degree2-paired pair of old fibers",
+    "global seeded random equal-size-four partition"
+  ],
+  "optimizer": "Refined matched run after run001 showed the coarse step bank could not move seven controls: at most 10 accepted projected-Adam iterations; each iteration compares dyadic step sizes 0.0005, 0.001, 0.002, 0.005, 0.01, and 0.02 plus no move by exact C++128 partition count; identical procedure for every partition.",
+  "gates": "Tiny direct-enumeration equality; exact reproduction of the retained 192 parent by the same counter; every retained result independently recounted by direct ordered-index C++128.",
+  "failure_scope": "A negative rejects only this seven-partition bank and optimizer budget. It does not reject other equitable partitions, graph automorphisms, cell sizes, or nonsymmetric/non-block-independent refinements.",
+  "resource": "one CPU process at a time; five-minute wall cap"
+}

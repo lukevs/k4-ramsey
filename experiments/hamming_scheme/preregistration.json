@@ -1,0 +1,12 @@
+{
+  "schema": "hamming-scheme-preregistration-v1",
+  "hypothesis": "Fractional relation probabilities on Z3 x F2^k improve over binary Hamming-shell rules and can compete with current structured graphons",
+  "dimensions": [6, 7, 8],
+  "parameters": "q[a,d], a=0 for equal Z3 coordinate and a=1 for unequal, d=0..k",
+  "exact_states": "27*binom(k+7,7) coordinate-count/Z3 states, repeated coarse indices included",
+  "tiny_falsifier": "histogram equality with literal u,v,w enumeration for k=0..3 plus exact rational objective agreement",
+  "optimizer": "dependency-free analytic-gradient projected Adam from binary Franek-Rodl shells, softened shell, two fixed random starts, and one alternating shell start",
+  "rationalization": "only if numerical density beats the current S3 candidate; round to denominator 65536 and exact-coordinate polish",
+  "evidence": "exploratory numerical until rational exact census and an independent census check",
+  "limits": "one CPU process; stop admitting compute at 21:00 UTC"
+}

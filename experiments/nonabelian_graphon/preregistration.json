@@ -1,0 +1,25 @@
+{
+  "id": "H-NAB-01",
+  "family": "nonabelian-stochastic-cayley-graphon",
+  "claim": "A genuinely nonabelian Cayley graphon may enter a different continuous basin from the 192-class precision construction.",
+  "groups": "F2^6 semidirect C3 with action C^r plus identity^(6-2r), r=1,2,3",
+  "classification": "These are all nontrivial order-three actions up to GL(6,2) conjugacy because x^3-1 is square-free over F2.",
+  "kernel": "One probability per inverse orbit, including the identity/within-class entry; p(g)=p(g^-1).",
+  "objective": "Exact left-translated ordered K4 graphon density over triples (a,b,c).",
+  "starts": [
+    "constant one-half",
+    "real component of a C3 character plus fixed-coordinate character",
+    "induced three-dimensional character from an acted F2^2 block",
+    "action-invariant quadratic/nonzero-block feature"
+  ],
+  "controls": [
+    "constant one-half density 1/32",
+    "thresholded binary version of each motivated start on the same group"
+  ],
+  "optimizer": "Deterministic inverse-orbit L-BFGS in logistic coordinates, at most 45 iterations/start, no random restarts.",
+  "tiny_oracle": "A4 = F2^2 semidirect C3: associativity, inverse, noncommutativity, inverse-orbit symmetry, and literal |G|^4 count equals translated |G|^3 count for a deterministic rational kernel.",
+  "promotion": "Round and exactly recount every optimized basin at Q=65536, select by exact rational objective, and materialize a symmetric unit-mass 192-step matrix. Independent generic direct recount required for promotion.",
+  "resource_limit": "One local CPU process at a time; no new compute admitted after 2026-09-27T22:00:00Z.",
+  "falsifier": "All three exhaustive action types converge above the incumbent, with continuous minima no better than their same-group structured controls.",
+  "scope": "A bounded deterministic screen of motivated basins, not global optimization over Cayley kernels or a novelty claim."
+}

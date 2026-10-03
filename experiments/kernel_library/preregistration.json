@@ -1,0 +1,19 @@
+{
+  "schema": "kernel-library-preregistration-v1",
+  "hypothesis": "Changing the centered relation spectrum can improve the exact triangle reward versus C4/diamond/K4 costs beyond the retained phased Z5 kernel",
+  "parent": "reports/literature-two-parameter-001/graphon-candidate.json",
+  "support": "all 1248 fractional coarse edges",
+  "kernels": [
+    "Z4 Fourier row [1,0,-1,0]",
+    "Z4 unequal-spectrum row [2,-1,0,-1]",
+    "S3 standard character",
+    "S3 standard character plus sign",
+    "S3 standard character minus sign"
+  ],
+  "normalization_rule": "primitive integer class function (gcd nonzero values 1), exact feasible integer q interval recomputed per kernel",
+  "screen": "literal n<=3 polynomial falsifiers, then exact U3..U6 and q minimization from uniform identity phases",
+  "exploitation": "one deterministic phase/support coordinate descent only for the best normalized new-kernel screen, followed by exact q reoptimization",
+  "admission": "materialize only if exact predicted density beats reports/association-scheme-phase-001",
+  "recount": "none in this lane; hand one admitted candidate to the reusable typed-kernel checker",
+  "limits": "one CPU process, no random restarts, stop admitting compute at 21:00 UTC"
+}

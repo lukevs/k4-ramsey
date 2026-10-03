@@ -1,0 +1,12 @@
+{
+  "hypothesis": "The frozen b93 five-microtype kernels have a common nonuniform latent mass vector that lowers the monochromatic K4 density.",
+  "input": "reports/graphon-joint-coarse-boundary-face-compressed-001/full-certificate.txt",
+  "semantics": "The same five weights are used inside each of 192 equal coarse groups; the full red-plus-blue objective is recomputed, including repeated coarse indices.",
+  "cheap_falsifier": "Aggregate the exact typed certificate into all 70 degree-four mass monomials, then inspect the simplex-projected gradient and Hessian at uniform weights.",
+  "admission": "Only if a continuous or exhaustive rational vector of total mass at most 16 beats the uniform objective; materialize by replicating microtypes for independent checking.",
+  "controls": [
+    "A tiny arbitrary weighted typed matrix must match literal replicated-class enumeration.",
+    "Uniform weights must reproduce the independently verified b93 density.",
+    "No centered-kernel delta coefficient is reused."
+  ]
+}

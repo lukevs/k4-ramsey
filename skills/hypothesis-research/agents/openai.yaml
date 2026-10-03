@@ -1,0 +1,4 @@
+interface:
+  display_name: "Hypothesis Research"
+  short_description: "Test diverse research ideas with rigorous checks"
+  default_prompt: "Use $hypothesis-research to investigate the problem through literature-informed hypotheses, fast experiments, and independent verification within our agreed budget."

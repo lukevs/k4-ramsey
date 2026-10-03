@@ -1,0 +1,11 @@
+{
+  "hypothesis": "H-F2-01E",
+  "parent": "reports/association-scheme-phase-two-amplitude-001",
+  "parent_candidate_sha256": "33df1d72c6e50a2ea0dc205f771ab8d3372b621b273cc53237072017ad4dda4d",
+  "parent_phase_assignment_sha256": "226ab819da150c12b8152e2ac6a10acaf7d5dcff716199c42d8d42c68790011e",
+  "matched_screen": "derive and exhaust each active edge's exact degree<=4 amplitude coordinate polynomial against the same immutable parent",
+  "conditional_search": "if any matched coordinate strictly improves, perform exactly one deterministic lexicographic exact coordinate sweep, recomputing incident factor products after each accepted move",
+  "state_fixed": "phases, active support, coarse means, Z5 kernel, masses and all noncurrent amplitudes",
+  "limits": "one process, at most 150 seconds, no restart or seed",
+  "promotion": "materialize only a strict exact improvement and dispatch to precision verifier with actual distinct oriented-kernel count"
+}
