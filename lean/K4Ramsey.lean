@@ -1,4 +1,5 @@
 import K4Ramsey.Counting.Multiplicity
+import K4Ramsey.Counting.ValidatedTemplate
 import K4Ramsey.Constructions.Published768.Certificate
 import K4Ramsey.Constructions.Clebsch192.Bound
 import K4Ramsey.Counting.SignRefinement

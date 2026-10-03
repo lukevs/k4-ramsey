@@ -152,7 +152,23 @@ finite-to-asymptotic mathematical bridge, but the published certificate has
 not yet been connected to it. Regression tests do not replace the missing
 counting proof.
 
+## Validated executable inputs
+
+`lean/K4Ramsey/Counting/ValidatedTemplate.lean` provides `ValidTemplate` and
+`ValidWeightedTemplate`: raw packed data accompanied by proofs that the Lean
+representation and weight checks returned true. The candidate executables share
+the pure parser in `lean/K4Ramsey/IO/TemplateInput.lean`, and count through these
+validated inputs. The published checker uses the same named `SubgraphCounts`
+record and numerator assembly, removing duplicated counting formulas.
+
+`ValidTemplate.countSubgraphs_numerator` proves that this facade computes the
+existing packed formula exactly; its axiom audit is empty. It does **not** prove
+the missing general equivalence between that formula and the literal tuple sum.
+Parser regression examples cover malformed matrices/weights and small exact
+counts. The remaining mathematical correctness gaps described above are unchanged.
+
 ## Data provenance
+
 
 Source: [New Ramsey Multiplicity Bounds and Search Heuristics,
 Theorem 1.1](https://arxiv.org/html/2206.04036v3), and the authors'

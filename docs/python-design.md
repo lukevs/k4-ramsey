@@ -18,6 +18,7 @@ All Pydantic definitions live in `src/k4_ramsey/schemas/`:
 | `strategies.py` | Shared script options and each maintained strategy's configuration. |
 | `dashboard.py` | Read-only projections of older reports, not new verification evidence. |
 | `types.py` | Shared scalar constraints, such as nonnegative counts and finite positive budgets. |
+| `native.py` | Fixed-width ctypes layouts matching the C header; these are ABI structures, not Pydantic JSON models. |
 
 Models use Pydantic's `BaseModel` and declare their own configuration. There is no
 custom root model. Strict validation rejects booleans, floats, or strings in integer
@@ -59,3 +60,30 @@ remain regression checks.
 The CLI migration covers the installed package, all nine maintained strategy
 scripts, and the binary-certificate generator. Historical one-off research
 programs and specialized fixed-witness generators have not been rewritten.
+
+## Native boundary
+
+`native/search.h` is the C contract: ownership, buffer sizes, cache prerequisites,
+error codes, and named count/move results. `native/search.cpp` keeps graph storage
+private and puts exported operations before their computational implementation.
+The order limit determines scratch-buffer sizes; it is not an unrelated magic
+array length. Cached flips allocate no memory. Cache creation builds a temporary
+table and publishes it only after success.
+
+Every exported operation contains C++ exceptions and reports an error through
+thread-local state. Python checks that state immediately and raises `ValueError`,
+`MemoryError`, or `RuntimeError`. Named ctypes structures replace positional
+result buffers in the maintained Python wrapper; the old C exports remain as
+compatibility adapters. Native validation checks nulls, indices, matrix symmetry,
+binary values, blue diagonals, and cache state independently of Python.
+
+As with ordinary pointer-based C APIs, callers must still supply live handles and
+buffers of the documented sizes. Dangling pointers and undersized nonnull buffers
+cannot be diagnosed reliably by this interface. A handle must not be mutated by
+concurrent calls.
+
+`just native-test` runs standalone C++ tests under AddressSanitizer and
+UndefinedBehaviorSanitizer, including allocation-failure injection, invalid
+arguments, thread-local errors, literal counts, deltas, and word boundaries.
+It is included in `just test` and `just check`. Native builds enable compiler
+warnings and treat them as errors.

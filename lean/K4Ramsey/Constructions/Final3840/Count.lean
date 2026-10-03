@@ -13,6 +13,14 @@ def memo {n : Nat} {α : Type} (f : Fin n → α) : Fin n → α :=
     memo f i = f i := by simp [memo]
 
 abbrev Tab (n : Nat) (α : Type) := {a : Array α // a.size = n}
+
+/-- A 20-by-20 integer block between two coarse vertices. -/
+abbrev FiberMatrix := Tab 20 (Tab 20 Int)
+/-- A value indexed by an ordered pair of the 192 coarse vertices. -/
+abbrev CoarsePairTable (α : Type) := Tab 192 (Tab 192 α)
+/-- Sparse path contractions, indexed by two endpoints and one middle block. -/
+abbrev PathCache := CoarsePairTable (Tab 192 (Option FiberMatrix))
+
 def tabulate {n : Nat} {α : Type} (f : Fin n → α) : Tab n α :=
   ⟨Array.ofFn f, by simp⟩
 def lookup {n : Nat} {α : Type} (a : Tab n α) (i : Fin n) : α :=
@@ -20,10 +28,12 @@ def lookup {n : Nat} {α : Type} (a : Tab n α) (i : Fin n) : α :=
 @[simp] theorem lookup_tabulate {n : Nat} {α : Type} (f : Fin n → α) (i : Fin n) :
     lookup (tabulate f) i = f i := by simp [lookup, tabulate]
 
-def bCache : Tab 192 (Tab 192 Int) := tabulate (fun i => tabulate (fun j => baseNumerator i j))
+def bCache : CoarsePairTable Int := tabulate (fun i => tabulate (fun j => baseNumerator i j))
+/-- The mathematical base matrix `b`, read from its tabulation. -/
 def b (i j : Coarse) : Int := lookup (lookup bCache i) j
-def dCache : Tab 192 (Tab 192 (Tab 20 (Tab 20 Int))) :=
+def dCache : CoarsePairTable FiberMatrix :=
   tabulate (fun i => tabulate (fun j => tabulate (fun x => tabulate (fun y => centeredNumerator i j x y))))
+/-- The centered perturbation matrix `d`, read from its tabulation. -/
 def d (i j : Coarse) (x y : Fiber) : Int :=
   lookup (lookup (lookup (lookup dCache i) j) x) y
 
@@ -35,7 +45,7 @@ def baseRoot (i : Coarse) : Int :=
     (65536 - b i j) * (65536 - b i k) * (65536 - b i l) *
     (65536 - b j k) * (65536 - b j l) * (65536 - b k l))
 
-def pathsCache : Tab 192 (Tab 192 (Tab 192 (Option (Tab 20 (Tab 20 Int))))) :=
+def pathsCache : PathCache :=
   tabulate (fun i => tabulate (fun j => tabulate (fun k =>
     if support i k && support j k then
       some (tabulate (fun x => tabulate (fun y => ∑ z : Fiber, d i k x z * d j k y z)))

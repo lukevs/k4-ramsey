@@ -70,6 +70,7 @@ Run `just` to list the available commands.
 |---|---|
 | `just build` | Build the proofs and C++/Lean experiment runner. |
 | `just test` | Run Lean and Python/native regression tests. |
+| `just native-test` | Run standalone C++ boundary tests with address/undefined-behavior sanitizers. |
 | `just audit` | List theorem axioms and native-evaluation dependencies. |
 | `just check` | Build, test, and audit. |
 | `just published` | Print the published 768-vertex graph's exact count. |

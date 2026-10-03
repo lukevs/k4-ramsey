@@ -29,14 +29,20 @@ native-build:
     mkdir -p build
     suffix=so
     if [[ "$(uname -s)" == Darwin ]]; then suffix=dylib; fi
-    c++ -std=c++17 -O3 -fPIC -shared native/search.cpp -o "build/libk4.$suffix"
+    c++ -std=c++17 -Wall -Wextra -Wpedantic -Werror -O3 -fPIC -shared native/search.cpp -o "build/libk4.$suffix"
+
+# Exercise the C ABI and allocation failures under address/undefined sanitizers.
+native-test:
+    mkdir -p build
+    c++ -std=c++17 -Wall -Wextra -Wpedantic -Werror -O1 -g -fsanitize=address,undefined -fno-omit-frame-pointer -pthread native/search.cpp tests/native/search_test.cpp -o build/test-native
+    build/test-native
 
 # Build the independent Lean candidate checkers.
 checker-build:
     bash scripts/lean.sh build check_candidate check_weighted_candidate
 
 # Run both Lean and Python regression tests.
-test: lean-test python-test
+test: lean-test native-test python-test
 
 # Check the separate Lean regression-test library.
 lean-test:

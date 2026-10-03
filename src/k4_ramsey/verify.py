@@ -89,6 +89,9 @@ def hash_verifier_sources() -> dict[str, str]:
     paths = [
         "lean/Executables/CheckCandidate.lean",
         "lean/K4Ramsey/Counting/Multiplicity.lean",
+        "lean/K4Ramsey/Counting/WeightedMultiplicity.lean",
+        "lean/K4Ramsey/Counting/ValidatedTemplate.lean",
+        "lean/K4Ramsey/IO/TemplateInput.lean",
         "lean/lean-toolchain",
         "lean/lakefile.toml",
         "src/k4_ramsey/verify.py",

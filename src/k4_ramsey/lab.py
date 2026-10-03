@@ -251,8 +251,12 @@ def record_build() -> dict[str, str]:
     native = locate_native_library()
     paths = [
         "native/search.cpp",
+        "native/search.h",
         "lean/Executables/CheckCandidate.lean",
         "lean/K4Ramsey/Counting/Multiplicity.lean",
+        "lean/K4Ramsey/Counting/WeightedMultiplicity.lean",
+        "lean/K4Ramsey/Counting/ValidatedTemplate.lean",
+        "lean/K4Ramsey/IO/TemplateInput.lean",
         "lean/lean-toolchain",
         "lean/lakefile.toml",
         str(native.relative_to(ROOT)),

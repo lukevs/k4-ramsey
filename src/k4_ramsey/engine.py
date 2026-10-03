@@ -8,6 +8,7 @@ from pathlib import Path
 
 from .artifacts import read_json
 from .schemas.certificates import UnitCertificate
+from .schemas.native import NativeCounts, NativeFlip, NativeStar
 from .schemas.verification import Counts
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -37,7 +38,12 @@ class Graph:
         self.close()
 
     def validate_endpoints(self, u, v):
-        if not self.ptr or not (0 <= u < self.n and 0 <= v < self.n and u != v):
+        if (
+            not self.ptr
+            or type(u) is not int
+            or type(v) is not int
+            or not (0 <= u < self.n and 0 <= v < self.n and u != v)
+        ):
             raise ValueError("invalid edge or closed graph")
 
     def calculate_delta(self, u: int, v: int) -> int:
@@ -89,9 +95,9 @@ class Graph:
     def find_best_cached_flip(self) -> tuple[int, int, int] | None:
         """Return (u,v,delta) minimizing the exact cached single-flip delta."""
         self.enable_cache()
-        out = (C.c_int64 * 3)()
-        self.lib.k4_best_cached(self.ptr, out)
-        return None if out[0] < 0 else tuple(out)
+        out = NativeFlip()
+        self.lib.k4_find_best_flip(self.ptr, C.byref(out))
+        return None if out.u < 0 else (out.u, out.v, out.delta)
 
     def find_best_cached_allowed(self, expiry, step: int, aspiration_delta: int):
         """Scan exact deltas with tabu expiry and strict aspiration.
@@ -113,9 +119,11 @@ class Graph:
         ):
             raise ValueError("aspiration_delta must be int64")
         self.enable_cache()
-        out = (C.c_int64 * 3)()
-        self.lib.k4_best_cached_allowed(self.ptr, expiry, step, aspiration_delta, out)
-        return None if out[0] < 0 else tuple(out)
+        out = NativeFlip()
+        self.lib.k4_find_allowed_flip(
+            self.ptr, expiry, step, aspiration_delta, C.byref(out)
+        )
+        return None if out.u < 0 else (out.u, out.v, out.delta)
 
     def find_best_cached_star(self, per_color: int = 16):
         """Best strict shared-center red/blue swap in low-cost shortlists.
@@ -126,22 +134,25 @@ class Graph:
         if type(per_color) is not int or not 1 <= per_color <= 1024:
             raise ValueError("per_color must be 1..1024")
         self.enable_cache()
-        out = (C.c_int64 * 4)()
-        self.lib.k4_best_cached_star(self.ptr, per_color, out)
-        return None if out[0] < 0 else tuple(out)
+        out = NativeStar()
+        self.lib.k4_find_best_star(self.ptr, per_color, C.byref(out))
+        return (
+            None
+            if out.center < 0
+            else (out.center, out.blue_neighbor, out.red_neighbor, out.delta)
+        )
 
     def count_subgraphs(self) -> dict:
         if not self.ptr:
             raise ValueError("closed graph")
-        out = (C.c_int64 * 5)()
-        self.lib.k4_counts(self.ptr, out)
+        out = NativeCounts()
+        self.lib.k4_count_subgraphs(self.ptr, C.byref(out))
         return Counts(
-            **dict(
-                zip(
-                    ("red_edges", "blue_triangles", "red_k4", "blue_k4", "numerator"),
-                    out,
-                )
-            )
+            red_edges=out.red_edges,
+            blue_triangles=out.blue_triangles,
+            red_k4=out.red_k4,
+            blue_k4=out.blue_k4,
+            numerator=out.numerator,
         ).model_dump(mode="json", by_alias=True, exclude_none=True)
 
     def export_certificate(self) -> dict:
@@ -190,7 +201,9 @@ def validate_certificate(data: dict) -> list[str]:
 def load_native_library():
     global _lib
     if _lib is None:
-        _lib = C.CDLL(str(locate_native_library()))
+        lib = C.CDLL(str(locate_native_library()))
+        lib.k4_error_code.argtypes, lib.k4_error_code.restype = [], C.c_int
+        lib.k4_last_error.argtypes, lib.k4_last_error.restype = [], C.c_char_p
         specs = {
             "k4_new": ([C.c_int, C.POINTER(C.c_uint8)], C.c_void_p),
             "k4_free": ([C.c_void_p], None),
@@ -232,10 +245,37 @@ def load_native_library():
                 None,
             ),
             "k4_best_cached_star": ([C.c_void_p, C.c_int, C.POINTER(C.c_int64)], None),
+            "k4_count_subgraphs": ([C.c_void_p, C.POINTER(NativeCounts)], C.c_int),
+            "k4_find_best_flip": ([C.c_void_p, C.POINTER(NativeFlip)], C.c_int),
+            "k4_find_allowed_flip": (
+                [
+                    C.c_void_p,
+                    C.POINTER(C.c_int),
+                    C.c_int,
+                    C.c_int64,
+                    C.POINTER(NativeFlip),
+                ],
+                C.c_int,
+            ),
+            "k4_find_best_star": (
+                [C.c_void_p, C.c_int, C.POINTER(NativeStar)],
+                C.c_int,
+            ),
         }
+
+        def check_native_result(result, function, arguments):
+            code = lib.k4_error_code()
+            if code:
+                message = lib.k4_last_error().decode("utf-8", errors="replace")
+                error = {1: ValueError, 2: MemoryError}.get(code, RuntimeError)
+                raise error(f"{function.__name__}: {message}")
+            return result
+
         for name, (args, result) in specs.items():
-            fn = getattr(_lib, name)
+            fn = getattr(lib, name)
             fn.argtypes, fn.restype = args, result
+            fn.errcheck = check_native_result
+        _lib = lib
     return _lib
 
 

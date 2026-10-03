@@ -125,6 +125,8 @@ def hash_verifier_sources() -> dict[str, str]:
         "lean/K4Ramsey/Counting/WeightedMultiplicity.lean",
         "lean/Tests/WeightedMultiplicity.lean",
         "lean/K4Ramsey/Counting/Multiplicity.lean",
+        "lean/K4Ramsey/Counting/ValidatedTemplate.lean",
+        "lean/K4Ramsey/IO/TemplateInput.lean",
         "lean/lean-toolchain",
         "src/k4_ramsey/weighted_verify.py",
         "src/k4_ramsey/artifacts.py",
