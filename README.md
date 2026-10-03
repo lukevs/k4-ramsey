@@ -59,6 +59,22 @@ and the [Jacobian Conjecture prompt](https://aaronlou.com/jacobian_counterexampl
 ([adaptation notes](paper/data/workflow-source-principles.md)). No candidate was
 accepted until a separate program had recounted it exactly.
 
+## Authors
+
+- Luke Van Seters
+- Madhan Jothimani
+
+## Citation
+
+```bibtex
+@misc{vanseters2026clebsch,
+  author = {Van Seters, Luke and Jothimani, Madhan},
+  title  = {Twelve {Clebsch} Graphs and a New Upper Bound for the {Ramsey} Multiplicity of {$K_4$}},
+  year   = {2026},
+  url    = {https://github.com/lukevs/k4-ramsey}
+}
+```
+
 ## Acknowledgments
 
 This work began at [Sundai Hack 142](https://www.sundai.club/events/boston/recursive-learning-hack-with-harvard-innovation-labs),
