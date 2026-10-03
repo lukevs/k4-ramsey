@@ -123,8 +123,8 @@ recount takes several minutes on the research machine. This native route is
 specific to macOS; the mathematical identity is platform-independent.
 
 For the formal proofs, use `just lean-build` and `just audit` from the repository
-root. `just certify-final3840` checks the numerical 3840-class certificate (about
-12 minutes when not cached). See [verification details](../docs/verification.md)
+root. `just certify-final3840` checks the numerical 3840-class certificate (several
+minutes when not cached). See [verification details](../docs/verification.md)
 for the trust boundary.
 
 `just paper-export` regenerates the frozen data from the repository's Lean

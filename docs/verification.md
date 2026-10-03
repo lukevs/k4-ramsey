@@ -15,24 +15,25 @@ monochromatic K4 density <= 1013294255057839 / 33620705806123008
 ```
 
 The construction is defined directly in group coordinates in
-`lean/K4Ramsey/Constructions/Clebsch192/Model.lean`; it needs no files from `reports/`. The proof chain is:
+`lean/K4Ramsey/Constructions/Clebsch192/Model.lean`; it needs no files from `reports/`.
+Paths below are relative to `lean/K4Ramsey/`. The proof chain is:
 
-1. `Graphon.lean` defines the literal six-edge sum, including repeated template
+1. `Core/Graphon.lean` defines the literal six-edge sum, including repeated template
    labels, proves the pair factorization, and proves the Cayley rooting identity.
-2. `Clebsch192Certificate.lean` checks symmetry and probability bounds and
+2. `Constructions/Clebsch192/Certificate.lean` checks symmetry and probability bounds and
    evaluates the literal rooted sum using Lean's `native_decide`.
-3. `FiniteProbability.lean` proves finite independence and averaging.
-4. `Realization.lean` proves that every symmetric rational probability table
+3. `Core/FiniteProbability.lean` proves finite independence and averaging.
+4. `Core/Realization.lean` proves that every symmetric rational probability table
    gives an actual coloring no worse than its density at **every** order >= 4.
    It uses independent random labels and edge colors; no asymptotic
    approximation or assumed realization theorem is needed.
-5. `Clebsch192Bound.exists_coloring` combines those results. Density uses
+5. `Clebsch192.exists_coloring` combines those results. Density uses
    uniformly sampled ordered distinct vertices: every four-set has the same
    24 orderings.
-6. `Asymptotic.lean` defines the actual finite minimum over all colorings and
+6. `Core/Asymptotic.lean` defines the actual finite minimum over all colorings and
    bounds its upper limit, without assuming convergence. It also proves that
    a uniform finite bound passes to any limit of those minima.
-   `Clebsch192Bound.ramsey_upperLimit_bound` and `ramsey_limit_bound`
+   `Clebsch192.ramsey_upperLimit_bound` and `ramsey_limit_bound`
    specialize these results to the construction.
    Convergence of the minimum-density sequence itself is not proved here;
    neither the upper-limit bound nor finite-order existence requires it.
@@ -58,61 +59,61 @@ asymptotic limit of the minimum densities.
 
 ## Formal 3,840-class bound
 
-The stronger **3,840-part** refinement now has a numerical formal certificate
-for the exact value
-`8450462766487926638466333426306607129 / 280384030360880691940646801777885184000`
-(approximately `0.030138887566497220`). Its proof chain is:
+The **3,840-part** refinement has the same kind of end-to-end proof:
 
-- `Final3840Data/` embeds the witness itself, not a supplied count. Its ten
-  small source chunks store the 1,248 fractional 20-by-20 blocks; the hard
-  blocks follow the canonical Clebsch rule in `Final3840Model.lean`.
-- `Final3840Validity.lean` checks symmetry, probability bounds, data dimensions,
-  and exact zero row means of the centered perturbations with `native_decide`.
-  It proves the existence of actual finite colorings bounded by the literal
-  density of this table.
-- `TensorK4.lean` and `CenteredExpansion.lean` prove the general counting
-  reduction: of the 64 expanded terms, only the base, four triangles, three
-  four-cycles, six diamonds, and the all-perturbation K4 remain. The proofs
-  include repeated labels and use no native evaluation. The generated proof
-  script only selects reindexings; Lean checks each reindexing and cancellation.
-- `Final3840Reduction.lean` applies that identity to both colors of this
-  actual witness. `Final3840Bound.lean` proves the upper-limit bound by its
-  **symbolic** density.
-- `Final3840Count.lean` implements sparse integer sums with stored two-edge
-  contraction arrays. `Final3840CountCorrect.lean` proves cache lookup,
-  factorization, and the correctness of every support guard.
-- `Final3840Arithmetic.density_eq_count` proves that these executable integer
-  sums, with the exact denominator `65536^6 * 3840^4`, equal the literal density.
-  `Final3840SymmetryProof.baseRoot_eq` reduces the base contribution to one
-  rooted count. These close the optimized-counter correctness gap.
+```text
+For every n >= 4, there exists a red/blue coloring on n vertices with
+monochromatic K4 density
+  <= 8450462766487926638466333426306607129 / 280384030360880691940646801777885184000
+   = 0.030138887566497220...
+```
 
-- `Final3840/Certificate.lean` recomputes the proved integer expression with
-  `native_decide`, obtaining
-  `519196432373018212667371525712277942005760`. `exact_density` then uses
-  `density_eq_count`, the proved base symmetry, and rational normalization to
-  establish the exact fraction above. No external report is a Lean premise.
-- `Final3840/NumericalBound.lean` proves `exists_coloring_exact`: for every
-  `n ≥ 4`, an actual coloring has density at most that fraction. It also proves
-  `ramsey_upperLimit_exact_bound` without a convergence assumption, and
-  `ramsey_limit_exact_bound` for any limit of the genuine finite minima.
+Paths below are relative to `lean/K4Ramsey/`. The proof chain is:
 
-Run `just certify-final3840` for this certificate, or `just lean-build` for the
-whole library. The fresh certificate check took 703 seconds in the observed
-run (roughly 2.3 GB for the Lean process); cached builds reuse its checked result.
-`just audit` prints the numerical theorem's
-native-evaluation dependency and the axioms of the final bound. The general
-counting and realization arguments remain kernel-checked; native compilation
-and evaluation are explicitly part of the concrete arithmetic trust boundary.
+1. `Constructions/Final3840/Data/` embeds the witness itself, not a count: ten
+   source chunks store the 1,248 fractional 20-by-20 blocks, and
+   `Constructions/Final3840/Model.lean` gives the remaining blocks by the
+   Clebsch rule.
+2. `Constructions/Final3840/Validity.lean` checks symmetry, probability bounds,
+   dimensions, and zero row means of the centered blocks with `native_decide`.
+3. `Counting/TensorK4.lean` and `Counting/CenteredExpansion.lean` prove the
+   general counting reduction: of the 64 expanded terms, only the base, four
+   triangles, three four-cycles, six diamonds, and the all-perturbation K4
+   remain. These proofs include repeated labels and use no native evaluation.
+4. `Constructions/Final3840/Reduction.lean` applies that identity to both
+   colors of the witness, and `Constructions/Final3840/Bound.lean` proves the
+   finite and asymptotic bounds in terms of its density.
+5. `Constructions/Final3840/Count.lean` implements sparse integer sums, and
+   `CountCorrect.lean` proves them correct. `Arithmetic.lean` proves
+   `Count.density_eq_count`: these sums, over the denominator
+   `65536^6 * 3840^4`, equal the density. `SymmetryProof.lean` proves
+   `baseRoot_eq`, which reduces the base term to a single rooted count.
+6. `Constructions/Final3840/Certificate.lean` evaluates that integer
+   expression with `native_decide`, obtaining
+   `519196432373018212667371525712277942005760`, and `exact_density` turns it
+   into the exact fraction above by kernel-checked rational arithmetic. No
+   external report is a Lean premise.
+7. `Constructions/Final3840/NumericalBound.lean` proves `exists_coloring_exact`
+   (the statement above for every n >= 4), `ramsey_upperLimit_exact_bound`
+   (without assuming convergence), and `ramsey_limit_exact_bound` (for any
+   limit of the finite minima).
 
-The separate `just recount` diagnostic completed all 192 slices in about
-553 seconds on the observed machine, using roughly 700 MB, and reproduced the
-same exact fraction. It prints progress every 16 coarse vertices. Its output
-alone is not the theorem: the certificate independently checks the equation.
+Run `just certify-final3840` to check this certificate, or `just lean-build`
+for the whole library. A fresh check takes several minutes. Cached builds reuse the checked result.
+`just audit` lists the axioms of each final theorem: Lean's standard axioms plus
+the native-evaluation steps. As for the 192-part bound, the general counting
+and realization arguments are kernel-checked, and native compilation and
+evaluation are part of the trust boundary for the arithmetic.
 
-`SignRefinement.lean` also proves the local six-edge identity for balanced
-two-way splits. The centered-block route above handles the complete 20-way
-refinement directly. The numerical certificate now completes that route for
-the fixed witness; it does not assert optimality or improve the numerical bound.
+`just recount` runs the same counting code as a standalone program, outside the
+proof, as a diagnostic. On the research machine it took about nine minutes, and its totals give
+exactly the numerator above. It prints progress every 16 coarse vertices. The paper
+also confirms the value with a separate character-identity computation in
+Python and C++.
+
+`Counting/SignRefinement.lean` also proves the six-edge identity for a single
+balanced two-way split. The centered-block route above handles the full 20-way
+refinement directly.
 
 The embedded witness comes from SHA-256
 `05302cbc635e939cc41f4ba019cdcba80199b0b83563100bac0b1a0d9fff1a29`.
@@ -124,10 +125,8 @@ while validating the matrix. Normal Lean builds do not need Python, NumPy, or
 the expanded JSON. `just generate-expansion` regenerates the 64-term algebraic
 proof without reading any numerical report.
 
-The older published-graph bitset checker
-also still lacks a proof connecting its implementation to that objective.
-The result above improves the 2022 benchmark; it makes no claim of priority
-over newer announced bounds.
+The result above improves the published 2022 benchmark; it makes no claim of
+priority over newer announced bounds.
 
 ## Published 768-vertex graph
 
@@ -184,7 +183,6 @@ Parser regression examples cover malformed matrices/weights and small exact
 counts. The remaining mathematical correctness gaps described above are unchanged.
 
 ## Data provenance
-
 
 Source: [New Ramsey Multiplicity Bounds and Search Heuristics,
 Theorem 1.1](https://arxiv.org/html/2206.04036v3), and the authors'

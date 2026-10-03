@@ -160,10 +160,12 @@ running.
 
 - The 192-class bound (0.0301389941) has a complete Lean proof, including the
   numerical evaluation.
-- The 3840-class bound (0.030138887566497220…) also has a complete numerical
-  Lean certificate, connected to the literal density and finite-coloring
-  existence theorem. Run `just certify-final3840` to check it. Both numerical
-  certificates use `native_decide`, trusting Lean's compiler and runtime.
+- The 3840-class bound (0.0301388876) also has a complete Lean proof,
+  including the numerical evaluation. Run `just certify-final3840` to check it
+  (several minutes the first time).
+- Both numerical evaluations use Lean's `native_decide`, so they trust Lean's
+  compiler as well as its kernel. The 3840-class value is also confirmed by an
+  independent computation in Python and C++.
 - The fast program behind `just published` agrees with the PPSS value, but no
   Lean proof yet connects it to the definition of the density.
 

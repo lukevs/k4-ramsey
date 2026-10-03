@@ -591,7 +591,7 @@ The witness $W_*$ is also embedded in Lean as its $1248$ fractional blocks toget
 Native checks establish its dimensions, symmetry, range, and centered rows; general proofs establish the centered expansion, a sparse counting reduction, and the correctness of the stored contractions, giving an integer expression for $\F(W_*)$ with denominator $65536^6\cdot3840^4$.
 Native evaluation of that expression gives the numerator $519196432373018212667371525712277942005760$, which equals $D(r)+D(Q-r)$ in~\eqref{eq:rawcounts}, and kernel-checked rational normalization turns it into~\eqref{eq:mainvalue}.
 Combined with Lemma~\ref{lem:realization}, this proves Theorem~\ref{thm:main} for every $n\ge4$, together with the asymptotic bound $c_4\le U$.
-A fresh check of this certificate takes about twelve minutes.
+A fresh check of this certificate takes several minutes.
 
 The general proofs use Lean's standard axioms and mathlib.
 The numerical evaluations for both theorems, and the native structural checks, additionally trust Lean's compiler and runtime.
