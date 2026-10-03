@@ -61,8 +61,8 @@ accepted until a separate program had recounted it exactly.
 
 ## Authors
 
-- Luke Van Seters
-- Madhan Jothimani
+- Luke Van Seters ([@lukevs](https://github.com/lukevs))
+- Madhan Jothimani ([@MadhanJ05](https://github.com/MadhanJ05))
 
 ## Citation
 
