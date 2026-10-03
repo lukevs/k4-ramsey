@@ -22,7 +22,7 @@ class WeightedVerifyTests(unittest.TestCase):
             data['weights']=weights
             with self.assertRaises(ValueError): validate_weighted(data)
 
-    @unittest.skipUnless((ROOT/'.lake/build/bin/check_weighted_candidate').exists(),'build weighted checker')
+    @unittest.skipUnless((ROOT/'lean/.lake/build/bin/check_weighted_candidate').exists(),'build weighted checker')
     def test_random_literal_oracle_and_big_integers(self):
         rng=random.Random(347)
         for weights in [[1,1,1,1],[1,3,7,11],[65535]*4,[1024,960,1088,1024]]:
@@ -36,7 +36,7 @@ class WeightedVerifyTests(unittest.TestCase):
             self.assertEqual(result['numerator'],expected)
             self.assertEqual(result['denominator'],sum(weights)**4)
 
-    @unittest.skipUnless((ROOT/'.lake/build/bin/check_weighted_candidate').exists(),'build weighted checker')
+    @unittest.skipUnless((ROOT/'lean/.lake/build/bin/check_weighted_candidate').exists(),'build weighted checker')
     def test_boundary_and_wrong_claim(self):
         data=certificate(['0'*65]*65)
         data['weights']=[1+i%7 for i in range(65)]

@@ -16,8 +16,8 @@ import subprocess
 import sys
 import time
 
-from .engine import ROOT, SEED, TARGET, build, load
-from .verify import build_checker, verify
+from .engine import ROOT, SEED, TARGET, native_library_path, load
+from .verify import verify
 
 
 def digest(path):
@@ -43,11 +43,11 @@ def write_json(path, data):
 
 
 def prepare():
-    native = build()
-    build_checker()
-    paths = ['native/search.cpp', 'CheckCandidate.lean', 'K4Ramsey/Multiplicity.lean',
-             'lean-toolchain', 'lakefile.toml', str(native.relative_to(ROOT)),
-             '.lake/build/bin/check_candidate']
+    """Record existing build artifacts; just owns all compiler invocations."""
+    native = native_library_path()
+    paths = ['native/search.cpp', 'lean/Executables/CheckCandidate.lean', 'lean/K4Ramsey/Counting/Multiplicity.lean',
+             'lean/lean-toolchain', 'lean/lakefile.toml', str(native.relative_to(ROOT)),
+             'lean/.lake/build/bin/check_candidate', 'justfile', 'scripts/lean.sh']
     manifest = {p: digest(ROOT/p) for p in paths}
     write_json(ROOT/'build/experiment-build.json', manifest)
     return manifest
@@ -57,14 +57,13 @@ def snapshot(destination):
     """Refuse stale binaries; each experiment runs a private copy of the code."""
     manifest_path = ROOT/'build/experiment-build.json'
     if not manifest_path.exists():
-        raise ValueError('Run python -m k4_ramsey.lab build before experiments')
+        raise ValueError('Run just runner-build before experiments')
     manifest = json.loads(manifest_path.read_text())
     for p, expected in manifest.items():
         if digest(ROOT/p) != expected:
-            raise ValueError(f'Stale build: {p}; run lab build again before dispatch')
+            raise ValueError(f'Stale build: {p}; run just runner-build before dispatch')
     paths = set(manifest)
     paths.update(str(p.relative_to(ROOT)) for p in (ROOT/'src/k4_ramsey').glob('*.py'))
-    paths.update(str(p.relative_to(ROOT)) for p in (ROOT/'build').glob('libk4.sha256'))
     identities = {}
     for p in sorted(paths):
         target = destination/p
@@ -131,19 +130,22 @@ def experiment(*, out, input_path, strategy, hypothesis, prediction, seed=0,
     try:
         source = out/'snapshot'
         report['source_hashes'] = snapshot(source)
-        shutil.copy2(strategy, source/'strategy.py')
-        report['strategy_sha256'] = digest(source/'strategy.py')
+        # Script-directory imports select the frozen package, not the editable
+        # workspace install provided by the parent uv environment.
+        strategy_copy = source/'src/strategy.py'
+        shutil.copy2(strategy, strategy_copy)
+        report['strategy_sha256'] = digest(strategy_copy)
         write_json(out/'input.json', data)
         write_json(out/'config.json', config)
         report['input_sha256'] = digest(out/'input.json')
-        checker = source/'.lake/build/bin/check_candidate'
+        checker = source/'lean/.lake/build/bin/check_candidate'
         report['baseline'] = verify(data, timeout=max(.001, deadline-time.monotonic()), checker=checker)
         report['setup_seconds'] = time.monotonic()-start
-        command = [sys.executable, str(source/'strategy.py'), '--input', str(out/'input.json'),
+        command = [sys.executable, str(strategy_copy), '--input', str(out/'input.json'),
                    '--output', str(out/'candidate.json'), '--seed', str(seed),
                    '--seconds', str(seconds), '--config', str(out/'config.json')]
         env = os.environ.copy()
-        env['PYTHONPATH'] = str(source/'src')
+        env.pop('PYTHONPATH', None)
         env['PYTHONDONTWRITEBYTECODE'] = '1'
         for name in ['OMP_NUM_THREADS','OPENBLAS_NUM_THREADS','MKL_NUM_THREADS',
                      'VECLIB_MAXIMUM_THREADS','NUMEXPR_NUM_THREADS']:
@@ -183,7 +185,7 @@ def experiment(*, out, input_path, strategy, hypothesis, prediction, seed=0,
         for p, expected_hash in report['source_hashes'].items():
             if digest(source/p) != expected_hash:
                 raise ValueError(f'experiment snapshot was modified: {p}')
-        if digest(source/'strategy.py') != report['strategy_sha256']:
+        if digest(strategy_copy) != report['strategy_sha256']:
             raise ValueError('strategy snapshot was modified')
         checked = verify(candidate, expected, timeout=max(.001, deadline-time.monotonic()), checker=checker)
         write_json(out/'verification.json', checked)
@@ -213,7 +215,7 @@ def experiment(*, out, input_path, strategy, hypothesis, prediction, seed=0,
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     sub = parser.add_subparsers(dest='action', required=True)
-    sub.add_parser('build', help='Build once before parallel dispatch; never during active experiments')
+    sub.add_parser('record-build', help='Record prebuilt artifact hashes (normally called by just runner-build)')
     dash = sub.add_parser('dashboard', help='Render a self-contained HTML snapshot of experiment states')
     dash.add_argument('--reports', type=Path, default=ROOT/'reports')
     dash.add_argument('--out', type=Path, default=ROOT/'journal.html')
@@ -228,9 +230,9 @@ def main():
     run.add_argument('--timeout', type=float, default=40)
     run.add_argument('--config', type=Path)
     args = parser.parse_args()
-    if args.action == 'build':
+    if args.action == 'record-build':
         prepare()
-        print('Native engine and Lean checker prepared.')
+        print('Native engine and Lean checker build identities recorded.')
         return
     if args.action == 'dashboard':
         from .dashboard import render

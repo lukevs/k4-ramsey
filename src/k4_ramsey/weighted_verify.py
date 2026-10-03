@@ -27,7 +27,7 @@ def validate_weighted(data):
 
 def verify(data,expected_density=None,timeout=120):
     rows,weights=validate_weighted(data)
-    checker=ROOT/'.lake/build/bin/check_weighted_candidate'
+    checker=ROOT/'lean/.lake/build/bin/check_weighted_candidate'
     if not checker.is_file(): raise RuntimeError('build check_weighted_candidate first')
     started=time.monotonic()
     with tempfile.TemporaryDirectory(prefix='k4-weighted-v1-') as directory:
@@ -42,8 +42,8 @@ def verify(data,expected_density=None,timeout=120):
     density=Fraction(numerator,denominator)
     if expected_density is not None and density!=Fraction(expected_density):
         raise ValueError('weighted checker disagrees with expected density')
-    sources=['WeightedCandidate.lean','K4Ramsey/WeightedMultiplicity.lean','K4Ramsey/WeightedTests.lean',
-             'K4Ramsey/Multiplicity.lean','lean-toolchain','src/k4_ramsey/weighted_verify.py']
+    sources=['lean/Executables/WeightedCandidate.lean','lean/K4Ramsey/Counting/WeightedMultiplicity.lean','lean/Tests/WeightedMultiplicity.lean',
+             'lean/K4Ramsey/Counting/Multiplicity.lean','lean/lean-toolchain','src/k4_ramsey/weighted_verify.py']
     return dict(schema='k4-weighted-verification-v1',status='lean_native_checked_weighted_v1',
         n=n,total_weight=total,numerator=numerator,denominator=denominator,density=str(density),
         seconds=time.monotonic()-started,checker_binary_sha256=hashlib.sha256(checker.read_bytes()).hexdigest(),

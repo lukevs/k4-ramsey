@@ -2,9 +2,7 @@
 from __future__ import annotations
 
 import ctypes as C
-import hashlib
 import json
-import subprocess
 import sys
 from pathlib import Path
 
@@ -15,23 +13,18 @@ SEED = ROOT / 'data/published_cayley_768.json'
 _lib = None
 
 
-def build() -> Path:
-    source = ROOT / 'native/search.cpp'
+def native_library_path() -> Path:
+    """Locate the prebuilt engine; compilation belongs to the justfile."""
     output = ROOT / 'build' / ('libk4.dylib' if sys.platform == 'darwin' else 'libk4.so')
-    output.parent.mkdir(exist_ok=True)
-    flags = ['-std=c++17', '-O3', '-fPIC', '-shared']
-    identity = hashlib.sha256(source.read_bytes() + repr(flags).encode()).hexdigest()
-    stamp = output.with_suffix('.sha256')
-    if not output.exists() or not stamp.exists() or stamp.read_text() != identity:
-        subprocess.run(['c++', *flags, str(source), '-o', str(output)], check=True)
-        stamp.write_text(identity)
+    if not output.is_file():
+        raise RuntimeError('Native engine is not built; run just runner-build')
     return output
 
 
 def library():
     global _lib
     if _lib is None:
-        _lib = C.CDLL(str(build()))
+        _lib = C.CDLL(str(native_library_path()))
         specs = {
             'k4_new': ([C.c_int, C.POINTER(C.c_uint8)], C.c_void_p),
             'k4_free': ([C.c_void_p], None),

@@ -73,8 +73,8 @@ def main():
                 offsets[u, v] = len(blocks)
                 blocks.append(block.copy())
     assert len(blocks) == 1248
-    dest = ROOT / "K4Ramsey/Final3840Data"
-    dest.mkdir(exist_ok=True)
+    dest = ROOT / "lean/K4Ramsey/Constructions/Final3840/Data"
+    dest.mkdir(parents=True, exist_ok=True)
     names = []
     # Literal decimal strings keep elaboration small. Their parser is Lean code.
     for chunk_no, first in enumerate(range(0, len(blocks), 128)):
@@ -90,8 +90,8 @@ def main():
         (dest / f"{name}.lean").write_text(source)
     index = ",".join(map(str, (offsets + 1).reshape(-1).tolist()))
     chunks = ", ".join(f"part{i:02d}" for i in range(len(names)))
-    imports = "\n".join(f"import K4Ramsey.Final3840Data.{name}" for name in names)
-    (ROOT / "K4Ramsey/Final3840Data.lean").write_text(
+    imports = "\n".join(f"import K4Ramsey.Constructions.Final3840.Data.{name}" for name in names)
+    (ROOT / "lean/K4Ramsey/Constructions/Final3840/Data.lean").write_text(
         f"{imports}\n\nnamespace K4Ramsey.Final3840Data\n\n"
         "-- Zero denotes a hard block. Other entries are one-based block IDs.\n"
         f'def blockIndexText : String := "{index}"\n\n'

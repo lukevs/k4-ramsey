@@ -46,6 +46,14 @@ class LabTests(unittest.TestCase):
         self.assertTrue(all(r['status']=='completed' for r in results))
         self.assertEqual(results[0]['candidate_sha256'],results[1]['candidate_sha256'])
 
+    def test_strategy_imports_frozen_package_without_pythonpath(self):
+        s = self.script("import os,k4_ramsey.engine\n"
+            "assert 'PYTHONPATH' not in os.environ\n"
+            "assert Path(k4_ramsey.engine.__file__).resolve().parent.parent == Path(__file__).resolve().parent\n"
+            "shutil.copy(inp,out)\n")
+        report = self.run_one(strategy=s)
+        self.assertEqual(report['status'], 'completed', report)
+
     def test_bad_claim_quarantined(self):
         s = self.script("shutil.copy(inp,out)\n(out.parent/'search.json').write_text('{\"numerator\": 0}')\n")
         report=self.run_one(strategy=s)
@@ -86,7 +94,7 @@ class LabTests(unittest.TestCase):
     def test_sigterm_writes_report_and_reaps_search(self):
         s=self.script('import time\ntime.sleep(10)\n')
         out=self.root/'signal'
-        env=os.environ.copy();env['PYTHONPATH']=str(ROOT/'src')
+        env=os.environ.copy();env.pop('PYTHONPATH', None)
         command=[sys.executable,'-m','k4_ramsey.lab','run','--input',str(self.input),
                  '--out',str(out),'--strategy',str(s),'--hypothesis','signal test',
                  '--prediction','interruption recorded','--seconds','10','--timeout','20']

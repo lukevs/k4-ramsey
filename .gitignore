@@ -11,6 +11,7 @@
 # Rebuildable native engine and Python caches.
 build/
 __pycache__/
+.venv/
 
 .envrc
 

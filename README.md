@@ -1,230 +1,106 @@
-# K4 Ramsey multiplicity in Lean
+# K4 Ramsey multiplicity
 
-## Formal Clebsch construction
+Construct, explore, and verify red/blue graph colorings with few monochromatic
+copies of K₄. The project combines Clebsch-based constructions, a C++ search
+engine, Python experiments, and Lean proofs.
 
-`K4Ramsey/Clebsch192Bound.lean` is an end-to-end finite upper-bound theorem
-for the compact **192-part** Clebsch construction at `p = 32/41`, `h = 22/41`:
+Start with [the introduction](introduction.md) for the problem and results.
+Open the [interactive explainer](research/clebsch-explorer.html) in a browser
+to explore the graph visually.
+
+## Layout
 
 ```text
-For every n >= 4, there exists a red/blue coloring on n vertices with
-monochromatic K4 density <= 1013294255057839 / 33620705806123008
-                        < 0.030139.
+lean/                     Self-contained Lean package
+  K4Ramsey.lean           Public library entry point
+  K4Ramsey/
+    Core/                 Objective, probability, realization, and limits
+    Counting/             Counters and general correctness proofs
+    Constructions/        Published768, Clebsch192, and Final3840
+  Executables/            Command-line counters
+  Audits/                 Theorem-axiom inspection
+  Tests/                  Lean regression tests
+  lakefile.toml           Lean build targets and dependencies
+src/k4_ramsey/            Python engine interface and experiment runner
+native/                   C++17 search primitives
+tests/                    Python/native regression tests
+experiments/              Strategies, configurations, and specialized tools
+data/                     Published seed and source attribution
+scripts/                  Generators and the Lean command wrapper
+docs/                     Verification and runner documentation
+research/                 Research notes, paper draft, and visual explainer
+justfile                  Common project commands
 ```
 
-The construction is defined directly in group coordinates in
-`K4Ramsey/Clebsch192.lean`; it needs no files from `reports/`. The proof chain is:
+Generated `reports/`, `build/`, `lean/.lake/`, and `journal.html` stay out of Git.
+Historical research logs retain their original paths; use the layout above for
+current source locations.
 
-1. `Graphon.lean` defines the literal six-edge sum, including repeated template
-   labels, proves the pair factorization, and proves the Cayley rooting identity.
-2. `Clebsch192Certificate.lean` checks symmetry and probability bounds and
-   evaluates the literal rooted sum using Lean's `native_decide`.
-3. `FiniteProbability.lean` proves finite independence and averaging.
-4. `Realization.lean` proves that every symmetric rational probability table
-   gives an actual coloring no worse than its density at **every** order >= 4.
-   It uses independent random labels and edge colors; no asymptotic
-   approximation or assumed realization theorem is needed.
-5. `Clebsch192Bound.exists_coloring` combines those results. Density uses
-   uniformly sampled ordered distinct vertices: every four-set has the same
-   24 orderings.
-6. `Asymptotic.lean` defines the actual finite minimum over all colorings and
-   bounds its upper limit, without assuming convergence. It also proves that
-   a uniform finite bound passes to any limit of those minima.
-   `Clebsch192Bound.ramsey_upperLimit_bound` and `ramsey_limit_bound`
-   specialize these results to the construction.
-   Convergence of the minimum-density sequence itself is not proved here;
-   neither the upper-limit bound nor finite-order existence requires it.
+## Setup
 
-Build and inspect the trust boundary:
+Use macOS or Linux with **Git**, **just**, **uv**, Lean's **elan** toolchain
+manager, and a **C++17 compiler** available as `c++`. Python 3.12+ is required;
+uv manages the project environment.
 
 ```sh
-lake build
-lake env lean AuditGraphon.lean
+git clone https://github.com/lukevs/k4-ramsey.git
+cd k4-ramsey
+just setup
 ```
 
-Lean and mathlib are both pinned to `v4.34.1`. The first build downloads
-mathlib and its cache. With the repository-local installation, prepend
-`env ELAN_HOME="$PWD/.elan" PATH="$PWD/.elan/bin:$PATH"` to these commands.
-Use `lake build`, rather than invoking the numerical certificate directly
-before its imported computational modules have been compiled.
+This syncs the locked Python environment, downloads cached mathlib dependencies,
+checks the proof library, and builds
+the C++ shared library and Lean candidate checker. Lean and mathlib are pinned
+to `v4.34.1`; allow several GB for dependencies and build products.
 
-The general counting and realization proofs use standard Lean axioms only;
-the concrete arithmetic additionally trusts native compilation/evaluation.
-There are no `sorry` placeholders or assumed numerical certificates in this
-proof chain. A finite-order bound valid for every n >= 4 also bounds any
-asymptotic limit of the minimum densities.
+The Python recipes use `uv run --locked` with the installed project package;
+no `PYTHONPATH` setup is needed. The core runner has no third-party runtime
+dependencies. Specialized research experiments may need additional dependencies.
+The Lean proofs use embedded data, not the large local experiment artifacts.
 
-**Scope:** this is not yet a numerical formal certificate for the stronger
-**3,840-part** refinement with reported value approximately
-`0.030138887566497220`. The following parts of that refinement now compile:
+## Common commands
 
-- `Final3840Data/` embeds the witness itself, not a supplied count. Its ten
-  small source chunks store the 1,248 fractional 20-by-20 blocks; the hard
-  blocks follow the canonical Clebsch rule in `Final3840Model.lean`.
-- `Final3840Validity.lean` checks symmetry, probability bounds, data dimensions,
-  and exact zero row means of the centered perturbations with `native_decide`.
-  It proves the existence of actual finite colorings bounded by the literal
-  density of this table.
-- `TensorK4.lean` and `CenteredExpansion.lean` prove the general counting
-  reduction: of the 64 expanded terms, only the base, four triangles, three
-  four-cycles, six diamonds, and the all-perturbation K4 remain. The proofs
-  include repeated labels and use no native evaluation. The generated proof
-  script only selects reindexings; Lean checks each reindexing and cancellation.
-- `Final3840Reduction.lean` applies that identity to both colors of this
-  actual witness. `Final3840Bound.lean` proves the upper-limit bound by its
-  **symbolic** density.
-- `Final3840Count.lean` implements sparse integer sums with stored two-edge
-  contraction arrays. `Final3840CountCorrect.lean` proves cache lookup,
-  factorization, and the correctness of every support guard.
-- `Final3840Arithmetic.density_eq_count` proves that these executable integer
-  sums, with the exact denominator `65536^6 * 3840^4`, equal the literal density.
-  `Final3840SymmetryProof.baseRoot_eq` reduces the base contribution to one
-  rooted count. These close the optimized-counter correctness gap.
+Run `just` to list the available commands.
 
-**Remaining gap:** finish the full numerical run and use `native_decide` to
-certify that the proved integer expression equals the reported exact rational
-`8450462766487926638466333426306607129 / 280384030360880691940646801777885184000`.
-The external numerical report is not used as a Lean premise. Thus the symbolic
-upper-limit theorem must not be presented as a certificate of that number.
+| Command | Action |
+|---|---|
+| `just build` | Build the proofs and C++/Lean experiment runner. |
+| `just test` | Run Lean and Python/native regression tests. |
+| `just audit` | List theorem axioms and native-evaluation dependencies. |
+| `just check` | Build, test, and audit. |
+| `just published` | Print the published 768-vertex graph's exact count. |
+| `just recount` | Run the long 3,840-part diagnostic count. |
+| `just search reports/descent-001` | Run a short search from the bundled seed. |
+| `just dashboard` | Refresh the local `journal.html` snapshot. |
+| `just runner-help run` | Show advanced experiment options. |
 
-The compiled single-slice smoke test completed. The full run was interrupted
-at the user's request to ship this checkpoint; no complete total was obtained.
-Resume the diagnostic run with `lake exe check_final3840`. This runner prints
-progress every 16 coarse vertices and uses roughly 700 MB in the observed run.
-Its output alone is not a theorem: the next step is a numerical Lean certificate
-and substitution into `density_eq_count` and the existing upper-bound theorem.
+Build before running searches, use a new output directory each time, and do not
+rebuild during an active experiment. Search parameters are positional:
+`just search OUT SEED SECONDS TIMEOUT`. The defaults are `0 10 40`; timeout
+includes setup and verification. The dashboard is a snapshot, not a server.
 
-`SignRefinement.lean` also proves the local six-edge identity for balanced
-two-way splits. The centered-block route above handles the complete 20-way
-refinement directly. The hypothesis-research workflow separated structural
-checks from the still-unverified numerical contraction certificate.
+Build commands live in the justfile. Python handles experiment supervision,
+checker-output validation, and artifact formatting—not compiler invocations.
+The C++ engine is loaded through `ctypes`.
 
-The embedded witness comes from SHA-256
-`05302cbc635e939cc41f4ba019cdcba80199b0b83563100bac0b1a0d9fff1a29`.
-`scripts/generate_final3840_data.py` checks this hash and every block mean when
-regenerating the data; normal Lean builds do not need Python, NumPy, or the
-large original JSON. `scripts/generate_tensor_expansion.py` regenerates the
-64-term algebraic proof without reading any numerical report.
+The full recount is a multi-minute task, not part of `just check`. An observed
+run used roughly 700 MB. Its printed totals do not replace the final numerical
+Lean certificate.
 
-The older published-graph bitset checker
-also still lacks a proof connecting its implementation to that objective.
-The result above improves the 2022 benchmark; it makes no claim of priority
-over newer announced bounds.
+## Further details
 
-## Published 768-vertex graph
+All normal workflows run through `just` from the repository root. The recipes
+manage Python's uv environment, the Lean working directory, compiled counters,
+and the optional repository-local `.elan/` installation. There is no need to set
+`PYTHONPATH`, activate an environment, or invoke Python or Lake directly.
 
-The Lean project checks the published 768-vertex Cayley template from Parczyk,
-Pokutta, Spiegel, and Szabó. It computes the exact balanced-blow-up numerator
-`10487165184`, with denominator `768^4`, equivalent to
-`4551721 / 150994944 ≈ 0.0301448570` (about 3.0145%).
+For custom strategies or replay, use `just experiment` with the options listed
+by `just runner-help run`.
 
-McKay's later reference numerator is `10486266368`. Its adjacency matrix is
-not included here, so **this project does not reproduce that improved bound**.
+**Verification status:** the 192-part construction has an end-to-end numerical
+upper-bound proof. The 3,840-part optimized counter is proved equal to the
+literal density, but its final numerical certificate remains unfinished.
+The published bitset checker also has a separate correctness gap.
 
-## Run
-
-With Lean installed through elan, run `lake build`. In this workspace, the
-local installation can be selected with:
-
-```sh
-env ELAN_HOME="$PWD/.elan" PATH="$PWD/.elan/bin:$PATH" lake build
-env ELAN_HOME="$PWD/.elan" PATH="$PWD/.elan/bin:$PATH" lake exe check_published
-env ELAN_HOME="$PWD/.elan" PATH="$PWD/.elan/bin:$PATH" lake env lean Audit.lean
-```
-
-The first command verifies the certificate and regression tests. The second
-reports individual counts and computation time. The third prints the theorem
-axioms. The bundled data makes all three independent of AutoLab and Python.
-Use the executable target for timing; bare `lean --run` does not load Lake's
-precompiled imports automatically and can fall back to slow interpretation.
-
-## Performance and verification scope
-
-`precompileModules = true` is essential: Lean loads compiled machine code for
-the imported counter. The data uses twelve `UInt64` words per adjacency row;
-all accumulated counts use arbitrary-precision `Nat`. The comparison theorem
-rewrites with `exact_numerator`, reusing its result instead of counting again.
-The 64-bit shift boundary is handled explicitly because UInt64 shifts wrap
-their shift count modulo 64.
-
-Historical timings for the published-only project, before the new mathlib
-formalization: a clean build of the library, tests, and executable
-took 9.15 seconds; the certificate proof module took 1.1 seconds, and the
-standalone executable took about 0.7 seconds wall time. These are observed
-timings, not a guarantee of optimality or identical speed on other machines.
-
-Lean verifies the matrix shape, symmetry, clear diagonal, padding bits, edge
-count, and the computed numerator. Tests exhaust all 1,024 simple graphs on
-five vertices against an independent ordered-quadruple oracle. Complete and
-empty graphs exercise word boundaries at 63/64/65 and 127/128/129 vertices.
-
-This is a verified execution of a counting program via `native_decide`.
-Lean 4.34.1 records native-evaluation axioms, visible in `Audit.lean`; compilation
-and runtime are part of the trust boundary. The general theorem connecting
-this optimized bitset program to the literal tuple sum has **not** been
-formalized. The new general realization theorem above supplies the
-finite-to-asymptotic mathematical bridge, but the published certificate has
-not yet been connected to it. Regression tests do not replace the missing
-counting proof.
-
-## Data provenance
-
-Source: [New Ramsey Multiplicity Bounds and Search Heuristics,
-Theorem 1.1](https://arxiv.org/html/2206.04036v3), and the authors'
-[Zenodo archive](https://zenodo.org/records/6602512) (CC BY 4.0),
-`graphs.zip`, member `graphs/c4.graph6.txt`.
-Archive SHA256: `6ff8a2496c545e86def3a12bd69ef557c50a890c732a8506d30b1bbe8467ec89`.
-
-`K4Ramsey/Published768Data.lean` embeds the graph supplied by the local hill's
-published example. To regenerate this representation:
-
-```sh
-python3 scripts/generate_lean_certificate.py \
-  .autolab/hills/clique-cluster-ramsey-multiplicity/examples/published_cayley_768/solution.json \
-  K4Ramsey/Published768Data.lean --namespace Published768
-```
-
-The checker currently supports unit weights and blue diagonals, precisely the
-published scenario. The generator rejects inputs outside that scope.
-
-## Experiment runner and dashboard
-
-The coordinating session dispatches individual experiments; there is no queue
-service. Build once before dispatch, and do not rebuild during active runs:
-
-```sh
-PYTHONPATH=src python3 -m k4_ramsey.lab build
-PYTHONPATH=src python3 -m unittest discover -s tests -v
-PYTHONPATH=src python3 -m k4_ramsey.lab run \
-  --out reports/descent-001 --seconds 10 --timeout 40 --seed 0 \
-  --hypothesis 'Sampled single-edge descent improves the published seed' \
-  --prediction 'Independent Lean recount confirms a smaller numerator'
-PYTHONPATH=src python3 -m k4_ramsey.lab dashboard
-```
-
-Open [the HTML experiment dashboard](journal.html) for statuses, exact checked
-values, reference gaps, and artifact links. It is a self-contained snapshot;
-rerun the dashboard command after dispatch/completion to refresh it. It does
-not start a server or supervise experiments after the session ends.
-
-Each new output directory contains input/config, a private source and binary
-snapshot, logs, mutable `status.json`, candidate/checkpoint, and final
-`report.json`. Existing run directories are never reused. Completed candidates
-are independently recounted by the compiled Lean executable; a failed/timed-out
-search's checkpoint is not promoted. These checks certify the artifact count,
-not the truth of its research hypothesis or a global optimum.
-
-For a no-search reproducibility test, supply `--input PATH` and
-`--config experiments/configs/replay.json`. For a new method, pass a standalone
-Python script with `--strategy PATH`. It receives `--input`, `--output`,
-`--seed`, `--seconds`, and `--config`; it must save a certificate at `--output`
-and may write `search.json` alongside it. A reported `numerator` must match
-Lean. The snapshot exposes the `k4_ramsey` package, but does not automatically
-package arbitrary sibling files or third-party dependencies.
-
-`--seconds` is the cooperative strategy duration; `--timeout` is the larger
-total run budget including setup and verification. The parent bounds and reaps
-the strategy process group, with a small startup/serialization grace period.
-The implementation targets POSIX (including macOS). Source hashes detect
-accidental mutation; this is not a security sandbox for hostile scripts.
-The coordinator caps concurrent CPU jobs, including verification, at four.
-Use fresh output paths and frozen builds for parallel experiments.
+See [verification details](docs/verification.md), [runner details](docs/experiments.md),
+and [seed attribution](data/SOURCE.md).

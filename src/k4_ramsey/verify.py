@@ -2,7 +2,6 @@
 from __future__ import annotations
 
 import hashlib
-import os
 import subprocess
 import tempfile
 import time
@@ -12,27 +11,17 @@ from .engine import ROOT, validate
 
 
 def verifier_identity():
-    paths = ['CheckCandidate.lean', 'K4Ramsey/Multiplicity.lean', 'lean-toolchain',
-             'lakefile.toml', 'src/k4_ramsey/verify.py', 'src/k4_ramsey/engine.py']
+    paths = ['lean/Executables/CheckCandidate.lean', 'lean/K4Ramsey/Counting/Multiplicity.lean', 'lean/lean-toolchain',
+             'lean/lakefile.toml', 'src/k4_ramsey/verify.py', 'src/k4_ramsey/engine.py']
     return {p: hashlib.sha256((ROOT/p).read_bytes()).hexdigest() for p in paths}
-
-
-def build_checker():
-    env = os.environ.copy()
-    local = ROOT / '.elan'
-    if local.exists():
-        env['ELAN_HOME'] = str(local)
-        env['PATH'] = str(local/'bin') + os.pathsep + env['PATH']
-    subprocess.run(['lake','build','check_candidate'], cwd=ROOT, env=env,
-                   check=True, timeout=180)
 
 
 def verify(data: dict, expected: int | None = None, timeout: float = 30,
            *, checker: Path | None = None) -> dict:
     rows = validate(data)
-    checker = checker or ROOT / '.lake/build/bin/check_candidate'
+    checker = checker or ROOT / 'lean/.lake/build/bin/check_candidate'
     if not checker.exists():
-        raise RuntimeError('build checker first: python -m k4_ramsey.lab build')
+        raise RuntimeError('Build checker first: just runner-build')
     started = time.monotonic()
     with tempfile.TemporaryDirectory(prefix='k4-verify-') as directory:
         matrix = Path(directory) / 'rows.txt'
