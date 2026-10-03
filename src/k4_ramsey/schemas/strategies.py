@@ -1,4 +1,4 @@
-"""Shared strategy script protocol and configuration data definitions."""
+"""Shared strategy script protocol and configuration models."""
 
 from pathlib import Path
 from typing import Annotated, Literal, Self

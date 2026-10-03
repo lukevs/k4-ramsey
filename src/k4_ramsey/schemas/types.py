@@ -1,4 +1,4 @@
-"""Scalar domains shared by the Pydantic data definitions."""
+"""Scalar types shared by the Pydantic models."""
 
 from typing import Annotated
 
