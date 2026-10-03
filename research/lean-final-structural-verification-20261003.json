@@ -1,0 +1,42 @@
+{
+  "date": "2026-10-03",
+  "hypothesis": "LF1",
+  "evidence_label": "Formal theorem checked; final numerical value NOT certified",
+  "candidate_sha256": "05302cbc635e939cc41f4ba019cdcba80199b0b83563100bac0b1a0d9fff1a29",
+  "source_hashes": {
+    "K4Ramsey/TensorK4.lean": "ca72307f66222ed17da48a5a281ab02da80c8127b9f0f12282fee671bd90c40a",
+    "K4Ramsey/CenteredExpansion.lean": "9fec3b368e021649a881f247174cf75ce680b181768eec5455eef690e65c28fe",
+    "K4Ramsey/Final3840Model.lean": "0565aafe755afaadcec76445a22c38bd98cfe632cac4df374bd0052d5cf9227e",
+    "K4Ramsey/Final3840Validity.lean": "2c7c94d8da78b0b0943e7135cedefedd98531dd38725acfc1c8721aaa0561ba0",
+    "K4Ramsey/Final3840Reduction.lean": "92aefdae3e13473e8911aacd228e625072fedc8c223ad19e4a6bfa113a2f6731",
+    "K4Ramsey/Final3840Bound.lean": "824edb4cf206905de70bab90b05e4a9481859c0c3512e5230daa5bd03590acd2",
+    "scripts/generate_final3840_data.py": "ef5eaf9c4ef8e632b0d164e51d1681fcc817e6aaa3793459883561024c26c65c",
+    "scripts/generate_tensor_expansion.py": "c1123fd1f8edee6164c30ddcc25ec56796109f0f7dbc32b99b037231abf07b67",
+    "scripts/probe_final_lean_structure.py": "ba749f7e504bad60e5ddc0a7ba6870fd51c9405ae8edd2659f5403699d48b260"
+  },
+  "build": {
+    "command": "env ELAN_HOME=\"$PWD/.elan\" PATH=\"$PWD/.elan/bin:$PATH\" lake build",
+    "exit_code": 0
+  },
+  "audit": {
+    "command": "env ELAN_HOME=\"$PWD/.elan\" PATH=\"$PWD/.elan/bin:$PATH\" lake env lean AuditGraphon.lean",
+    "exit_code": 0,
+    "sorryAx": false,
+    "generic_reduction_axioms": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "concrete_checks": "Additional native_decide evaluation axioms; no external numerical oracle"
+  },
+  "verified": [
+    "Embedded table symmetry and probability bounds",
+    "Zero row and column means",
+    "64-term centered expansion with repeated labels",
+    "Red and blue counting reductions for actual witness",
+    "Finite realization for every n >= 4",
+    "Symbolic upper-limit bound by actual table density"
+  ],
+  "remaining": "Lean numerical evaluation of surviving contractions and equality to target rational",
+  "processes_left_running": []
+}

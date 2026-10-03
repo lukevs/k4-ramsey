@@ -1,0 +1,36 @@
+{
+  "date": "2026-10-03",
+  "reason": "User requested shipping current work and continuing later",
+  "status": "Arithmetic correctness proved; numerical certificate pending",
+  "proved": [
+    "Final3840.Count.paths_eq",
+    "Final3840.Count.triangleAt_eq",
+    "Final3840.Count.cycleAt_eq",
+    "Final3840.Count.diamondAt_eq",
+    "Final3840.Count.tetrahedronAt_eq",
+    "Final3840.Count.raw_total",
+    "Final3840.Count.density_eq_count",
+    "Final3840.baseRoot_eq"
+  ],
+  "compiled_single_slice_at_0": {
+    "triangle": "-4975367596943308034838017354956800",
+    "cycle": "3808732739236232006527017734635520",
+    "diamond": "83195996276992963394419135027200",
+    "tetrahedron": "-21575814541806477376107842469120",
+    "scope": "Compiled Lean diagnostic, not native_decide theorem; displayed per-function timings were zero because closed terms were initialized before main"
+  },
+  "failed_or_interrupted_tests": [
+    "Initial function-based memoization rebuilt arrays on lookup; replaced with explicit array-valued caches and proved lookup correctness.",
+    "Interpreted lean --run attempt canceled; use compiled lake executable.",
+    "Full compiled run canceled at user request after approximately five minutes, before a complete result; observed RSS 702192 KiB. No partial progress reached the pipe. Explicit stdout flush added at each 16-root checkpoint."
+  ],
+  "resume": [
+    "lake exe check_final3840",
+    "Obtain and certify exact rooted base and four motif totals using native_decide; arithmetic implementation is imported and precompiled.",
+    "Use baseRoot_eq to replace the outer base sum by 192 times the rooted base value.",
+    "Rewrite density_eq_count with certified totals and norm_num to obtain target rational.",
+    "Specialize finite_realization and symbolic ramsey_upperLimit_bound; audit axioms."
+  ],
+  "processes_left_running": [],
+  "final_numerical_density_certified": false
+}

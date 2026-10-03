@@ -1,0 +1,20 @@
+{
+  "objective": "Prove the exact density and finite realization of the fixed 3840-part Clebsch witness in Lean",
+  "candidate": "reports/round4-E5-depth2-001/graphon-candidate.json",
+  "candidate_sha256": "05302cbc635e939cc41f4ba019cdcba80199b0b83563100bac0b1a0d9fff1a29",
+  "density": "8450462766487926638466333426306607129/280384030360880691940646801777885184000",
+  "normalization": "All ordered class quadruples including repeats; four distinct realized vertices; equal class masses; denominator N^4 Q^6",
+  "evidence_standard": "Lean theorem connecting actual construction to literal six-edge objective and existing realization theorem; native_decide allowed, no external numerical oracle or sorry",
+  "scope": "Verification of this witness, not new construction search, global optimality, or priority claim",
+  "resources": {"machine": "local", "max_cpu_processes": 2, "initial_test_timeout_seconds": 300, "paid_or_remote_compute": false},
+  "stopping_conditions": ["Verified target theorem", "User interruption", "Integrity failure requiring reassessment", "Need for new authority"],
+  "hypotheses": [
+    {"id": "LF1", "family": "centered-block-contraction", "claim": "The final witness is a zero-row-mean 20-way refinement of a 192-part table", "prediction": "All block row/column means equal the base and every nonzero perturbation is confined to its fractional support", "test": "Read the fixed matrix, verify exact means and count surviving support motifs", "status": "supported", "evidence": ["Final3840Validity.centered_rows", "Final3840Validity.hard_blocks", "Final3840Reduction.red_count_reduction", "Final3840Reduction.blue_count_reduction"], "next_decision": "Evaluate surviving sparse contractions using a Lean implementation and prove its connection to the reduced literal sum"},
+    {"id": "LF2", "family": "iterated-sign-refinement", "claim": "Two balanced sign identities certify the final witness from a 960-part parent", "prediction": "Exact reconstruction and the existing local sign identity give a manageable contraction count", "test": "Reconstruct both split matrices and compare exact finite sums on tiny controls", "status": "proposed", "next_decision": "Use if smaller than a single 20-way centered refinement"}
+  ],
+  "current_state": "Checkpoint requested by user. Final3840Arithmetic.density_eq_count now proves equivalence of the cached, sparse integer counter and the literal density, including all factors and both colors. Base rooting is proved. Single-slice compiled execution completed; full run stopped at user request before totals were obtained. Native numerical certificate and substitution into the bound remain unfinished.",
+  "structural_probe": {"command": "UV_CACHE_DIR=/private/tmp/k4-lean-uv-cache OPENBLAS_NUM_THREADS=1 OMP_NUM_THREADS=1 uv run --offline --no-project --with numpy python scripts/probe_final_lean_structure.py", "elapsed_seconds": 0.7689352920278907, "support_degree": 13, "support_edges": 1248, "triangle_orderings": 6912, "cycle4_orderings_with_repeats": 161472, "diamond_orderings_with_repeats": 36864, "k4_orderings": 6912, "scope": "Python diagnostic, not a Lean numerical certificate"},
+  "verification_notes": ["Initial local Python environments lacked NumPy; probe subsequently ran with uv-managed NumPy.", "Lean rejected initial generated proofs with omitted section hypotheses; generator corrected and all 64 cases compiled.", "No full numerical contraction recount has been run in Lean; efficient arithmetic and its refinement proof remain necessary."],
+  "next_test": "Run lake exe check_final3840 (progress flushed every 16 roots), record exact totals and runtime, then certify those totals using native_decide. Rewrite density_eq_count using the certificates and baseRoot_eq; derive the explicit finite and asymptotic bound. Do not assume the external rational as a premise.",
+  "checkpoint": "research/lean-final-arithmetic-checkpoint-20261003.json"
+}
