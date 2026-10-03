@@ -1,0 +1,37 @@
+{
+  "quotient.json": {
+    "source": "reports/pilot-algebraic-lift-001/quotient.json",
+    "source_sha256": "9a0ab6cb0c2027444b44dc1ad53c004e7da96de6ccffe812ec89f4be3cc733dd",
+    "source_bytes": 108921,
+    "stored_bytes": 108921,
+    "stored_sha256": "9a0ab6cb0c2027444b44dc1ad53c004e7da96de6ccffe812ec89f4be3cc733dd"
+  },
+  "base192.json": {
+    "source": "reports/literature-two-parameter-001/graphon-candidate.json",
+    "source_sha256": "e26e754168010c069da3e0b207a140f2c7cbbfc36cc0a6af06ef409db5024450",
+    "source_bytes": 188481,
+    "stored_bytes": 188481,
+    "stored_sha256": "e26e754168010c069da3e0b207a140f2c7cbbfc36cc0a6af06ef409db5024450"
+  },
+  "family-rule.json": {
+    "source": "experiments/round4_E11/rule.json",
+    "source_sha256": "7bd0878fe0daacb91c2df227c161a3d906db679fe956e3d667e7552d31204ebf",
+    "source_bytes": 1271,
+    "stored_bytes": 1271,
+    "stored_sha256": "7bd0878fe0daacb91c2df227c161a3d906db679fe956e3d667e7552d31204ebf"
+  },
+  "vertex-map.json": {
+    "source": "experiments/round4_E11/perm.json",
+    "source_sha256": "5887cd9c71f4b5a969df478c601e48a91b1eef52bed26b637ffe99e16457917e",
+    "source_bytes": 2313,
+    "stored_bytes": 2313,
+    "stored_sha256": "5887cd9c71f4b5a969df478c601e48a91b1eef52bed26b637ffe99e16457917e"
+  },
+  "final3840.json.gz": {
+    "source": "reports/round4-E5-depth2-001/graphon-candidate.json",
+    "source_sha256": "05302cbc635e939cc41f4ba019cdcba80199b0b83563100bac0b1a0d9fff1a29",
+    "source_bytes": 163149107,
+    "stored_bytes": 2339827,
+    "stored_sha256": "d7fd4c921b5d2726b8cb672dcda0a79a6953fc29a2507f8fc1c95bc3b0e87370"
+  }
+}

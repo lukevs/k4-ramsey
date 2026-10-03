@@ -7,11 +7,11 @@ import subprocess
 import tempfile
 import unittest
 
-from experiments.weights.collective_gradient import differences,evaluate,gradient_direction
-from experiments.weights.collective_curvature import hessian,projected_cg,quantize
-from experiments.weights.pair_transfer import features
+from research.experiments.weights.collective_gradient import differences,evaluate,gradient_direction
+from research.experiments.weights.collective_curvature import hessian,projected_cg,quantize
+from research.experiments.weights.pair_transfer import features
 from k4_ramsey.engine import Graph,certificate
-from experiments.weights.collective_graphon import positive_restricted_hessian
+from research.experiments.weights.collective_graphon import positive_restricted_hessian
 
 
 def oracle(rows,weights):
@@ -90,7 +90,7 @@ class CollectiveWeightTests(unittest.TestCase):
     def test_graphon_mass_derivatives_against_literal_tuples(self):
         with tempfile.TemporaryDirectory() as directory:
             binary=Path(directory)/'derivative'
-            source=Path(__file__).resolve().parents[1]/'experiments/weights/collective_graphon.cpp'
+            source=Path(__file__).resolve().parents[1]/'research/experiments/weights/collective_graphon.cpp'
             subprocess.run(['c++','-O2','-std=c++17',str(source),'-o',str(binary)],check=True,timeout=30)
             for matrix in ([[0,1],[1,0]],[[0,1,2],[1,0,1],[2,1,0]]):
                 n=len(matrix);den=2

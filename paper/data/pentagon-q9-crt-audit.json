@@ -1,0 +1,209 @@
+{
+  "schema": "round4-P-crt-pair-quadratic-audit-v1",
+  "status": "completed",
+  "evidence": "independent_generic_pair_quadratic_multiprime_crt_recount",
+  "candidate": {
+    "path": "reports/round4-P-pentagon-001/pent-Q9-7-4-8.json",
+    "sha256": "22df51a8e7e24030c246fe266a1077dc363eda23c4fe299798cfbb3ec400f511",
+    "order": 960,
+    "denominator": 9,
+    "unit_masses": true,
+    "symmetric": true,
+    "in_range": true
+  },
+  "method": "sum_{a,b} M_ab * x_ab^T M x_ab with x_ab = M_a o M_b; mod primes < 2^21 via Accelerate dgemm (exact: all partial sums integers < 2^53); CRT; red and blue (Q-M, including diagonal) counted separately",
+  "primes": [
+    2097143,
+    2097133,
+    2097131
+  ],
+  "crt_modulus_bits": 63,
+  "count_bound_bits": 59,
+  "tiny_literal_oracle": {
+    "status": "passed",
+    "cases": 21,
+    "detail": [
+      {
+        "n": 1,
+        "q": 2,
+        "primes": 3,
+        "red": 1,
+        "blue": 1,
+        "ok": true
+      },
+      {
+        "n": 1,
+        "q": 7,
+        "primes": 3,
+        "red": 1,
+        "blue": 46656,
+        "ok": true
+      },
+      {
+        "n": 1,
+        "q": 1,
+        "primes": 3,
+        "red": 0,
+        "blue": 1,
+        "ok": true
+      },
+      {
+        "n": 2,
+        "q": 65536,
+        "primes": 7,
+        "red": 109112027823008112477313790204,
+        "blue": 22492373633674567582220644604,
+        "ok": true
+      },
+      {
+        "n": 2,
+        "q": 7,
+        "primes": 3,
+        "red": 129330,
+        "blue": 154656,
+        "ok": true
+      },
+      {
+        "n": 2,
+        "q": 7,
+        "primes": 3,
+        "red": 4160,
+        "blue": 440988,
+        "ok": true
+      },
+      {
+        "n": 3,
+        "q": 7,
+        "primes": 3,
+        "red": 19968,
+        "blue": 1358025,
+        "ok": true
+      },
+      {
+        "n": 3,
+        "q": 65536,
+        "primes": 7,
+        "red": 40641996229589763834704407894,
+        "blue": 394813463773725726848996584790,
+        "ok": true
+      },
+      {
+        "n": 3,
+        "q": 1,
+        "primes": 3,
+        "red": 6,
+        "blue": 5,
+        "ok": true
+      },
+      {
+        "n": 4,
+        "q": 2,
+        "primes": 3,
+        "red": 384,
+        "blue": 4096,
+        "ok": true
+      },
+      {
+        "n": 4,
+        "q": 1,
+        "primes": 3,
+        "red": 9,
+        "blue": 35,
+        "ok": true
+      },
+      {
+        "n": 4,
+        "q": 1,
+        "primes": 3,
+        "red": 9,
+        "blue": 35,
+        "ok": true
+      },
+      {
+        "n": 5,
+        "q": 1,
+        "primes": 3,
+        "red": 254,
+        "blue": 5,
+        "ok": true
+      },
+      {
+        "n": 5,
+        "q": 2,
+        "primes": 3,
+        "red": 945,
+        "blue": 1129,
+        "ok": true
+      },
+      {
+        "n": 5,
+        "q": 7,
+        "primes": 3,
+        "red": 11966382,
+        "blue": 336757,
+        "ok": true
+      },
+      {
+        "n": 6,
+        "q": 7,
+        "primes": 3,
+        "red": 1770603,
+        "blue": 13035857,
+        "ok": true
+      },
+      {
+        "n": 6,
+        "q": 7,
+        "primes": 3,
+        "red": 5096037,
+        "blue": 2155617,
+        "ok": true
+      },
+      {
+        "n": 6,
+        "q": 65536,
+        "primes": 7,
+        "red": 1988129180420530358453588402060,
+        "blue": 4523527931640283835440405749644,
+        "ok": true
+      },
+      {
+        "n": 7,
+        "q": 2,
+        "primes": 3,
+        "red": 11666,
+        "blue": 7434,
+        "ok": true
+      },
+      {
+        "n": 7,
+        "q": 2,
+        "primes": 3,
+        "red": 1724,
+        "blue": 8516,
+        "ok": true
+      },
+      {
+        "n": 7,
+        "q": 2,
+        "primes": 3,
+        "red": 4286,
+        "blue": 2962,
+        "ok": true
+      }
+    ]
+  },
+  "recount": {
+    "red": "6781808419966800",
+    "blue": "6822227112660360",
+    "total": "13604035532627160",
+    "denominator": "451377585192960000",
+    "density": "4198776398959/139314069504000",
+    "decimal_from_fraction": 0.030138925766133366
+  },
+  "seconds": {
+    "full_recount": 73.723920417,
+    "total": 75.128691042
+  },
+  "scope": "Native exact computation (C++ + Accelerate BLAS + Python CRT). Not a Lean proof, not an optimality or novelty claim."
+}

@@ -2,7 +2,7 @@ from fractions import Fraction
 import itertools
 import unittest
 
-from experiments.weights.pair_transfer import coefficients,features,grid_minimum
+from research.experiments.weights.pair_transfer import coefficients,features,grid_minimum
 from k4_ramsey.engine import Graph,certificate
 
 

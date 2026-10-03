@@ -50,8 +50,8 @@ class DashboardTests(unittest.TestCase):
 
     def test_portfolio_is_notes_not_ranking(self):
         self.record('checked', 1, 32)
-        research = self.root/'research'
-        research.mkdir()
+        research = self.root/'research'/'notes'
+        research.mkdir(parents=True)
         (research/'portfolio-status.json').write_text(json.dumps({
             'updated_at': '2026-09-27T21:20:00Z',
             'limits': '8 agents; 4 compute jobs',

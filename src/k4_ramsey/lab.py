@@ -45,7 +45,7 @@ def run_command(
     prediction: Annotated[str, typer.Option()],
     input_path: Annotated[Path, typer.Option("--input")] = SEED,
     strategy: Annotated[Path, typer.Option()] = ROOT
-    / "experiments/strategies/edge_descent.py",
+    / "src/k4_ramsey/strategies/edge_descent.py",
     seed: Annotated[int, typer.Option()] = 0,
     seconds: Annotated[float, typer.Option()] = 10.0,
     timeout: Annotated[float, typer.Option()] = 40.0,

@@ -7,7 +7,7 @@ import unittest
 
 from k4_ramsey.engine import Graph, certificate
 
-spec = importlib.util.spec_from_file_location('matching_search',Path(__file__).resolve().parents[1]/'experiments/strategies/matching_search.py')
+spec = importlib.util.spec_from_file_location('matching_search',Path(__file__).resolve().parents[1]/'src/k4_ramsey/strategies/matching_search.py')
 matching = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(matching)
 

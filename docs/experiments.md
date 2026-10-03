@@ -30,7 +30,7 @@ search's checkpoint is not promoted. These checks certify the artifact count,
 not the truth of its research hypothesis or a global optimum.
 
 For a no-search reproducibility test, supply `--input PATH` and
-`--config experiments/configs/replay.json`. For a new method, pass a standalone
+`--config data/search-configs/replay.json`. For a new method, pass a standalone
 Python script with `--strategy PATH`. It receives `--input`, `--output`,
 `--seed`, `--seconds`, and `--config`; it must save a certificate at `--output`
 and may write `search.json` alongside it. A reported `numerator` must match

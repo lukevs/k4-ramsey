@@ -14,6 +14,7 @@ __pycache__/
 .venv/
 
 .envrc
+.DS_Store
 
 # Generated experiment outputs and downloaded/rendered papers.
 /reports/
@@ -32,23 +33,23 @@ __pycache__/
 *.safetensors
 
 # Compiled experiment executables (sources remain tracked).
-/experiments/assumption_discrete_basins/check_matrix
-/experiments/assumption_discrete_basins/search
-/experiments/assumption_discrete_basins/unrestricted
-/experiments/assumption_discrete_basins/validate_delta
-/experiments/coordinated_reconstruction/exhaustive
-/experiments/latent_weights/screen
-/experiments/quadratic_next/full_cayley
-/experiments/quadratic_next/screen
-/experiments/quadratic_scheme/screen
-/experiments/relation_engine/engine
-/experiments/relation_engine/engine_v2
-/experiments/round4_E1/pa
-/experiments/round4_E1/pa_b6
-/experiments/round4_E1/pa_lift
-/experiments/round4_E2/nrpa_cayley
-/experiments/round4_E2/nrpa_cayley_v2
-/experiments/round4_E4/exact_count
-/experiments/round4_E7/cay
-/experiments/round4_E7/cay9
-/experiments/round5_F5/k4mix
+/research/experiments/assumption_discrete_basins/check_matrix
+/research/experiments/assumption_discrete_basins/search
+/research/experiments/assumption_discrete_basins/unrestricted
+/research/experiments/assumption_discrete_basins/validate_delta
+/research/experiments/coordinated_reconstruction/exhaustive
+/research/experiments/latent_weights/screen
+/research/experiments/quadratic_next/full_cayley
+/research/experiments/quadratic_next/screen
+/research/experiments/quadratic_scheme/screen
+/research/experiments/relation_engine/engine
+/research/experiments/relation_engine/engine_v2
+/research/experiments/round4_E1/pa
+/research/experiments/round4_E1/pa_b6
+/research/experiments/round4_E1/pa_lift
+/research/experiments/round4_E2/nrpa_cayley
+/research/experiments/round4_E2/nrpa_cayley_v2
+/research/experiments/round4_E4/exact_count
+/research/experiments/round4_E7/cay
+/research/experiments/round4_E7/cay9
+/research/experiments/round5_F5/k4mix

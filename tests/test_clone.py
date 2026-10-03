@@ -2,7 +2,7 @@ import itertools
 import random
 import unittest
 
-from experiments.strategies.clone_search import apply_edges, clone_edges, select_pair, trial_clone
+from k4_ramsey.strategies.clone_search import apply_edges, clone_edges, select_pair, trial_clone
 from k4_ramsey.engine import Graph, certificate
 
 

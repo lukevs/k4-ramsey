@@ -1,0 +1,97 @@
+{
+  "schema": "k4-paper-supplement-v1",
+  "files": {
+    "final3840.json.gz": {
+      "sha256": "b00e417b9545977165f9a76e8bdb921e13d79e4510baab7600c713b2804a0265",
+      "bytes": 134570
+    },
+    "final3840-audit.json": {
+      "sha256": "8c983a4d60606c241cd2e6debf8c3e6a53f26dd193ded90dadb9bd05f0904d69",
+      "bytes": 13693
+    },
+    "sign1920-character-audit.json": {
+      "sha256": "170130ae94c27e4923e86af1fb182bb2af8fa0a8fd99e0b84cbb2f02f707628d",
+      "bytes": 10475
+    },
+    "sign1920-direct-audit.json": {
+      "sha256": "914066a7ccecbf42917d15f4c5e1478c64705ccf2e5ff38369352c6f61920639",
+      "bytes": 4435
+    },
+    "base-polynomial.json": {
+      "sha256": "1600f474c35ee490c0f740dbf5fb16e1810208f28b48d34ffdab49ab1e70464c",
+      "bytes": 474
+    },
+    "base-minimum.json": {
+      "sha256": "0cf72474fef4be7bae9f78a2c3d916285b876d2ff3ed7967254cde44d13471e7",
+      "bytes": 5750
+    },
+    "pentagon-q9.json.gz": {
+      "sha256": "029c5b02ed23f9a4225ee661422284defb61f4724d10aab956cb959ba6da6181",
+      "bytes": 46766
+    },
+    "pentagon-phases.json": {
+      "sha256": "226ab819da150c12b8152e2ac6a10acaf7d5dcff716199c42d8d42c68790011e",
+      "bytes": 18813
+    },
+    "base-class-map.json": {
+      "sha256": "5887cd9c71f4b5a969df478c601e48a91b1eef52bed26b637ffe99e16457917e",
+      "bytes": 2313
+    },
+    "base-original-order.json": {
+      "sha256": "e26e754168010c069da3e0b207a140f2c7cbbfc36cc0a6af06ef409db5024450",
+      "bytes": 188481
+    },
+    "parent-amplitudes.json": {
+      "sha256": "bc3fb31c12d557d2151b1b2d5308a03cc948182e951b93c9f5f7d670adf431cb",
+      "bytes": 18493
+    },
+    "pentagon-q9-direct-audit.json": {
+      "sha256": "8274e440129cda295df0408473da9338507cb20ca8aaebf8c0762c2bccb20430",
+      "bytes": 4212
+    },
+    "pentagon-q9-crt-audit.json": {
+      "sha256": "a642bbeb11a11368e9cacc9421fb6935a362948c59231d23fd22254151995a6a",
+      "bytes": 4250
+    },
+    "research-workflow.md": {
+      "sha256": "99973c9b4bb5412e02c7ea7ee0c7f688c6aa9c034f26d59f175bb93acd81a6e1",
+      "bytes": 7052
+    },
+    "workflow-source-principles.md": {
+      "sha256": "9d5efecfb12ac7267c82b7fbc6e4dd2c247e3f9bf411984d32cc52cca388a14e",
+      "bytes": 1793
+    }
+  },
+  "source_sha256": {
+    "lean/K4Ramsey/Constructions/Final3840/Data/Part00.lean": "3e9422c2298f7e9e4479361e3ccfbe93c7a0e5b75e9b88156c5d6cd2c99c93ac",
+    "lean/K4Ramsey/Constructions/Final3840/Data/Part01.lean": "f7b17b12fe658ffce7fe2168bdbef2f1314f46a4df0e5f97ac7335852a7250a9",
+    "lean/K4Ramsey/Constructions/Final3840/Data/Part02.lean": "41dfecdf8486eaa0bd54bdf9b5dab062b3458ea346021c75a75580030c3b6ed9",
+    "lean/K4Ramsey/Constructions/Final3840/Data/Part03.lean": "d020be401fdf57f809c8634a3e16305b86db0c236baf41e7a5c8269b8c6ac64c",
+    "lean/K4Ramsey/Constructions/Final3840/Data/Part04.lean": "2ba3bf07015ee447dc37a3885c0c6eb1f0975e9e01630e2dd93da9a689d6b18f",
+    "lean/K4Ramsey/Constructions/Final3840/Data/Part05.lean": "9da829b816bfac842ab873fbfaa7cbcdca68a131546cf9f2c6d359920ac3f26e",
+    "lean/K4Ramsey/Constructions/Final3840/Data/Part06.lean": "443afed4d73c7907972b617a772459d28ca5a68590e0a02b4a0b139c70c8a83b",
+    "lean/K4Ramsey/Constructions/Final3840/Data/Part07.lean": "b02abf728b5d47e9d58563f086ad88b06c83a975aa3198bcb360aebdbdf63731",
+    "lean/K4Ramsey/Constructions/Final3840/Data/Part08.lean": "c815fdce22741f6ec469bb336fc91a9c8da5f58b6f4326f488e71264b84c3909",
+    "lean/K4Ramsey/Constructions/Final3840/Data/Part09.lean": "75848c956f1171e67f89a6271ef893d2e5881eb52c141787961af164b138d26c",
+    "reports/round4-E5-depth2-001/graphon-candidate.json": "05302cbc635e939cc41f4ba019cdcba80199b0b83563100bac0b1a0d9fff1a29",
+    "reports/round5-F5-audit-E5-depth2-001/report.json": "8c983a4d60606c241cd2e6debf8c3e6a53f26dd193ded90dadb9bd05f0904d69",
+    "reports/round5-F5-audit-E5-depth1-001/report.json": "170130ae94c27e4923e86af1fb182bb2af8fa0a8fd99e0b84cbb2f02f707628d",
+    "reports/round4-P-audit-E5-depth1-001/report.json": "914066a7ccecbf42917d15f4c5e1478c64705ccf2e5ff38369352c6f61920639",
+    "experiments/round5_F4/Fpoly.json": "1600f474c35ee490c0f740dbf5fb16e1810208f28b48d34ffdab49ab1e70464c",
+    "experiments/round5_F4/crit.json": "0cf72474fef4be7bae9f78a2c3d916285b876d2ff3ed7967254cde44d13471e7",
+    "reports/round4-P-package/candidates/C-pentagon-Q9.json": "22df51a8e7e24030c246fe266a1077dc363eda23c4fe299798cfbb3ec400f511",
+    "reports/round4-P-package/structure/phase-assignment.json": "226ab819da150c12b8152e2ac6a10acaf7d5dcff716199c42d8d42c68790011e",
+    "reports/round4-P-package/structure/e11-vertex-map.json": "5887cd9c71f4b5a969df478c601e48a91b1eef52bed26b637ffe99e16457917e",
+    "reports/round4-P-package/structure/b192-base.json": "e26e754168010c069da3e0b207a140f2c7cbbfc36cc0a6af06ef409db5024450",
+    "reports/round4-P-package/structure/per-edge-amplitudes.json": "bc3fb31c12d557d2151b1b2d5308a03cc948182e951b93c9f5f7d670adf431cb",
+    "reports/round4-P-package/receipts/C-u256.json": "8274e440129cda295df0408473da9338507cb20ca8aaebf8c0762c2bccb20430",
+    "reports/round4-P-package/receipts/C-crt.json": "a642bbeb11a11368e9cacc9421fb6935a362948c59231d23fd22254151995a6a"
+  },
+  "export": {
+    "original_matrix_entries_checked": 14745600,
+    "mismatches": 0,
+    "exporter_sha256": "3f2f172d2f144e68210ef01b4485d821ad478b17edb88516393ce0b7662f2035",
+    "witness_checker_sha256": "7a59188f9d705f8ce2b6e342abf3e40c5922c97f178b689fe1416256015f126f",
+    "note": "Source and witness checks, not a new density recount."
+  }
+}

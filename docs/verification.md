@@ -103,10 +103,13 @@ certificate.
 
 The embedded witness comes from SHA-256
 `05302cbc635e939cc41f4ba019cdcba80199b0b83563100bac0b1a0d9fff1a29`.
-`scripts/generate_final3840_data.py` checks this hash and every block mean when
-regenerating the data; normal Lean builds do not need Python, NumPy, or the
-large original JSON. `scripts/generate_tensor_expansion.py` regenerates the
-64-term algebraic proof without reading any numerical report.
+`just generate-final3840` checks this hash and every block mean when regenerating
+the data from `data/constructions/final3840.json.gz`. The compressed input
+preserves the original JSON bytes; its provenance is recorded alongside it.
+Regeneration expands roughly 163 MB of JSON and needs substantially more RAM
+while validating the matrix. Normal Lean builds do not need Python, NumPy, or
+the expanded JSON. `just generate-expansion` regenerates the 64-term algebraic
+proof without reading any numerical report.
 
 The older published-graph bitset checker
 also still lacks a proof connecting its implementation to that objective.

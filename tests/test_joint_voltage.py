@@ -1,9 +1,9 @@
 import random
 import unittest
 
-from experiments.finite_joint.joint_voltage import apply_transition, infer_shift, transition_edges
-from experiments.finite_joint.block_cycle_escape import apply as apply_cycle, edges as cycle_edges
-from experiments.finite_joint.two_switch_escape import apply as apply_switch
+from research.experiments.finite_joint.joint_voltage import apply_transition, infer_shift, transition_edges
+from research.experiments.finite_joint.block_cycle_escape import apply as apply_cycle, edges as cycle_edges
+from research.experiments.finite_joint.two_switch_escape import apply as apply_switch
 from k4_ramsey.engine import Graph, certificate
 
 

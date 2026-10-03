@@ -2,12 +2,12 @@ import itertools
 import random
 import unittest
 
-from experiments.algebraic.switching import canonical_cut, switch
-from experiments.algebraic.gm_cells import cells, gm_switch, is_cell
-from experiments.algebraic.lift import (decompose, gauge_relabel, materialize, PERMUTATIONS,
+from research.experiments.algebraic.switching import canonical_cut, switch
+from research.experiments.algebraic.gm_cells import cells, gm_switch, is_cell
+from research.experiments.algebraic.lift import (decompose, gauge_relabel, materialize, PERMUTATIONS,
     REGULAR_TWO,half_blocks,materialize_half)
-from experiments.algebraic.lift import standardize_halves,triangle_constraint_components
-from experiments.algebraic.cycle_model import build_model
+from research.experiments.algebraic.lift import standardize_halves,triangle_constraint_components
+from research.experiments.algebraic.cycle_model import build_model
 from k4_ramsey.engine import Graph, certificate
 
 

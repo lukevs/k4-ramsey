@@ -524,7 +524,7 @@ def render_graphon_panel(records, out, benchmark):
 
 def render_portfolio_panel(reports, out):
     """Display coordinator notes separately from scored evidence."""
-    path = reports.parent / "research" / "portfolio-status.json"
+    path = reports.parent / "research" / "notes" / "portfolio-status.json"
     if not path.is_file():
         return ""
     try:

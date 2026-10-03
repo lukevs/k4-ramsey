@@ -3,7 +3,7 @@ import unittest
 from fractions import Fraction
 from itertools import product
 
-from experiments.structural.profiles import (
+from research.experiments.structural.profiles import (
     compose_graph, compose_profile, composition_terms, graph_from_mask,
     mono, nested_limit, profile, transform, xor_graph, xor_profiles,
 )

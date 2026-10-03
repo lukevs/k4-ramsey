@@ -6,7 +6,7 @@ import unittest
 
 from k4_ramsey.engine import Graph,certificate
 
-spec=importlib.util.spec_from_file_location('star_search',Path(__file__).resolve().parents[1]/'experiments/strategies/star_search.py')
+spec=importlib.util.spec_from_file_location('star_search',Path(__file__).resolve().parents[1]/'src/k4_ramsey/strategies/star_search.py')
 star=importlib.util.module_from_spec(spec)
 spec.loader.exec_module(star)
 

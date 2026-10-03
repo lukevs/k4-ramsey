@@ -1,0 +1,146 @@
+{
+  "binary_sha256": "0141362b60cd67accef96aface1a99922f32db8f8e440f074798230a063bc925",
+  "candidate": {
+    "order": 960,
+    "path": "/Users/luke.vanseters/code/github.com/lukevs/k4-ramsey/reports/round4-P-pentagon-001/pent-Q9-7-4-8.json",
+    "probabilities_in_range": true,
+    "probability_denominator": 9,
+    "sha256": "22df51a8e7e24030c246fe266a1077dc363eda23c4fe299798cfbb3ec400f511",
+    "symmetric": true,
+    "unit_masses": true
+  },
+  "compile_seconds": 0.43854508300000006,
+  "construction_input": "Candidate matrix only; no supplied score, typed decomposition, histogram, or search report",
+  "direct_recount": {
+    "blue": 6822227112660360,
+    "decimal": 0.030138925766133366,
+    "denominator": 451377585192960000,
+    "density": "4198776398959/139314069504000",
+    "red": 6781808419966800,
+    "seconds": 114.97326000000001,
+    "total": 13604035532627160
+  },
+  "driver_snapshot_sha256": "d8efb98fdb4b8158ec3e55ce4b531fe2db111af3208bca7dd9b4fee03a46f7a8",
+  "evidence": "independent_generic_direct_ordered_index_u256_recount",
+  "finished_at": "2026-09-27T22:22:05.087054+00:00",
+  "hypothesis": "A generic direct ordered-index recount matches the frozen candidate",
+  "normalization": "equal unit masses; all ordered class quadruples including repeats; N^4*Q^6",
+  "overflow_bounds": {
+    "global_total": 451377585192960000,
+    "inner_contraction": 54419558400,
+    "outer_addend": 489776025600,
+    "pair_product": 81,
+    "u128_limit": 340282366920938463463374607431768211456,
+    "u256_limit": 115792089237316195423570985008687907853269984665640564039457584007913129639936,
+    "u64_limit": 18446744073709551616
+  },
+  "schema": "direct-ordered-u256-audit-v1",
+  "seconds": 115.850797625,
+  "source_snapshot_sha256": "a31c4052c5e429f042e4f0ea20e92a0078fa354c767b33f7801d9b0060beca97",
+  "started_at": "2026-09-27T22:20:09.235045+00:00",
+  "status": "completed",
+  "tiny_literal_oracle": {
+    "cases": [
+      {
+        "blue": 4096,
+        "case": 0,
+        "order": 1,
+        "red": 729,
+        "seconds": 0.21528112499999996,
+        "total": 4825
+      },
+      {
+        "blue": 1,
+        "case": 1,
+        "order": 1,
+        "red": 46656,
+        "seconds": 0.00527533400000002,
+        "total": 46657
+      },
+      {
+        "blue": 729,
+        "case": 2,
+        "order": 1,
+        "red": 4096,
+        "seconds": 0.0049150839999999585,
+        "total": 4825
+      },
+      {
+        "blue": 29106,
+        "case": 0,
+        "order": 2,
+        "red": 29792,
+        "seconds": 0.004894541999999946,
+        "total": 58898
+      },
+      {
+        "blue": 46656,
+        "case": 1,
+        "order": 2,
+        "red": 690460,
+        "seconds": 0.004767791999999993,
+        "total": 737116
+      },
+      {
+        "blue": 928544,
+        "case": 2,
+        "order": 2,
+        "red": 4096,
+        "seconds": 0.005428540999999898,
+        "total": 932640
+      },
+      {
+        "blue": 266730,
+        "case": 0,
+        "order": 3,
+        "red": 114361,
+        "seconds": 0.0049736249999999815,
+        "total": 381091
+      },
+      {
+        "blue": 1739853,
+        "case": 1,
+        "order": 3,
+        "red": 138876,
+        "seconds": 0.004966333000000045,
+        "total": 1878729
+      },
+      {
+        "blue": 81218,
+        "case": 2,
+        "order": 3,
+        "red": 475185,
+        "seconds": 0.004752749999999972,
+        "total": 556403
+      },
+      {
+        "blue": 406301,
+        "case": 0,
+        "order": 4,
+        "red": 1556709,
+        "seconds": 0.005067416000000047,
+        "total": 1963010
+      },
+      {
+        "blue": 306781,
+        "case": 1,
+        "order": 4,
+        "red": 1652755,
+        "seconds": 0.005165958999999942,
+        "total": 1959536
+      },
+      {
+        "blue": 2015460,
+        "case": 2,
+        "order": 4,
+        "red": 676570,
+        "seconds": 0.005210124999999954,
+        "total": 2692030
+      }
+    ],
+    "fixtures": 12,
+    "semantics": "arbitrary symmetric matrices and diagonals; direct Python big-int ordered quadruples",
+    "status": "passed"
+  },
+  "trust": "Native U256 exact execution; not compiled Lean, a kernel proof, formal realization theorem, or novelty claim"
+}

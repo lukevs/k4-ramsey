@@ -7,7 +7,7 @@ import unittest
 
 from k4_ramsey.engine import Graph,certificate
 
-spec=importlib.util.spec_from_file_location('cubic_star',Path(__file__).resolve().parents[1]/'experiments/strategies/cubic_star.py')
+spec=importlib.util.spec_from_file_location('cubic_star',Path(__file__).resolve().parents[1]/'src/k4_ramsey/strategies/cubic_star.py')
 cubic=importlib.util.module_from_spec(spec)
 spec.loader.exec_module(cubic)
 

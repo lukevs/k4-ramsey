@@ -2,7 +2,7 @@ import itertools
 import random
 import unittest
 
-from experiments.diagonal.optimize import coefficients,optimize
+from research.experiments.diagonal.optimize import coefficients,optimize
 
 
 def oracle(rows):

@@ -57,9 +57,11 @@ counterexamples live in `tests/test_schemas.py`; CLI examples are in
 `tests/test_cli.py`. Existing literal-count, timeout, tamper, and snapshot tests
 remain regression checks.
 
-The CLI migration covers the installed package, all nine maintained strategy
-scripts, and the binary-certificate generator. Historical one-off research
-programs and specialized fixed-witness generators have not been rewritten.
+The maintained strategies live in `src/k4_ramsey/strategies/`, and Lean source
+generators live in `src/k4_ramsey/generators/`. Both use Typer entry points through
+the root justfile. The fixed-witness algorithms have been relocated, not
+redesigned. Historical programs remain under `research/experiments/`; their
+imports and paths were migrated, but their CLIs have not all been rewritten.
 
 ## Native boundary
 

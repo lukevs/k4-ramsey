@@ -2,8 +2,8 @@ import random
 import unittest
 from fractions import Fraction
 
-from experiments.structural.new_profiles import explicit_expand, finite_profiles, limiting_profiles
-from experiments.structural.profiles import graph_from_mask, nested_limit, profile
+from research.experiments.structural.new_profiles import explicit_expand, finite_profiles, limiting_profiles
+from research.experiments.structural.profiles import graph_from_mask, nested_limit, profile
 
 
 class NewStructuralTests(unittest.TestCase):

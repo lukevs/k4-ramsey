@@ -72,7 +72,7 @@ class CliTests(unittest.TestCase):
 
     def test_certificate_generator_cli(self):
         output = self.root / "Example.lean"
-        result = subprocess.run([sys.executable, str(ROOT / "scripts/generate_lean_certificate.py"),
+        result = subprocess.run([sys.executable, "-m", "k4_ramsey.generators.generate_lean_certificate",
                                  str(self.input), str(output), "--namespace", "Example"],
                                 capture_output=True, text=True, timeout=10)
         self.assertEqual(result.returncode, 0, result.stderr)
@@ -94,7 +94,7 @@ class CliTests(unittest.TestCase):
             with self.subTest(strategy=name):
                 request = ExperimentRequest(
                     out=self.root / name, input_path=self.input,
-                    strategy=ROOT / f"experiments/strategies/{name}.py",
+                    strategy=ROOT / f"src/k4_ramsey/strategies/{name}.py",
                     hypothesis="CLI smoke test", prediction="Exact recount agrees",
                     seconds=0.1, timeout=5.0, config=config,
                 )

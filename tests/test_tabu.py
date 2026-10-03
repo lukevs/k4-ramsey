@@ -1,7 +1,7 @@
 import ctypes as C
 import unittest
 
-from experiments.strategies.tabu_search import expiry_step, tabu_walk
+from k4_ramsey.strategies.tabu_search import expiry_step, tabu_walk
 from k4_ramsey.engine import Graph, certificate
 
 

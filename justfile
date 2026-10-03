@@ -57,13 +57,13 @@ check: python-lint lean-build test audit
 
 # Check maintained Python formatting and basic correctness.
 python-lint:
-    uv run --locked ruff check src/k4_ramsey experiments/strategies scripts/generate_lean_certificate.py
-    uv run --locked ruff format --check src/k4_ramsey experiments/strategies scripts/generate_lean_certificate.py
+    uv run --locked ruff check src/k4_ramsey
+    uv run --locked ruff format --check src/k4_ramsey
 
 # Format the maintained Python modules (historical experiments stay untouched).
 format:
-    uv run --locked ruff check --select I --fix src/k4_ramsey experiments/strategies scripts/generate_lean_certificate.py
-    uv run --locked ruff format src/k4_ramsey experiments/strategies scripts/generate_lean_certificate.py
+    uv run --locked ruff check --select I --fix src/k4_ramsey
+    uv run --locked ruff format src/k4_ramsey
 
 # Print the published graph's exact count.
 published:
@@ -96,8 +96,40 @@ verify-weighted *args:
 
 # Embed a binary certificate as Lean source; see --help for arguments.
 generate-certificate *args:
-    uv run --locked python scripts/generate_lean_certificate.py "$@"
+    uv run --locked python -m k4_ramsey.generators.generate_lean_certificate "$@"
+
+# Regenerate the ordinary six-edge expansion proofs.
+generate-expansion:
+    uv run --locked python -m k4_ramsey.generators.generate_tensor_expansion
+
+# Regenerate the fixed Lean witness from its bundled, hash-checked source.
+generate-final3840:
+    uv run --locked python -m k4_ramsey.generators.generate_final3840_data
+
+# Rebuild the standalone HTML explainer from bundled inputs (requires Node.js).
+explainer:
+    node explainer/build.mjs
 
 # Show the experiment runner's full CLI options.
 runner-help *args:
     uv run --locked k4-lab "$@" --help
+
+# Validate paper data (not a fresh density recount).
+paper-check *args:
+    uv run --locked k4-paper check "$@"
+
+# Regenerate the scientific figures from checked construction data.
+paper-figures:
+    uv run --locked k4-paper figures
+
+# Export frozen evidence from archived tables and reports.
+paper-export *args:
+    uv run --locked k4-paper export "$@"
+
+# Build the manuscript with a standard latexmk installation.
+paper: paper-check paper-figures
+    latexmk -cd -pdf -interaction=nonstopmode -halt-on-error paper/main.tex
+
+# Build with Tectonic instead of latexmk.
+paper-tectonic: paper-check paper-figures
+    tectonic paper/main.tex

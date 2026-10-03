@@ -1,0 +1,57 @@
+{
+  "schema": "k4-paper-figures-v1",
+  "source_sha256": {
+    "explainer/clebsch-explorer.html": "9f52dd7098c9eab535d565ee9ed2c2a7b20e255eab87e8908cd11dfd4d813323",
+    "data/published_cayley_768.json": "4c372995b69be5e30713965670d525f75876a5e0a434f576491522cc0920fc54",
+    "paper/data/base-minimum.json": "0cf72474fef4be7bae9f78a2c3d916285b876d2ff3ed7967254cde44d13471e7",
+    "src/k4_ramsey/paper/figures.py": "57c77bf91c89ab1803f1edc06249fe4b2956cefa5ea0937891837d85c70ca061"
+  },
+  "files": {
+    "clebsch-graph.pdf": {
+      "sha256": "2c1351591e6a6f481bdd7da23283a0a17e712318814ee4c746fed966e79af623",
+      "bytes": 26183
+    },
+    "clebsch-graph.png": {
+      "sha256": "c3c05c2115b1368081a657eafc122116ebb91c6f2adf4bad40905e7c1679414f",
+      "bytes": 128790
+    },
+    "ppss-reordered.pdf": {
+      "sha256": "60fc72430df72e85d0b32a53580092c72ff9488d3d1004dcbe50a9316a6d7c92",
+      "bytes": 29705
+    },
+    "ppss-reordered.png": {
+      "sha256": "a905b1ace601521c04c21dd4cae278d288024cd8cda23fed306af02a6a775e93",
+      "bytes": 107219
+    },
+    "family-rule.pdf": {
+      "sha256": "4981408cebba1f9d25ba314fa7aa0ed1813a0bb51965bc927bbbd7010743f83b",
+      "bytes": 27681
+    },
+    "family-rule.png": {
+      "sha256": "ed34eefa30e0e112c454b7d9c330f7ecef58b3503ba16987963b2aed0e28dd72",
+      "bytes": 120612
+    },
+    "refinements.pdf": {
+      "sha256": "fce511a912b17be4de5f1a4d0a3a9a69812cfcd701b4dca99a86f71244ff12e8",
+      "bytes": 24340
+    },
+    "refinements.png": {
+      "sha256": "0cbaf9193b7b96c8393344eef30871ddefda921422b400941bf9dca9b0f0c9f9",
+      "bytes": 81044
+    },
+    "bounds.pdf": {
+      "sha256": "0707aef897f1c1288de742d195c07b6ee2d91532c5a5820dac7594bc22044d86",
+      "bytes": 28404
+    },
+    "bounds.png": {
+      "sha256": "faa3e30148e208a05606bc63b31be690b04c92ad196ab77b05dd90e729aef1a6",
+      "bytes": 101266
+    }
+  },
+  "checks": [
+    "768x768 explorer matrix equals permuted published data",
+    "all twelve internal families match the fourfold Clebsch pattern",
+    "family type table equals the algebraic rule",
+    "PPSS fiber red counts follow the rule, with P same-position 16 or 12"
+  ]
+}

@@ -1,0 +1,685 @@
+{
+ "schema": "zk-fibre-character-audit-v1",
+ "lane": "round5-F5",
+ "status": "completed",
+ "evidence": "independent_structured_Z2k_character_expansion_multiprime_crt_recount",
+ "candidate": {
+  "path": "reports/round4-E5-depth2-001/graphon-candidate.json",
+  "sha256": "05302cbc635e939cc41f4ba019cdcba80199b0b83563100bac0b1a0d9fff1a29",
+  "N": 3840,
+  "Q": 65536
+ },
+ "validation": {
+  "square": true,
+  "uniform_weights": true,
+  "symmetric": true,
+  "in_range_0_Q": true
+ },
+ "fibre_structure": {
+  "xor_basis": [
+   1,
+   2
+  ],
+  "k": 2,
+  "base_classes": 960,
+  "reconstruction_mismatches_red": 0,
+  "reconstruction_mismatches_blue": 0,
+  "entries_checked": 14745600,
+  "nonzero_per_character_red": {
+   "0": 478080,
+   "1": 41090,
+   "2": 40390,
+   "3": 40980
+  }
+ },
+ "exact": {
+  "red": "259147196226119060009588075500947710392320",
+  "blue": "260049236146899152657783450211330231613440",
+  "total": "519196432373018212667371525712277942005760",
+  "denominator": "17226794825372509712833339501233265704960000",
+  "denominator_formula": "N^4 * Q^6",
+  "density_fraction": "8450462766487926638466333426306607129/280384030360880691940646801777885184000",
+  "density_decimal_display": "0.030138887566497220"
+ },
+ "method": {
+  "red": {
+   "orbits": 11,
+   "dgemm_keys": 5,
+   "primes": [
+    2097143,
+    2097133,
+    2097131,
+    2097097,
+    2097091,
+    2097083,
+    2097047,
+    2097041
+   ],
+   "log2_crt_modulus": 167.99969042536702,
+   "log2_max_abs_bound": 147.62756238243406,
+   "engine": "k4mix.cpp (Accelerate dgemm mod p)",
+   "log2_bound_per_assignment_max": 147.62756238243406,
+   "assignments": [
+    {
+     "assignment": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+     ],
+     "orbit_size": 1,
+     "S": "4146520096032145398569916397504797818880000"
+    },
+    {
+     "assignment": [
+      1,
+      0,
+      1,
+      0,
+      1,
+      0
+     ],
+     "orbit_size": 4,
+     "S": "-13621417852569438819274143497716070400"
+    },
+    {
+     "assignment": [
+      2,
+      0,
+      2,
+      0,
+      2,
+      0
+     ],
+     "orbit_size": 4,
+     "S": "-13604325705618813480127801993882828800"
+    },
+    {
+     "assignment": [
+      3,
+      0,
+      3,
+      0,
+      3,
+      0
+     ],
+     "orbit_size": 4,
+     "S": "-13484568669975397885355023062600960000"
+    },
+    {
+     "assignment": [
+      0,
+      1,
+      1,
+      2,
+      2,
+      3
+     ],
+     "orbit_size": 12,
+     "S": "-9049031599950882478734738971330560"
+    },
+    {
+     "assignment": [
+      1,
+      1,
+      0,
+      2,
+      3,
+      3
+     ],
+     "orbit_size": 12,
+     "S": "-7726574447417899242032513845954560"
+    },
+    {
+     "assignment": [
+      2,
+      1,
+      3,
+      2,
+      0,
+      3
+     ],
+     "orbit_size": 12,
+     "S": "-8702210211440337373566807223982080"
+    },
+    {
+     "assignment": [
+      3,
+      1,
+      2,
+      2,
+      1,
+      3
+     ],
+     "orbit_size": 6,
+     "S": "786603838702595668737365644738560"
+    },
+    {
+     "assignment": [
+      1,
+      0,
+      1,
+      1,
+      0,
+      1
+     ],
+     "orbit_size": 3,
+     "S": "78364297291091274050339506495170560"
+    },
+    {
+     "assignment": [
+      2,
+      0,
+      2,
+      2,
+      0,
+      2
+     ],
+     "orbit_size": 3,
+     "S": "-757830036044018186792718719509299200"
+    },
+    {
+     "assignment": [
+      3,
+      0,
+      3,
+      3,
+      0,
+      3
+     ],
+     "orbit_size": 3,
+     "S": "74748686849486275061702249338664960"
+    }
+   ]
+  },
+  "blue": {
+   "orbits": 11,
+   "dgemm_keys": 5,
+   "primes": [
+    2097143,
+    2097133,
+    2097131,
+    2097097,
+    2097091,
+    2097083,
+    2097047,
+    2097041
+   ],
+   "log2_crt_modulus": 167.99969042536702,
+   "log2_max_abs_bound": 147.62756238243406,
+   "engine": "k4mix.cpp (Accelerate dgemm mod p)",
+   "log2_bound_per_assignment_max": 147.62756238243406,
+   "assignments": [
+    {
+     "assignment": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+     ],
+     "orbit_size": 1,
+     "S": "4160627231692944493840813786869699133440000"
+    },
+    {
+     "assignment": [
+      1,
+      0,
+      1,
+      0,
+      1,
+      0
+     ],
+     "orbit_size": 4,
+     "S": "13128407801656829718466886280150681600"
+    },
+    {
+     "assignment": [
+      2,
+      0,
+      2,
+      0,
+      2,
+      0
+     ],
+     "orbit_size": 4,
+     "S": "13109695470717232688448127937332838400"
+    },
+    {
+     "assignment": [
+      3,
+      0,
+      3,
+      0,
+      3,
+      0
+     ],
+     "orbit_size": 4,
+     "S": "12996472082126433277573273825348761600"
+    },
+    {
+     "assignment": [
+      0,
+      1,
+      1,
+      2,
+      2,
+      3
+     ],
+     "orbit_size": 12,
+     "S": "13231610982864447408505079106467840"
+    },
+    {
+     "assignment": [
+      1,
+      1,
+      0,
+      2,
+      3,
+      3
+     ],
+     "orbit_size": 12,
+     "S": "13567074733583678386288738551592960"
+    },
+    {
+     "assignment": [
+      2,
+      1,
+      3,
+      2,
+      0,
+      3
+     ],
+     "orbit_size": 12,
+     "S": "13112758919675041868872431270471680"
+    },
+    {
+     "assignment": [
+      3,
+      1,
+      2,
+      2,
+      1,
+      3
+     ],
+     "orbit_size": 6,
+     "S": "786603838702595668737365644738560"
+    },
+    {
+     "assignment": [
+      1,
+      0,
+      1,
+      1,
+      0,
+      1
+     ],
+     "orbit_size": 3,
+     "S": "196553653780195905068023105189324800"
+    },
+    {
+     "assignment": [
+      2,
+      0,
+      2,
+      2,
+      0,
+      2
+     ],
+     "orbit_size": 3,
+     "S": "654601110950105148908614950455377920"
+    },
+    {
+     "assignment": [
+      3,
+      0,
+      3,
+      3,
+      0,
+      3
+     ],
+     "orbit_size": 3,
+     "S": "190411590363368078519008688432773120"
+    }
+   ]
+  }
+ },
+ "tiny_oracle": {
+  "status": "passed",
+  "cases": [
+   {
+    "n": 1,
+    "k_built": 1,
+    "k_found": 1,
+    "Q": 65536,
+    "matrix": "W",
+    "N": 2,
+    "checker": "4154609469450292565943552856",
+    "brute": "4154609469450292565943552856",
+    "match": true
+   },
+   {
+    "n": 1,
+    "k_built": 1,
+    "k_found": 1,
+    "Q": 65536,
+    "matrix": "Q-W",
+    "N": 2,
+    "checker": "111952360825687199309178375000",
+    "brute": "111952360825687199309178375000",
+    "match": true
+   },
+   {
+    "n": 2,
+    "k_built": 1,
+    "k_found": 1,
+    "Q": 65536,
+    "matrix": "W",
+    "N": 4,
+    "checker": "480808031416887269007044797226",
+    "brute": "480808031416887269007044797226",
+    "match": true
+   },
+   {
+    "n": 2,
+    "k_built": 1,
+    "k_found": 1,
+    "Q": 65536,
+    "matrix": "Q-W",
+    "N": 4,
+    "checker": "1320907247550025117797781758762",
+    "brute": "1320907247550025117797781758762",
+    "match": true
+   },
+   {
+    "n": 3,
+    "k_built": 1,
+    "k_found": 1,
+    "Q": 65536,
+    "matrix": "W",
+    "N": 6,
+    "checker": "4438570207766730395992638987872",
+    "brute": "4438570207766730395992638987872",
+    "match": true
+   },
+   {
+    "n": 3,
+    "k_built": 1,
+    "k_found": 1,
+    "Q": 65536,
+    "matrix": "Q-W",
+    "N": 6,
+    "checker": "717969619459390122903907704416",
+    "brute": "717969619459390122903907704416",
+    "match": true
+   },
+   {
+    "n": 2,
+    "k_built": 2,
+    "k_found": 2,
+    "Q": 65536,
+    "matrix": "W",
+    "N": 8,
+    "checker": "14102475063706422051594849570204",
+    "brute": "14102475063706422051594849570204",
+    "match": true
+   },
+   {
+    "n": 2,
+    "k_built": 2,
+    "k_found": 2,
+    "Q": 65536,
+    "matrix": "Q-W",
+    "N": 8,
+    "checker": "2132127326102653337117826829724",
+    "brute": "2132127326102653337117826829724",
+    "match": true
+   },
+   {
+    "n": 1,
+    "k_built": 3,
+    "k_found": 3,
+    "Q": 65536,
+    "matrix": "W",
+    "N": 8,
+    "checker": "9471565512846468743928401303616",
+    "brute": "9471565512846468743928401303616",
+    "match": true
+   },
+   {
+    "n": 1,
+    "k_built": 3,
+    "k_found": 3,
+    "Q": 65536,
+    "matrix": "Q-W",
+    "N": 8,
+    "checker": "3516103926732322714826851948608",
+    "brute": "3516103926732322714826851948608",
+    "match": true
+   },
+   {
+    "n": 3,
+    "k_built": 2,
+    "k_found": 2,
+    "Q": 7,
+    "matrix": "W",
+    "N": 12,
+    "checker": "31968600",
+    "brute": "31968600",
+    "match": true
+   },
+   {
+    "n": 3,
+    "k_built": 2,
+    "k_found": 2,
+    "Q": 7,
+    "matrix": "Q-W",
+    "N": 12,
+    "checker": "57802240",
+    "brute": "57802240",
+    "match": true
+   },
+   {
+    "n": 4,
+    "k_built": 1,
+    "k_found": 1,
+    "Q": 65536,
+    "matrix": "W",
+    "N": 8,
+    "checker": "4478962845131029234025007825698",
+    "brute": "4478962845131029234025007825698",
+    "match": true
+   },
+   {
+    "n": 4,
+    "k_built": 1,
+    "k_found": 1,
+    "Q": 65536,
+    "matrix": "Q-W",
+    "N": 8,
+    "checker": "8377573438093545162165549417250",
+    "brute": "8377573438093545162165549417250",
+    "match": true
+   },
+   {
+    "n": 2,
+    "k_built": 3,
+    "k_found": 3,
+    "Q": 65536,
+    "matrix": "W",
+    "N": 16,
+    "checker": "82049083808572491302627266785648",
+    "brute": "82049083808572491302627266785648",
+    "match": true
+   },
+   {
+    "n": 2,
+    "k_built": 3,
+    "k_found": 3,
+    "Q": 65536,
+    "matrix": "Q-W",
+    "N": 16,
+    "checker": "92003148322428781800570518499696",
+    "brute": "92003148322428781800570518499696",
+    "match": true
+   },
+   {
+    "n": 5,
+    "k_built": 1,
+    "k_found": 1,
+    "Q": 1,
+    "matrix": "W",
+    "N": 10,
+    "checker": "318",
+    "brute": "318",
+    "match": true
+   },
+   {
+    "n": 5,
+    "k_built": 1,
+    "k_found": 1,
+    "Q": 1,
+    "matrix": "Q-W",
+    "N": 10,
+    "checker": "814",
+    "brute": "814",
+    "match": true
+   },
+   {
+    "n": 1,
+    "k_built": 2,
+    "k_found": 2,
+    "Q": 65536,
+    "matrix": "W",
+    "N": 4,
+    "checker": "1042209922911476972087944680000",
+    "brute": "1042209922911476972087944680000",
+    "match": true
+   },
+   {
+    "n": 1,
+    "k_built": 2,
+    "k_found": 2,
+    "Q": 65536,
+    "matrix": "Q-W",
+    "N": 4,
+    "checker": "85091947915817073126724080192",
+    "brute": "85091947915817073126724080192",
+    "match": true
+   },
+   {
+    "n": 3,
+    "k_built": 2,
+    "k_found": 2,
+    "Q": 65536,
+    "matrix": "relabelled",
+    "N": 12,
+    "checker": "43665473347379274082643779304624",
+    "brute": "43665473347379274082643779304624",
+    "match": true
+   },
+   {
+    "n": 24,
+    "k_built": 1,
+    "k_found": 1,
+    "Q": 65536,
+    "matrix": "relabelled",
+    "N": 48,
+    "checker": "6207286012399340548864608020026232",
+    "brute": "6207286012399340548864608020026232",
+    "match": true
+   },
+   {
+    "n": 2,
+    "k_built": 3,
+    "k_found": 3,
+    "Q": 65536,
+    "matrix": "relabelled",
+    "N": 16,
+    "checker": "57362641665208955921152455245784",
+    "brute": "57362641665208955921152455245784",
+    "match": true
+   },
+   {
+    "n": 5,
+    "k_built": 0,
+    "k_found": 0,
+    "Q": 65536,
+    "matrix": "W",
+    "N": 5,
+    "checker": "1500831105315500878994628388632",
+    "brute": "1500831105315500878994628388632",
+    "match": true
+   },
+   {
+    "n": 7,
+    "k_built": 0,
+    "k_found": 0,
+    "Q": 65536,
+    "matrix": "W",
+    "N": 7,
+    "checker": "4816954387193899238076157762580",
+    "brute": "4816954387193899238076157762580",
+    "match": true
+   },
+   {
+    "n": 9,
+    "k_built": 0,
+    "k_found": 0,
+    "Q": 65536,
+    "matrix": "W",
+    "N": 9,
+    "checker": "10780278261882739255841019252952",
+    "brute": "10780278261882739255841019252952",
+    "match": true
+   },
+   {
+    "n": 12,
+    "k_built": 2,
+    "k_found": 0,
+    "Q": 65536,
+    "matrix": "perturbed",
+    "N": 12,
+    "checker": "47036162987304259147662463404844",
+    "brute": "47036162987304259147662463404844",
+    "match": true,
+    "note": "perturbation must reduce discovered k"
+   }
+  ],
+  "seed": 20260927
+ },
+ "timings_s": {
+  "oracle": 0.5229527950286865,
+  "load": 0.7139067649841309,
+  "discover": 0.25734496116638184,
+  "fourier_and_reconstruction": 0.8466131687164307,
+  "red": 345.0953938961029,
+  "blue": 273.1504588127136,
+  "wall": 275.55395102500916
+ },
+ "log": [
+  "[23:21:47] oracle passed (27 cases, 0.5s)",
+  "[23:21:48] loaded N=3840 Q=65536 in 0.7s; validation {'square': True, 'uniform_weights': True, 'symmetric': True, 'in_range_0_Q': True}",
+  "[23:21:48] discovered XOR group basis [1, 2] (k=2) in 0.1s",
+  "[23:21:48] n=960; reconstruction mismatches red=0 blue=0 (0.6s)",
+  "[23:21:48] nonzero entries per character block (red): {0: 478080, 1: 41090, 2: 40390, 3: 40980}",
+  "[23:27:33]   prime 2097041 key 2 done 7.96s",
+  "[23:27:33]   prime 2097041 key 3 done 8.81s",
+  "[23:27:33]   prime 2097041 key 4 done 6.60s",
+  "[23:27:33] red done 345.1s",
+  "--- blue part (separate job) ---",
+  "[23:27:43] oracle passed (27 cases, 0.5s)",
+  "[23:27:43] loaded N=3840 Q=65536 in 0.7s; validation {'square': True, 'uniform_weights': True, 'symmetric': True, 'in_range_0_Q': True}",
+  "[23:27:44] discovered XOR group basis [1, 2] (k=2) in 0.3s",
+  "[23:27:44] n=960; reconstruction mismatches red=0 blue=0 (0.8s)",
+  "[23:27:44] nonzero entries per character block (red): {0: 478080, 1: 41090, 2: 40390, 3: 40980}",
+  "[23:32:18]   prime 2097041 key 2 done 5.24s",
+  "[23:32:18]   prime 2097041 key 3 done 5.65s",
+  "[23:32:18]   prime 2097041 key 4 done 5.41s",
+  "[23:32:18] blue done 273.2s"
+ ],
+ "trust_boundary": "Native exact computation (Python ints + numpy/Accelerate float64 dgemm mod 8 primes < 2^21 with asserted < 2^53 intermediates, CRT). Reads only the candidate matrix; fibre group discovered by exhaustive XOR-mask invariance search; character decomposition verified entry by entry. The reduction D = 2^-2k sum_cycle S(c) is a derived identity tested against brute force on tiny cases, not a formal proof. S4 orbit reduction of assignments is used. Not Lean; no optimality/novelty claim."
+}

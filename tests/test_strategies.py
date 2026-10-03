@@ -14,7 +14,7 @@ class StrategyTests(unittest.TestCase):
             write_json(source,certificate(['00000']*5))
             for strategy,config in [('scan_descent',{}),('anneal',{'max_moves':100,'cycle_moves':25})]:
                 result=experiment(out=root/strategy,input_path=source,
-                    strategy=ROOT/f'experiments/strategies/{strategy}.py',
+                    strategy=ROOT/f'src/k4_ramsey/strategies/{strategy}.py',
                     hypothesis='Tiny correctness fixture',prediction='Lean agrees',
                     seconds=1,timeout=6,config=config)
                 self.assertEqual(result['status'],'completed',result.get('error'))

@@ -22,7 +22,7 @@ class LabTests(unittest.TestCase):
 
     def run_one(self, name='run', strategy=None, **kwargs):
         return experiment(out=self.root/name, input_path=self.input,
-            strategy=strategy or ROOT/'experiments/strategies/edge_descent.py',
+            strategy=strategy or ROOT/'src/k4_ramsey/strategies/edge_descent.py',
             hypothesis='Test-only runner fixture', prediction='Exact recount agrees',
             seconds=.1, timeout=5, config={'max_moves':0}, **kwargs)
 
