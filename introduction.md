@@ -112,7 +112,7 @@ Why could a plain second-derivative test not find these improvements? For a sign
 
 ## 8. How it was found
 
-The research was done by an autonomous AI system running in [Codex](https://github.com/openai/codex), OpenAI's agent harness. Every agent was OpenAI's **GPT-6 Astra** model: a parent agent directed eight subagents, created with Codex's native subagents, each pursuing a different line of attack: new constructions, algebra, optimization, literature and verification. The parent kept track of approaches, moved effort toward what worked, and decided which results to keep.
+The research was done by an autonomous AI system running in [Codex](https://github.com/openai/codex), OpenAI's agent harness. Every agent was OpenAI's **[GPT-6 Astra](https://deploymentsafety.openai.com/gpt-6-astra)** model: a parent agent directed eight subagents, created with Codex's native subagents, each pursuing a different line of attack: new constructions, algebra, optimization, literature and verification. The parent kept track of approaches, moved effort toward what worked, and decided which results to keep.
 
 Every agent followed the same [research skill](paper/data/research-workflow.md), a set of standing instructions. We derived it from two public prompts for autonomous mathematical research: OpenAI's [Cycle Double Cover prompt](https://cdn.openai.com/pdf/04d1d1e4-bc75-476a-97cf-49055cd98d31/cdc_prompt.pdf) and the [Jacobian Conjecture prompt](https://aaronlou.com/jacobian_counterexample_prompt.pdf). The skill keeps their emphasis on diverse approaches and adversarial review. It adds falsifiable predictions, exact recounts and experiment records ([adaptation notes](paper/data/workflow-source-principles.md)).
 

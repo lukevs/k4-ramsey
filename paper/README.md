@@ -3,7 +3,7 @@
 `main.tex` is the manuscript source. `main.pdf` is the compiled version.
 `references.bib` contains the bibliography.
 
-Authors: Luke Van Seters (Klaviyo) and Madhan Jothimani (independent researcher).
+Authors: Luke Van Seters and Madhan Jothimani.
 
 The paper states the exact 3840-class construction bound. It also gives the
 192-class bound with its numerical Lean proof. It identifies the remaining

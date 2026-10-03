@@ -28,8 +28,7 @@
 \setlength{\emergencystretch}{2em}
 \setlist{itemsep=2pt,topsep=4pt}
 \title{Twelve Clebsch graphs and a new upper bound\\ for the Ramsey multiplicity of $K_4$}
-\author{Luke Van Seters\\\small Klaviyo
-  \and Madhan Jothimani\\\small Independent researcher}
+\author{Luke Van Seters \and Madhan Jothimani}
 \date{October 3, 2026}
 
 \begin{document}
@@ -602,7 +601,7 @@ Jeong, Park, Hyun, Oum, and Yang formalize flag algebras in Lean with a certific
 \label{sec:methods}
 
 The results in this paper were found by an autonomous AI research system.
-Every agent was OpenAI's GPT-6 Astra model, running in OpenAI's Codex agent harness~\cite{codex}.
+Every agent was OpenAI's GPT-6 Astra model~\cite{astra2026}, running in OpenAI's Codex agent harness~\cite{codex}.
 A parent agent ran the campaign and directed eight subagents, created with Codex's native subagent mechanism.
 Each subagent worked on its own line of attack, such as new constructions, algebraic descriptions, optimization, literature review, and verification.
 The parent kept a registry of approaches, combined the evidence, reassigned subagents as lines succeeded or failed, and decided which candidates to promote.
@@ -617,7 +616,7 @@ The supplement contains the skill and a note on how it adapts the two prompts.
 The path to Theorem~\ref{thm:main} went through the steps of this paper in order.
 The fiber partition of the PPSS graph and its quotient on $192$ classes were found first, and a separate line of work then identified the quotient as the Cayley rule~\eqref{eq:types}.
 Optimization of $p$ and $h$, the pentagon refinement, and the sign refinements followed, each improving the previous best.
-The campaign started on 27 September 2026, and $W_*$ was produced and independently recounted within its first day.
+The campaign started on 27 September 2026 at Sundai Hack~142~\cite{sundai2026}, and $W_*$ was produced and independently recounted within its first day.
 
 The system was designed so that no agent could certify its own result.
 Every proposed improvement was an explicit rational matrix with a hash and a predicted value, and was accepted only after a separate program had recounted it; the final count of $W_*$ was done by a checker that did not read the search code.
@@ -646,7 +645,11 @@ The repository also contains the search programs, the independent counters, the 
 
 \section*{Acknowledgments}
 
-We thank Parczyk, Pokutta, Spiegel, and Szab\'o for publishing their construction data, which was the starting point of this work, and the authors of the two research prompts~\cite{jacobianprompt,cdcprompt}.
+This work began at Sundai Hack~142, \emph{Recursive Self Improvement and Formal Verification in Mathematics}, held at Harvard on 27 September 2026~\cite{sundai2026}.
+Our biggest thanks go to the Sundai Club organizers: without the event, this work would not exist.
+We especially thank Alejandro Zarzuelo Urdiales, a guest at the event, who selected the open problems for the hack from his Ulam Open Problems Difficulty Atlas and presented them to the participants; this problem was one of them.
+
+We also thank Parczyk, Pokutta, Spiegel, and Szab\'o for publishing their construction data, which was the starting point of this work, and the authors of the two research prompts~\cite{jacobianprompt,cdcprompt}.
 
 \appendix
 \section{Supplement and reproduction}

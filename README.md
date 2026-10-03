@@ -37,7 +37,7 @@ exactly, so we don't claim to beat it.
 ![The PPSS graph before and after relabeling](paper/figures/ppss-reordered.png)
 
 The results were found autonomously by an AI research system running in the
-[Codex](https://github.com/openai/codex), OpenAI's agent harness: a GPT-6 Astra
+[Codex](https://github.com/openai/codex), OpenAI's agent harness: a [GPT-6 Astra](https://deploymentsafety.openai.com/gpt-6-astra)
 parent agent directing eight GPT-6 Astra subagents through Codex's native
 subagents. All agents
 followed a research skill derived from OpenAI's
@@ -45,6 +45,13 @@ followed a research skill derived from OpenAI's
 and the [Jacobian Conjecture prompt](https://aaronlou.com/jacobian_counterexample_prompt.pdf)
 ([skill](paper/data/research-workflow.md), [adaptation notes](paper/data/workflow-source-principles.md)).
 No candidate was accepted until a separate program had recounted it exactly.
+
+This work began at [Sundai Hack 142](https://www.sundai.club/events/boston/recursive-learning-hack-with-harvard-innovation-labs),
+*Recursive Self Improvement and Formal Verification in Mathematics* (Harvard,
+27 September 2026). Huge thanks to the Sundai Club organizers: without
+the event, this work would not exist. Special thanks to Alejandro Zarzuelo
+Urdiales, a guest at the event, who selected the open problems for the hack
+and presented them; this problem was one of them.
 
 **Where to read more.**
 
