@@ -42,8 +42,8 @@ can't compare the two, so we don't claim to beat it. The exact value is
    Its minimum, 0.0301389773, already beats McKay's value. A nearby rational
    point, 0.0301389941, is proved in Lean.
 3. **Refinement.** Splitting each class with a pentagon pattern, then twice into
-   balanced ± halves, gives 3840 classes and the bound above. Its value comes
-   from an independent exact computation.
+   balanced ± halves, gives 3840 classes and the bound above. The bound is
+   proved in Lean and confirmed by an independent exact computation.
 
 ![History of upper bounds on c₄](paper/figures/bounds.png)
 
@@ -160,9 +160,10 @@ running.
 
 - The 192-class bound (0.0301389941) has a complete Lean proof, including the
   numerical evaluation.
-- For the 3840-class bound, Lean proves the structure and the counting formula,
-  but the final numerical step is not formalized yet. The value comes from an
-  independent exact computation.
+- The 3840-class bound (0.030138887566497220…) also has a complete numerical
+  Lean certificate, connected to the literal density and finite-coloring
+  existence theorem. Run `just certify-final3840` to check it. Both numerical
+  certificates use `native_decide`, trusting Lean's compiler and runtime.
 - The fast program behind `just published` agrees with the PPSS value, but no
   Lean proof yet connects it to the definition of the density.
 

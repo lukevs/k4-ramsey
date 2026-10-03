@@ -5,9 +5,9 @@
 
 Authors: Luke Van Seters and Madhan Jothimani.
 
-The paper states the exact 3840-class construction bound. It also gives the
-192-class bound with its numerical Lean proof. It identifies the remaining
-numerical formalization gap for the larger construction.
+The paper states the exact 3840-class construction bound and the 192-class
+bound. Both have numerical Lean proofs; the 3840-class value is also confirmed
+by an independent exact computation.
 
 ## Build
 
@@ -123,8 +123,9 @@ recount takes several minutes on the research machine. This native route is
 specific to macOS; the mathematical identity is platform-independent.
 
 For the formal proofs, use `just lean-build` and `just audit` from the repository
-root. See [verification details](../docs/verification.md) for their trust boundary.
-The full numerical 3840-class Lean certificate remains unfinished.
+root. `just certify-final3840` checks the numerical 3840-class certificate (about
+12 minutes when not cached). See [verification details](../docs/verification.md)
+for the trust boundary.
 
 `just paper-export` regenerates the frozen data from the repository's Lean
 tables and local reports. A normal paper build does not need those reports.

@@ -11,7 +11,7 @@ rational number. The arithmetic certificate uses native evaluation; the
 counting reduction and realization argument are kernel-checked proofs.
 
 This is intentionally named `Clebsch192`, not `FinalClebsch`: the stronger
-3,840-part refinement has not yet been connected to this proof pipeline.
+3,840-part refinement has its own certificate in `Final3840.NumericalBound`.
 -/
 
 namespace K4Ramsey.Clebsch192

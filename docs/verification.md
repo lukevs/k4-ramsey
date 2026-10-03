@@ -56,9 +56,12 @@ There are no `sorry` placeholders or assumed numerical certificates in this
 proof chain. A finite-order bound valid for every n >= 4 also bounds any
 asymptotic limit of the minimum densities.
 
-**Scope:** this is not yet a numerical formal certificate for the stronger
-**3,840-part** refinement with reported value approximately
-`0.030138887566497220`. The following parts of that refinement now compile:
+## Formal 3,840-class bound
+
+The stronger **3,840-part** refinement now has a numerical formal certificate
+for the exact value
+`8450462766487926638466333426306607129 / 280384030360880691940646801777885184000`
+(approximately `0.030138887566497220`). Its proof chain is:
 
 - `Final3840Data/` embeds the witness itself, not a supplied count. Its ten
   small source chunks store the 1,248 fractional 20-by-20 blocks; the hard
@@ -83,23 +86,33 @@ asymptotic limit of the minimum densities.
   `Final3840SymmetryProof.baseRoot_eq` reduces the base contribution to one
   rooted count. These close the optimized-counter correctness gap.
 
-**Remaining gap:** finish the full numerical run and use `native_decide` to
-certify that the proved integer expression equals the reported exact rational
-`8450462766487926638466333426306607129 / 280384030360880691940646801777885184000`.
-The external numerical report is not used as a Lean premise. Thus the symbolic
-upper-limit theorem must not be presented as a certificate of that number.
+- `Final3840/Certificate.lean` recomputes the proved integer expression with
+  `native_decide`, obtaining
+  `519196432373018212667371525712277942005760`. `exact_density` then uses
+  `density_eq_count`, the proved base symmetry, and rational normalization to
+  establish the exact fraction above. No external report is a Lean premise.
+- `Final3840/NumericalBound.lean` proves `exists_coloring_exact`: for every
+  `n ≥ 4`, an actual coloring has density at most that fraction. It also proves
+  `ramsey_upperLimit_exact_bound` without a convergence assumption, and
+  `ramsey_limit_exact_bound` for any limit of the genuine finite minima.
 
-The compiled single-slice smoke test completed. The full run was interrupted
-at the user's request to ship this checkpoint; no complete total was obtained.
-Resume the diagnostic run with `just recount`. This runner prints
-progress every 16 coarse vertices and uses roughly 700 MB in the observed run.
-Its output alone is not a theorem: the next step is a numerical Lean certificate
-and substitution into `density_eq_count` and the existing upper-bound theorem.
+Run `just certify-final3840` for this certificate, or `just lean-build` for the
+whole library. The fresh certificate check took 703 seconds in the observed
+run (roughly 2.3 GB for the Lean process); cached builds reuse its checked result.
+`just audit` prints the numerical theorem's
+native-evaluation dependency and the axioms of the final bound. The general
+counting and realization arguments remain kernel-checked; native compilation
+and evaluation are explicitly part of the concrete arithmetic trust boundary.
+
+The separate `just recount` diagnostic completed all 192 slices in about
+553 seconds on the observed machine, using roughly 700 MB, and reproduced the
+same exact fraction. It prints progress every 16 coarse vertices. Its output
+alone is not the theorem: the certificate independently checks the equation.
 
 `SignRefinement.lean` also proves the local six-edge identity for balanced
 two-way splits. The centered-block route above handles the complete 20-way
-refinement directly. Structural checks are separate from the still-unverified numerical contraction
-certificate.
+refinement directly. The numerical certificate now completes that route for
+the fixed witness; it does not assert optimality or improve the numerical bound.
 
 The embedded witness comes from SHA-256
 `05302cbc635e939cc41f4ba019cdcba80199b0b83563100bac0b1a0d9fff1a29`.

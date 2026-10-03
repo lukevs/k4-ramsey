@@ -3,8 +3,8 @@ import K4Ramsey.Core.Asymptotic
 import Mathlib.Data.Fin.Embedding
 
 /-! Symbolic upper bound for the actual final witness. No numerical density
-is assumed here. The missing numerical contraction certificate is deliberately
-not disguised as a hypothesis of an "exact density" theorem. -/
+is assumed here. `NumericalBound` specializes this result using the independently
+checked arithmetic certificate in `Certificate`. -/
 
 namespace K4Ramsey.Final3840
 

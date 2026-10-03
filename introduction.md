@@ -123,7 +123,7 @@ The agents found the fiber structure, the Clebsch rule, the two-knob family, and
 | Claim | Evidence |
 |---|---|
 | c₄ ≤ 0.0301389941 (192 groups) | Full Lean proof, including the numerical evaluation |
-| c₄ ≤ 0.0301388876 (3840 groups) | Independent exact integer computation; Lean checks the structure and counting formula, but the final numerical step isn't formalized yet |
+| c₄ ≤ 0.0301388876 (3840 groups) | Full Lean proof, including native numerical evaluation, plus an independent exact integer computation |
 | The PPSS graph has the Clebsch structure | Checked entry by entry every time the figures are generated |
 | The two-knob minimum is 0.0301389773 | Exact computer algebra (Gröbner basis, Sturm count, interval arithmetic) |
 

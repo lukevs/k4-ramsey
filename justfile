@@ -78,6 +78,10 @@ audit: lean-build
 recount:
     bash scripts/lean.sh exe check_final3840
 
+# Check the full numerical 3,840-class certificate and bound (multi-minute).
+certify-final3840:
+    bash scripts/lean.sh build K4Ramsey.Constructions.Final3840.NumericalBound
+
 # Run a short C++-backed search; OUT must be a new directory.
 search out seed="0" seconds="10" timeout="40":
     uv run --locked k4-lab run --out {{ quote(out) }} --seed {{ quote(seed) }} --seconds {{ quote(seconds) }} --timeout {{ quote(timeout) }} --hypothesis 'Sampled single-edge descent improves the published seed' --prediction 'Independent Lean recount confirms a smaller numerator'

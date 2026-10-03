@@ -3,6 +3,7 @@ import K4Ramsey.Counting.SignRefinement
 import K4Ramsey.Constructions.Final3840.Bound
 import K4Ramsey.Constructions.Final3840.Arithmetic
 import K4Ramsey.Constructions.Final3840.SymmetryProof
+import K4Ramsey.Constructions.Final3840.NumericalBound
 
 -- These general theorems must not depend on sorryAx or native evaluation.
 #print axioms K4Ramsey.Graphon.pairSum_eq_colorSum
@@ -33,3 +34,8 @@ import K4Ramsey.Constructions.Final3840.SymmetryProof
 #print axioms K4Ramsey.Final3840.Count.raw_total
 #print axioms K4Ramsey.Final3840.Count.density_eq_count
 #print axioms K4Ramsey.Final3840.baseRoot_eq
+#print axioms K4Ramsey.Final3840.exact_count
+#print axioms K4Ramsey.Final3840.exact_density
+#print axioms K4Ramsey.Final3840.exists_coloring_exact
+#print axioms K4Ramsey.Final3840.ramsey_upperLimit_exact_bound
+#print axioms K4Ramsey.Final3840.ramsey_limit_exact_bound

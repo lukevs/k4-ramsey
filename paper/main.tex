@@ -45,7 +45,7 @@ Refining this graphon with a pentagon pattern and two balanced sign splits gives
 \]
 so $c_4\le U$.
 This is below Feinstein's announced threshold.
-A rational point of the two-parameter family gives $c_4\le0.0301389941$ with a proof checked in Lean; the bound $U$ is established by an independent exact computation.
+Both this bound and the bound $c_4\le0.0301389941$ from a rational point of the two-parameter family are proved in Lean, including their numerical evaluations, and $U$ is confirmed by an independent exact computation.
 The constructions were found autonomously by OpenAI's GPT-6 Astra model running in the Codex harness, with one agent directing eight copies of itself as subagents.
 \end{abstract}
 
@@ -128,6 +128,7 @@ There is a symmetric $3840\times3840$ table $W_*$ of probabilities with denomina
  \F(W_*)=U=\frac{8450462766487926638466333426306607129}{280384030360880691940646801777885184000}=0.030138887566497220\ldots.
 \end{equation}
 Consequently, for every $n\ge4$ some red/blue coloring of $K_n$ has monochromatic $K_4$ proportion at most $U$, and $c_4\le U<0.030139$.
+This statement, including the numerical evaluation, is proved in Lean.
 \end{theorem}
 
 \begin{theorem}[Compact bound]
@@ -150,9 +151,8 @@ The decomposition, the two-parameter family, and both refinements were found by 
 Every candidate the agents proposed was an explicit rational matrix, and none was accepted until a separate program had recounted it exactly.
 
 \paragraph{Verification.}
-Theorem~\ref{thm:compact} has an end-to-end formal proof in Lean.
-For Theorem~\ref{thm:main}, Lean proves that the witness has the stated structure and that an optimized counting formula equals its density, but the final numerical evaluation is not yet formalized; the value in~\eqref{eq:mainvalue} comes from an independent exact computation based on a character identity (Section~\ref{sec:count}).
-Section~\ref{sec:formal} states precisely what is proved and what is computed.
+Both theorems have end-to-end formal proofs in Lean, in which the final numerical evaluations use Lean's native evaluation (Section~\ref{sec:formal}).
+The value in~\eqref{eq:mainvalue} is also confirmed by an independent exact computation, based on a character identity and separate code (Section~\ref{sec:count}).
 
 \section{Step graphons and finite colorings}
 \label{sec:prelim}
@@ -507,8 +507,9 @@ the compact data use a permutation of the coarse classes, and the supplement che
 \section{An exact count by characters}
 \label{sec:count}
 
-A direct evaluation of~\eqref{eq:density} for $N=3840$ has about $2\cdot10^{14}$ terms.
-We use the sign symmetry of $W_*$ to reduce it.
+The value~\eqref{eq:mainvalue} is proved in Lean (Section~\ref{sec:formal}).
+This section gives an independent computation of it, using a different reduction and different code.
+A direct evaluation of~\eqref{eq:density} for $N=3840$ has about $2\cdot10^{14}$ terms, and we use the sign symmetry of $W_*$ to reduce it.
 Fourier methods already appear in the multiplicity analysis of Jagger, \v{S}\v{t}ov\'{i}\v{c}ek, and Thomason~\cite{jagger1996}; we give the specific identity we need.
 
 \subsection{The character identity}
@@ -575,8 +576,7 @@ For $W_*$ it gives
  D(Q-r)&=260049236146899152657783450211330231613440,\notag\\
  N^4Q^6&=17226794825372509712833339501233265704960000,
 \end{align}
-which by~\eqref{eq:integer} is the value $U$ in~\eqref{eq:mainvalue}.
-Lemma~\ref{lem:realization} then gives Theorem~\ref{thm:main}.
+which by~\eqref{eq:integer} is the value $U$ in~\eqref{eq:mainvalue}, in agreement with the Lean certificate.
 The value predicted by the search code was compared with this count only after the count was complete.
 A generic count of the full $3840$-class table, without the symmetry reduction, has not been run.
 
@@ -589,12 +589,13 @@ There are no \code{sorry} placeholders and no assumed numerical certificates.
 
 The witness $W_*$ is also embedded in Lean as its $1248$ fractional blocks together with the coarse group rule.
 Native checks establish its dimensions, symmetry, range, and centered rows; general proofs establish the centered expansion, a sparse counting reduction, and the correctness of the stored contractions, giving an integer expression for $\F(W_*)$ with denominator $65536^6\cdot3840^4$.
-What remains is a numerical certificate that this integer expression equals~\eqref{eq:mainvalue}.
-Until then, Theorem~\ref{thm:main} rests on the exact computation of Section~\ref{sec:count}.
+Native evaluation of that expression gives the numerator $519196432373018212667371525712277942005760$, which equals $D(r)+D(Q-r)$ in~\eqref{eq:rawcounts}, and kernel-checked rational normalization turns it into~\eqref{eq:mainvalue}.
+Combined with Lemma~\ref{lem:realization}, this proves Theorem~\ref{thm:main} for every $n\ge4$, together with the asymptotic bound $c_4\le U$.
+A fresh check of this certificate takes about twelve minutes.
 
 The general proofs use Lean's standard axioms and mathlib.
-The native checks additionally trust the compiler and runtime.
-The external count trusts Python integer arithmetic, the C++ program, and the stated exactness bounds for Accelerate.
+The numerical evaluations for both theorems, and the native structural checks, additionally trust Lean's compiler and runtime.
+The independent count of Section~\ref{sec:count} trusts Python integer arithmetic, the C++ program, and the stated exactness bounds for Accelerate.
 Jeong, Park, Hyun, Oum, and Yang formalize flag algebras in Lean with a certificate-to-proof compiler~\cite{jeong2026}; that work concerns lower-bound certificates, whereas our proofs realize explicit tables.
 
 \section{How the construction was found}
